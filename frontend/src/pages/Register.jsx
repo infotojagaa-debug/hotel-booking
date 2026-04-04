@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import API from '../utils/api';
+import API, { BACKEND_URL } from '../utils/api';
 import './Auth.css';
 
 const Register = () => {
@@ -196,7 +196,7 @@ const Register = () => {
                     </form>
 
                     <div className="auth-social-group mt-15">
-                        <button className="btn-social-modern" type="button" onClick={() => window.location.href = 'http://localhost:5000/api/users/auth/google'}>
+                        <button className="btn-social-modern" type="button" onClick={() => window.location.href = `${BACKEND_URL}/api/users/auth/google`}>
                             <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G" />
                             Google
                         </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaWifi, FaSnowflake, FaTv, FaCocktail, FaBorderNone, FaBed, FaWater, FaHotTub, FaLock, FaBriefcase, FaCheck } from 'react-icons/fa';
-import API from '../../utils/api';
+import API, { BACKEND_URL } from '../../utils/api';
 
 const AMENITY_ICONS = {
     'WiFi': <FaWifi />,
@@ -53,7 +53,7 @@ const ManagerRooms = ({ rooms, hotels, selectedHotel, onSelectHotel, onRefresh }
                 return API.post('/upload', formData); // Let Axios handle the form-data boundary natively
             });
             const responses = await Promise.all(uploadPromises);
-            const newUrls = responses.map(res => 'http://localhost:5000' + res.data.url).join(', ');
+            const newUrls = responses.map(res => BACKEND_URL + res.data.url).join(', ');
             
             const currentImages = form.images ? form.images.trim() + (form.images.trim().endsWith(',') ? ' ' : ', ') : '';
             setForm({ ...form, images: currentImages + newUrls });

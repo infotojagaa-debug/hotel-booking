@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaWifi, FaSwimmingPool, FaVideo, FaShieldAlt, FaDumbbell, FaUtensils, FaCar, FaSpa, FaSnowflake, FaCocktail, FaTshirt, FaPlaneDeparture, FaCheck, FaUmbrellaBeach } from 'react-icons/fa';
-import API from '../../utils/api';
+import API, { BACKEND_URL } from '../../utils/api';
 
 const AMENITY_ICONS = {
     'WiFi': <FaWifi />,
@@ -56,7 +56,7 @@ const ManagerHotels = ({ hotels, selectedHotel, onSelectHotel, onRefresh }) => {
                 return API.post('/upload', formData);
             });
             const responses = await Promise.all(uploadPromises);
-            const newUrls = responses.map(res => 'http://localhost:5000' + res.data.url).join(', ');
+            const newUrls = responses.map(res => BACKEND_URL + res.data.url).join(', ');
             
             const currentImages = form.images ? form.images.trim() + (form.images.trim().endsWith(',') ? ' ' : ', ') : '';
             setForm({ ...form, images: currentImages + newUrls });

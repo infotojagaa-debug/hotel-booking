@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { AuthContext } from './AuthContext';
-import API from '../utils/api';
+import API, { BACKEND_URL } from '../utils/api';
 import { useToast } from '../components/WishlistToast';
 
 export const NotificationContext = createContext();
@@ -26,7 +26,7 @@ export const NotificationProvider = ({ children }) => {
             fetchNotifications();
             
             // Connect to Backend WebSocket
-            const newSocket = io('http://localhost:5000', {
+            const newSocket = io(BACKEND_URL, {
                 reconnection: true,
             });
             setSocket(newSocket);

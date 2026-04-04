@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 're
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { FaStar, FaBuilding, FaMapMarkerAlt, FaGlobe } from 'react-icons/fa';
+import { BACKEND_URL } from '../utils/api';
 
 // --- CUSTOM MARKER CREATORS ---
 
@@ -141,7 +142,7 @@ const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center
                                 <div className="map-info-window overflow-hidden">
                                     <div className="relative">
                                         <img 
-                                            src={hotel.images?.[0]?.startsWith('http') ? hotel.images[0] : `http://localhost:5000${hotel.images[0]}`} 
+                                            src={hotel.images?.[0]?.startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`} 
                                             alt={hotel.name} 
                                             className="w-full h-32 object-cover"
                                         />

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import API from '../utils/api';
+import API, { BACKEND_URL } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import './Auth.css';
 
@@ -17,7 +17,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
-        window.location.href = 'http://localhost:5000/api/users/auth/google';
+        window.location.href = `${BACKEND_URL}/api/users/auth/google`;
     };
 
     const handleSubmit = async (e) => {
