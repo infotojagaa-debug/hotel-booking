@@ -39,8 +39,8 @@ const BookingHotelCard = ({ hotel, offer }) => {
                 <img 
                     src={
                         hotel.images?.[0] 
-                        ? (hotel.images?.[0].startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`)
-                        : 'https://images.unsplash.com/photo-1566073771259-6a8506099945'
+                        ? (hotel.images[0].startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`)
+                        : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600'
                     } 
                     alt={hotel.name} 
                     className="w-full h-full object-cover cursor-pointer"

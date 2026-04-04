@@ -78,7 +78,7 @@ const HotelListCard = ({ hotel, isActive, onSelect, onHover }) => {
             {/* Image (140x110) */}
             <div className="w-[140px] h-[110px] relative flex-shrink-0 overflow-hidden rounded-[18px] bg-slate-50 shadow-inner">
                 <img 
-                    src={hotel.images?.[0]?.startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`}
+                    src={hotel.images?.[0] ? (hotel.images[0].startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`) : 'https://placehold.co/400x300?text=No+Image'}
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-115"
                     alt={hotel.name}
                 />
@@ -275,7 +275,7 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
                                                 >
                                                     <div className="h-[160px] overflow-hidden relative">
                                                         <img 
-                                                            src={hotel.images?.[0]?.startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`}
+                                                            src={hotel.images?.[0] ? (hotel.images[0].startsWith('http') ? hotel.images[0] : `${BACKEND_URL}${hotel.images[0]}`) : 'https://placehold.co/400x300?text=No+Image'}
                                                             className="w-full h-full object-cover transition-transform duration-700 group-hover/popup:scale-110"
                                                             alt={hotel.name}
                                                         />

@@ -177,7 +177,7 @@ const ManagerOffers = ({ offers, hotels, onRefresh }) => {
                                     
                                     {form.bannerImage && (
                                         <div style={{ marginTop: '20px', borderRadius: '10px', overflow: 'hidden', height: '160px', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyItems: 'center', border: '1px solid #e2e8f0' }}>
-                                            <img src={form.bannerImage.startsWith('http') ? form.bannerImage : `${BACKEND_URL}${form.bannerImage.startsWith('/') ? '' : '/'}${form.bannerImage}`} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <img src={form.bannerImage?.startsWith('http') ? form.bannerImage : `${BACKEND_URL}${form.bannerImage?.startsWith('/') ? '' : '/'}${form.bannerImage}`} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         </div>
                                     )}
                                 </div>
@@ -262,7 +262,7 @@ const ManagerOffers = ({ offers, hotels, onRefresh }) => {
                                         {/* Preview Area */}
                                         {editingOffer.bannerImage && (
                                             <div style={{ marginTop: '20px', borderRadius: '10px', overflow: 'hidden', height: '160px', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyItems: 'center', border: '1px solid #e2e8f0' }}>
-                                                <img src={editingOffer.bannerImage.startsWith('http') ? editingOffer.bannerImage : `${BACKEND_URL}${editingOffer.bannerImage.startsWith('/') ? '' : '/'}${editingOffer.bannerImage}`} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                <img src={editingOffer.bannerImage?.startsWith('http') ? editingOffer.bannerImage : `${BACKEND_URL}${editingOffer.bannerImage?.startsWith('/') ? '' : '/'}${editingOffer.bannerImage}`} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                             </div>
                                         )}
                                     </div>
