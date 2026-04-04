@@ -1,0 +1,334 @@
+/* HotelAddForm — Premium property registration form */
+
+.hotel-form-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.form-alert {
+    padding: 16px 24px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.form-alert-success { background: #ecfdf5; color: #059669; }
+.form-alert-error { background: #fef2f2; color: #dc2626; }
+
+.hotel-add-form {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 50px;
+    box-shadow: 0 20px 60px rgba(109, 93, 252, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Form Rows */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.form-row-three {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.form-input {
+    padding: 18px 22px;
+    border-radius: 16px;
+    border: 2px solid #eef2f7;
+    background: #f8fafc;
+    font-size: 1rem;
+    color: #1e293b;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.25s;
+    width: 100%;
+    box-sizing: border-box;
+    caret-color: #6d5dfc; /* Fixed white cursor issue */
+}
+
+.form-input:focus {
+    border-color: #6d5dfc;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(109, 93, 252, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+}
+
+/* Add-on chips */
+.addon-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.addon-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 40px;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Outfit', sans-serif;
+}
+
+.addon-chip:hover {
+    border-color: #6d5dfc;
+    color: #6d5dfc;
+}
+
+.addon-chip-selected {
+    background: #f1f0ff;
+    border-color: #6d5dfc;
+    color: #6d5dfc;
+}
+
+/* Amenity selection container */
+.amenity-section-container {
+    background-color: #f8f7ff;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1.5px solid #eceaff;
+    margin-top: 10px;
+}
+
+.amenity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .amenity-grid { grid-template-columns: 1fr; }
+}
+
+.amenity-chip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.amenity-chip:hover {
+    background: rgba(0,0,0,0.03);
+}
+
+.amenity-chip input[type="checkbox"] {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    background: #fff;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.amenity-chip input[type="checkbox"]:hover {
+    border-color: #6d5dfc;
+    background: #f8f7ff;
+}
+
+.amenity-chip input[type="checkbox"]:checked {
+    background: #6d5dfc;
+    border-color: #6d5dfc;
+    box-shadow: 0 4px 10px rgba(109, 93, 252, 0.3);
+}
+
+.amenity-chip input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.chip-icon {
+    font-size: 1.4rem;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+}
+
+.amenity-chip span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.amenity-chip-selected {
+    background: rgba(0,0,0,0.05);
+}
+
+/* Image upload */
+.image-mode-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.mode-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #eef2f7;
+    background: #f8fafc;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+}
+
+.mode-tab-active {
+    border-color: #6d5dfc;
+    background: #f1f0ff;
+    color: #6d5dfc;
+}
+
+.file-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 48px;
+    border: 2px dashed #d1d5db;
+    border-radius: 20px;
+    background: #f8fafc;
+    cursor: pointer;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.file-upload-zone:hover {
+    border-color: #6d5dfc;
+    background: #f1f0ff;
+}
+
+.file-upload-zone i {
+    font-size: 2.5rem;
+    color: #6d5dfc;
+}
+
+.file-upload-zone small {
+    font-size: 0.78rem;
+    color: #94a3b8;
+}
+
+.image-preview {
+    max-height: 200px;
+    border-radius: 12px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.image-preview-url {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-top: 12px;
+}
+
+/* Submit buttons */
+.form-submit-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.form-submit-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #6d5dfc, #5b4dec);
+    color: #fff;
+    padding: 18px 40px;
+    border-radius: 16px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(109, 93, 252, 0.25);
+}
+
+.form-submit-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0, 108, 228, 0.35);
+}
+
+.form-submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.form-cancel-btn {
+    padding: 18px 30px;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+}
+
+.form-cancel-btn:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+}

@@ -1,0 +1,98 @@
+.booking-stepper-container {
+    padding: 100px 0 24px 0; /* Clears fixed navbar (80px approx) */
+    width: 100%;
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 24px;
+    background-color: #fff;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.booking-stepper-flex {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.booking-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #4b5563;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Active State */
+.booking-step.active {
+    color: #1a1a1a;
+}
+
+.booking-step.active .step-icon-wrap {
+    background-color: #6d5dfc;
+    color: #fff;
+    border-color: #6d5dfc;
+}
+
+/* Completed State */
+.booking-step.completed {
+    color: #6d5dfc;
+}
+
+.booking-step.completed .step-icon-wrap {
+    background-color: #6d5dfc;
+    color: #fff;
+    border-color: #6d5dfc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+/* Pending State (Default) */
+.step-icon-wrap {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #9ca3af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #9ca3af;
+    transition: all 0.2s;
+}
+
+.step-label {
+    white-space: nowrap;
+}
+
+.step-connector {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #d1d5db;
+    min-width: 40px;
+}
+
+/* Completed Connector */
+.booking-step.completed + .step-connector {
+    background-color: #6d5dfc;
+}
+
+@media (max-width: 640px) {
+    .booking-stepper-container {
+        padding: 16px 8px;
+    }
+    
+    .step-label {
+        font-size: 12px;
+    }
+    
+    .step-connector {
+        min-width: 10px;
+    }
+}

@@ -1,0 +1,47 @@
+export const INDIAN_LOCATIONS = [
+    // STATES
+    { name: 'Tamil Nadu', state: 'Tamil Nadu', type: 'State' },
+    { name: 'Karnataka', state: 'Karnataka', type: 'State' },
+    { name: 'Maharashtra', state: 'Maharashtra', type: 'State' },
+    { name: 'Kerala', state: 'Kerala', type: 'State' },
+    { name: 'Telangana', state: 'Telangana', type: 'State' },
+    { name: 'Andhra Pradesh', state: 'Andhra Pradesh', type: 'State' },
+    { name: 'Gujarat', state: 'Gujarat', type: 'State' },
+    { name: 'Rajasthan', state: 'Rajasthan', type: 'State' },
+    { name: 'Delhi', state: 'Delhi', type: 'State' },
+    { name: 'Uttar Pradesh', state: 'Uttar Pradesh', type: 'State' },
+    { name: 'West Bengal', state: 'West Bengal', type: 'State' },
+    { name: 'Goa', state: 'Goa', type: 'State' },
+
+    // CITIES (Major)
+    { name: 'Chennai', state: 'Tamil Nadu', type: 'City' },
+    { name: 'Coimbatore', state: 'Tamil Nadu', type: 'City' },
+    { name: 'Madurai', state: 'Tamil Nadu', type: 'City' },
+    { name: 'Bengaluru', state: 'Karnataka', type: 'City' },
+    { name: 'Mysuru', state: 'Karnataka', type: 'City' },
+    { name: 'Mumbai', state: 'Maharashtra', type: 'City' },
+    { name: 'Pune', state: 'Maharashtra', type: 'City' },
+    { name: 'Kochi', state: 'Kerala', type: 'City' },
+    { name: 'Thiruvananthapuram', state: 'Kerala', type: 'City' },
+    { name: 'Hyderabad', state: 'Telangana', type: 'City' },
+    { name: 'Visakhapatnam', state: 'Andhra Pradesh', type: 'City' },
+    { name: 'Ahmedabad', state: 'Gujarat', type: 'City' },
+    { name: 'Jaipur', state: 'Rajasthan', type: 'City' },
+    { name: 'New Delhi', state: 'Delhi', type: 'City' },
+    { name: 'Lucknow', state: 'Uttar Pradesh', type: 'City' },
+    { name: 'Kolkata', state: 'West Bengal', type: 'City' },
+    { name: 'Panaji', state: 'Goa', type: 'City' },
+
+    // DISTRICTS (As requested)
+    { name: 'Erode', state: 'Tamil Nadu', type: 'District' },
+    { name: 'Salem', state: 'Tamil Nadu', type: 'District' },
+    { name: 'Tiruppur', state: 'Tamil Nadu', type: 'District' },
+    { name: 'Vellore', state: 'Tamil Nadu', type: 'District' },
+    { name: 'Thanjavur', state: 'Tamil Nadu', type: 'District' },
+    { name: 'Udupi', state: 'Karnataka', type: 'District' },
+    { name: 'Kodagu', state: 'Karnataka', type: 'District' },
+    { name: 'Ernakulam', state: 'Kerala', type: 'District' },
+    { name: 'Alappuzha', state: 'Kerala', type: 'District' },
+    { name: 'Nagpur', state: 'Maharashtra', type: 'District' },
+    { name: 'Nashik', state: 'Maharashtra', type: 'District' }
+];

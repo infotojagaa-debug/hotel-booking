@@ -1,0 +1,401 @@
+/* 1. Base Layout & Container Stability */
+.search-page-container {
+    padding-top: 100px; 
+    background-color: #f8fafc;
+    min-height: 100vh;
+    scrollbar-gutter: stable; /* Crucial: Prevents layout shift between long/short views */
+}
+
+.search-results-wrapper {
+    max-width: none !important; /* Ultimate fluid scaling (No limit) */
+    width: 100% !important; /* Stretch to fill any monitor size */
+    margin: 0 auto;
+    padding: 0 40px; /* Professional side margins even in fluid mode */
+}
+
+/* 2. Header & Breadcrumbs */
+.search-results-header-wrap {
+    margin-bottom: 30px; 
+    margin-top: 16px;
+    width: 100%;
+    position: relative;
+    z-index: 110; /* Higher than sticky-sidebar (10) */
+}
+
+/* 3. Main Results Grid (ABSOLUTE 250px FIXED SIDEBAR) */
+.search-results-grid {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 0; /* Removing parent gap to use stable column padding instead */
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .search-results-grid {
+        /* FIXED GRID TRACKS: Prevents tracks from resizing based on content (List vs Grid) */
+        display: grid !important;
+        grid-template-columns: 300px 1fr !important;
+        width: 100% !important;
+    }
+}
+
+/* 4. Filter Sidebar Styling (ABSOLUTE LOCKED 300px WIDTH) */
+.sticky-sidebar {
+    position: sticky !important;
+    top: 100px !important; 
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-right: 12px;
+    z-index: 10;
+    
+    /* Hard-locking all width properties to exactly 300px for absolute consistency */
+    width: 300px !important;
+    min-width: 300px !important; 
+    max-width: 300px !important;
+    flex: 0 0 300px !important;
+}
+
+/* 5. Results Column - THE STABLE 24px LOCK */
+.results-column {
+    width: 100% !important;
+    min-width: 0 !important; 
+    flex: 1 !important;
+    /* Stable space between the sidebar and the container in BOTH views */
+    padding-left: 24px !important; 
+}
+
+@media (max-width: 1023px) {
+    .results-column {
+        padding-left: 0 !important;
+    }
+}
+
+/* 6. View Toggle Implementation (Zero-Shift Containers) */
+.results-container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+/* 6a. List View Styles (Vertical Flex Column) */
+.results-container.list-view {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px;
+    width: 100% !important;
+}
+
+/* 6b. Grid View Styles (FORCED 3-Column horizontal rows) */
+.results-container.grid-view {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px;
+    width: 100% !important;
+    justify-items: stretch !important; /* Stretch cards to fill the track */
+}
+
+@media (max-width: 1250px) {
+    .results-container.grid-view {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .results-container.grid-view {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* 7. Hotel Card Adaptability (Premium UI) */
+.hotel-card-premium {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e7e7e7;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+}
+
+.hotel-card-premium:hover {
+    border-color: #006ce4;
+    box-shadow: 0 4px 12px rgba(0, 108, 228, 0.1);
+}
+
+/* 7a. List View Specific Internal Scaling (Expansive but Shortened) */
+.list-view .hotel-card-premium {
+    flex-direction: row;
+    width: 100%;
+    height: 260px !important; /* Increased to 260px for perfect button clearance */
+    overflow: hidden;
+}
+
+.list-view .card-image-wrapper {
+    width: 300px !important; /* Narrower image for better horizontal space */
+    height: 260px !important; /* Match card height */
+    flex-shrink: 0;
+}
+
+.list-view .hotel-title-blue {
+    font-size: 20px !important; /* Fully restored for premium look */
+    font-weight: 700 !important;
+    color: #006ce4 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.list-view .location-row-links {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    font-size: 13px !important; /* Restored for readability */
+    color: #006ce4 !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important; 
+}
+
+.list-view .room-inventory-section {
+    margin-top: 6px !important; /* Added back margin for breathing room */
+    padding-left: 14px !important;
+    border-left: 1px solid #ddd !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+
+.list-view .pricing-column-anchored {
+    width: 250px !important; /* Restore width */
+    min-width: 250px !important;
+    padding-left: 20px !important;
+    padding-bottom: 12px !important; /* Critical: Ensure button is not cramped at the bottom */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    text-align: right !important;
+    flex-shrink: 0 !important;
+    height: 100%;
+}
+
+/* 7b. Grid View Specific Internal Scaling (Strictly Compact) */
+.grid-view .hotel-card-premium {
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.grid-view .card-image-wrapper {
+    width: 100% !important;
+    height: 150px !important;
+    padding: 0;
+}
+
+.grid-view .hotel-title-blue {
+    font-size: 16px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 2px !important;
+}
+
+.grid-view .location-row-links {
+    font-size: 11px !important;
+    gap: 4px !important;
+}
+
+.grid-view .room-inventory-section {
+    margin-top: 2px !important;
+    padding-left: 8px !important;
+}
+
+.grid-view .pricing-column-anchored {
+    width: 100% !important;
+    border-top: 1px solid #f2f2f2;
+    padding-top: 6px;
+    margin-top: 6px;
+}
+
+/* 8. Shared Internal Components (Sanitized) */
+.card-image-wrapper {
+    position: relative;
+    padding: 8px;
+}
+
+.card-image-wrapper img {
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-content {
+    flex: 1;
+    padding: 12px 16px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 16px !important;
+    width: 100% !important;
+    min-width: 0;
+}
+
+.grid-view .card-content {
+    flex-direction: column !important;
+    padding: 8px !important;
+    gap: 4px !important;
+}
+
+.details-column {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+}
+
+.featured-badge-gold {
+    display: inline-flex;
+    align-items: center;
+    background: #fdf0d5;
+    color: #1a1a1a;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.score-badge-dark-blue {
+    background: #2d264d !important;
+    color: white !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px 6px 6px 0 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
+.see-availability-btn-fluid {
+    background: #6d5dfc !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background 0.2s;
+}
+
+.see-availability-btn-fluid:hover {
+    background: #6d5dfc !important;
+}
+
+/* 9. Sidebar Typography & Icons */
+.filter-item-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100%;
+    cursor: pointer;
+    padding: 4px 0;
+    gap: 12px;
+}
+
+.filter-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.filter-item-icon {
+    font-size: 14px;
+    color: #6a6a6a;
+    width: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+.filter-item-row:hover .filter-item-icon {
+    color: #6d5dfc;
+}
+
+.filter-item-label {
+    font-size: 13px;
+    color: #262626;
+}
+
+.filter-item-count {
+    font-size: 12px;
+    color: #737373;
+}
+
+.filter-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #6d5dfc;
+}
+
+/* 10. UI Helpers */
+.sort-pill-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 50px;
+    min-width: 220px;
+    cursor: pointer;
+}
+
+.view-toggle-pill-container {
+    display: flex;
+    background: #f5f5f5;
+    border: 1px solid #e7e7e7;
+    border-radius: 50px;
+    padding: 2px;
+}
+
+.view-pill-segment {
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #595959;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+}
+
+.view-pill-segment.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-weight: 700;
+    border: 1px solid #e7e7e7;
+}
+
+.see-availability-btn {
+    background: #6d5dfc;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.see-availability-btn:hover {
+    background: #2d264d;
+}
+/* Removed duplicate .hotel-card-offer-badge to prevent absolute stretch collision with index.css */

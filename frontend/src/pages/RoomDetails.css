@@ -1,0 +1,519 @@
+/* Room Details - Premium Styling Overhaul */
+
+.room-details-wrapper {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+.room-details-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+@media (max-width: 1024px) {
+    .room-details-main-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+}
+
+/* 1. Image Gallery - Premium Mosaic */
+.room-premium-gallery {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+    background: #fff;
+    padding: 10px;
+}
+
+.room-main-img-wrap {
+    height: 480px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: zoom-in;
+}
+
+@media (max-width: 768px) {
+    .room-main-img-wrap {
+        height: 300px;
+    }
+}
+
+.room-main-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.room-main-img-wrap:hover img {
+    transform: scale(1.03);
+}
+
+/* 2. Headline & Title Components */
+.room-title-premium {
+    font-size: 38px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+
+@media (max-width: 640px) {
+    .room-title-premium {
+        font-size: 28px;
+    }
+}
+
+.hotel-info-tagline {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge-premium-blue {
+    background: linear-gradient(135deg, #6d5dfc 0%, #5b4dec 100%);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(109, 93, 252, 0.2);
+}
+
+/* 3. Re-allocated Guest Reviews Section */
+.reviews-section-premium {
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.reviews-header-flex-p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+    flex-wrap: wrap; /* Ensure it wraps on mobile */
+}
+
+.section-title-p {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+}
+
+.rating-summary-card-p {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #fff;
+    padding: 10px 18px;
+    border-radius: 14px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.rating-label-p {
+    font-weight: 800;
+    font-size: 16px;
+    color: #1e293b;
+    margin: 0;
+}
+
+.rating-count-p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 2px 0 0;
+}
+
+.rating-score-badge-p {
+    width: 52px;
+    height: 52px;
+    background: #1e293b;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+    font-size: 20px;
+    font-weight: 800;
+    flex-shrink: 0; /* Never shink badge */
+}
+
+/* 4. Leave a Review Form */
+.leave-review-box-p {
+    background: #fff;
+    border: 1.5px dashed #e2e8f0;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+    transition: border-color 0.3s;
+}
+
+.leave-review-box-p:focus-within {
+    border-color: #6d5dfc;
+    border-style: solid;
+}
+
+.leave-review-title-p {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.star-selection-p {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.star-active-p {
+    color: #faba00;
+    font-size: 26px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.star-active-p:hover { transform: scale(1.2); }
+
+.star-inactive-p {
+    color: #e2e8f0;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.review-input-p {
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #f8fafc;
+    margin-bottom: 20px;
+    resize: none;
+    outline: none;
+}
+
+.review-input-p:focus {
+    background: #fff;
+    border-color: #cbd5e1;
+}
+
+.submit-review-btn-p {
+    background: #1e293b;
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-review-btn-p:hover { background: #000; }
+
+/* 5. Booking Card (Refined & Neat) */
+.premium-booking-card {
+    background: #ffffff;
+    border: 1px solid #eef2f6;
+    border-radius: 28px;
+    padding: 24px;
+    position: sticky;
+    top: 110px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.premium-booking-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.premium-booking-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.premium-booking-card::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.premium-booking-card::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
+}
+
+.premium-booking-card:hover {
+    box-shadow: 0 30px 70px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 1024px) {
+    .premium-booking-card {
+        position: static;
+        margin-top: 30px;
+    }
+}
+
+.booking-card-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.room-price-total {
+    font-size: 38px;
+    font-weight: 900;
+    color: #1e293b;
+    letter-spacing: -1.5px;
+}
+
+.price-unit {
+    color: #64748b;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Input Fields Overhaul */
+.booking-input-grid-box {
+    border: 1.5px solid #f1f5f9;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.booking-input-group {
+    padding: 8px 16px;
+    border-bottom: 1.5px solid #f1f5f9;
+    background: #fff;
+    transition: background 0.2s;
+}
+
+.booking-input-group:last-child {
+    border-bottom: none;
+}
+
+.booking-input-group:focus-within {
+    background: #f8fafc;
+}
+
+.booking-input-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.datepicker-premium-custom {
+    width: 100% !important;
+    border: none !important;
+    padding: 0 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    background: transparent !important;
+    outline: none !important;
+}
+
+.datepicker-premium-custom::placeholder {
+    color: #cbd5e1;
+}
+
+/* Capacity Row */
+.capacity-row-p {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    margin-bottom: 16px;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.capacity-icon-p {
+    width: 32px;
+    height: 32px;
+    background: #f1f0fe;
+    color: #6d5dfc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.capacity-text-p {
+    font-size: 13px;
+    color: #475569;
+    font-weight: 500;
+}
+
+.capacity-text-p strong {
+    color: #1e293b;
+    font-weight: 700;
+}
+
+/* The Button */
+.btn-reserve-gold {
+    background: linear-gradient(135deg, #6d5dfc 0%, #4f46e5 100%);
+    color: #ffffff;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(109, 93, 252, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-bottom: 16px;
+}
+
+.btn-reserve-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(109, 93, 252, 0.4);
+    background: linear-gradient(135deg, #7c6eff 0%, #5b52f1 100%);
+}
+
+.btn-reserve-gold:active {
+    transform: translateY(0);
+}
+
+.not-charged-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+/* Facilities Section */
+.included-facilities-box {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.facilities-title-p {
+    font-size: 11px;
+    font-weight: 900;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.facilities-mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.facility-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.facility-mini-icon {
+    font-size: 14px;
+}
+
+/* Price Summary Box Styles */
+.price-summary-box-p {
+    background: #f8fafc;
+    border: 1px solid #eef2f6;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.price-line-p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.price-line-total-p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #1e293b;
+    font-weight: 800;
+    padding-top: 12px;
+    border-top: 2px dashed #e2e8f0;
+}
+
+.price-line-total-p span:last-child {
+    font-size: 20px;
+    color: #6d5dfc;
+}
+
+/* Modern Review Cards */
+.review-card-modern {
+    background: #fff;
+    padding: 24px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 40px 0 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: #6d5dfc;
+    border-radius: 2px;
+}
+
+.amenity-premium-pill {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #f1f5f9;
+    padding: 16px;
+}
+
