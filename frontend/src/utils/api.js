@@ -14,4 +14,28 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+// Add interceptor to sanitize legacy localhost URLs from database
+API.interceptors.response.use((response) => {
+  if (response.data) {
+    const sanitizeUrls = (obj) => {
+      if (typeof obj === 'string') {
+        return obj.replace(/http:\/\/localhost:5000/g, '');
+      } else if (Array.isArray(obj)) {
+        return obj.map(sanitizeUrls);
+      } else if (obj !== null && typeof obj === 'object') {
+        const newObj = {};
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            newObj[key] = sanitizeUrls(obj[key]);
+          }
+        }
+        return newObj;
+      }
+      return obj;
+    };
+    response.data = sanitizeUrls(response.data);
+  }
+  return response;
+});
+
 export default API;
