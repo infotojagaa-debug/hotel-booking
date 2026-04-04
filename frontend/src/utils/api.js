@@ -19,7 +19,11 @@ API.interceptors.response.use((response) => {
   if (response.data) {
     const sanitizeUrls = (obj) => {
       if (typeof obj === 'string') {
-        return obj.replace(/http:\/\/localhost:5000/g, '');
+        const cleaned = obj.replace(/http:\/\/localhost:5000/g, '');
+        if (cleaned.startsWith('/uploads/')) {
+            return `${BACKEND_URL}${cleaned}`;
+        }
+        return cleaned;
       } else if (Array.isArray(obj)) {
         return obj.map(sanitizeUrls);
       } else if (obj !== null && typeof obj === 'object') {
