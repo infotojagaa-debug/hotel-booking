@@ -84,7 +84,7 @@ const HotelAddForm = ({ onSuccess }) => {
             } else if (imageMode === 'upload' && imageFile) {
                 const formData = new FormData();
                 formData.append('image', imageFile);
-                const { data } = await API.post('/hotels/upload', formData, {
+                const { data } = await API.post('/upload', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
                 imagesList = [data.url || data.imagePath];
