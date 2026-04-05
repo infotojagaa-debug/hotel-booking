@@ -53,7 +53,7 @@ const ManagerRooms = ({ rooms, hotels, selectedHotel, onSelectHotel, onRefresh }
                 return API.post('/upload', formData); // Let Axios handle the form-data boundary natively
             });
             const responses = await Promise.all(uploadPromises);
-            const newUrls = responses.map(res => BACKEND_URL + res.data.url).join(', ');
+            const newUrls = responses.map(res => res.data.url).join(', ');
             
             const currentImages = form.images ? form.images.trim() + (form.images.trim().endsWith(',') ? ' ' : ', ') : '';
             setForm({ ...form, images: currentImages + newUrls });
