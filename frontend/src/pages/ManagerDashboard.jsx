@@ -222,21 +222,23 @@ const ManagerDashboard = () => {
 
         {/* Content */}
         <main className="mgr-content">
-          {errorMsg && (
-            <div style={{ padding: '20px', background: '#ffe4e6', color: '#e11d48', borderRadius: '8px', marginBottom: '20px' }}>
-              <strong>Error loading dashboard:</strong> {errorMsg}
-            </div>
-          )}
-          {activeTab === 'overview'      && <ManagerOverview analytics={analytics} reservations={reservations} />}
-          {activeTab === 'hotels'        && <ManagerHotels hotels={hotels} selectedHotel={selectedHotel} onSelectHotel={handleSelectHotel} onRefresh={fetchAll} />}
-          {activeTab === 'rooms'         && <ManagerRooms rooms={rooms} hotels={hotels} selectedHotel={selectedHotel} onSelectHotel={handleSelectHotel} onRefresh={() => { fetchAll(); }} />}
-          {activeTab === 'availability'  && <ManagerAvailability rooms={rooms} hotels={hotels} selectedHotel={selectedHotel} onSelectHotel={handleSelectHotel} />}
-          {activeTab === 'bookings'      && <ManagerBookings reservations={reservations} onRefresh={fetchAll} />}
-          {activeTab === 'reports'       && <ManagerReports reservations={reservations} analytics={analytics} />}
-          {activeTab === 'reviews'       && <ManagerReviews reviews={reviews} onRefresh={fetchAll} />}
-          {activeTab === 'offers'        && <ManagerOffers offers={offers} hotels={hotels} onRefresh={fetchAll} />}
-          {activeTab === 'notifications' && <ManagerNotifications notifications={notifications} onRefresh={fetchAll} />}
-          {activeTab === 'profile'       && <ManagerProfile userInfo={userInfo} onRefresh={fetchAll} />}
+          <div className="container-elite section-premium">
+            {errorMsg && (
+              <div style={{ padding: '20px', background: '#ffe4e6', color: '#e11d48', borderRadius: '8px', marginBottom: '20px' }}>
+                <strong>Error loading dashboard:</strong> {errorMsg}
+              </div>
+            )}
+            {activeTab === 'overview'      && <ManagerOverview analytics={analytics} reservations={reservations} />}
+            {activeTab === 'hotels'        && <ManagerHotels hotels={hotels} selectedHotel={selectedHotel} onSelectHotel={handleSelectHotel} onRefresh={fetchAll} />}
+            {activeTab === 'rooms'         && <ManagerRooms rooms={rooms} hotels={hotels} selectedHotel={selectedHotel} onSelectHotel={handleSelectHotel} onRefresh={() => { fetchAll(); }} />}
+            {activeTab === 'availability'  && <ManagerAvailability rooms={rooms} hotels={hotels} selectedHotel={selectedHotel} onSelectHotel={handleSelectHotel} />}
+            {activeTab === 'bookings'      && <ManagerBookings reservations={reservations} onRefresh={fetchAll} />}
+            {activeTab === 'reports'       && <ManagerReports reservations={reservations} analytics={analytics} />}
+            {activeTab === 'reviews'       && <ManagerReviews reviews={reviews} onRefresh={fetchAll} />}
+            {activeTab === 'offers'        && <ManagerOffers offers={offers} hotels={hotels} onRefresh={fetchAll} />}
+            {activeTab === 'notifications' && <ManagerNotifications notifications={notifications} onRefresh={fetchAll} />}
+            {activeTab === 'profile'       && <ManagerProfile userInfo={userInfo} onRefresh={fetchAll} />}
+          </div>
         </main>
       </div>
     </div>

@@ -162,7 +162,7 @@ const Rooms = () => {
         </div>
       </div>
 
-      <div className="search-results-wrapper">
+      <div className="search-results-wrapper container-elite section-premium">
         
         {/* 🔥 Promotion Banner Strip */}
         <div className={`listing-promo-strip ${activeOffer ? 'applied' : ''}`} data-aos="fade-down">

@@ -416,6 +416,7 @@ const AdminPanel = () => {
 
             {/* Main Content Area */}
             <div className={`admin-main-content ${!isSidebarOpen ? 'full-width' : ''}`}>
+                <div className="container-elite section-premium">
                 <div className="admin-header-premium">
                     <div className="admin-welcome">
                         <h2>{
@@ -1262,6 +1263,7 @@ const AdminPanel = () => {
                         </form>
                     </div>
                 )}
+                </div>
             </div>
 
             {/* Custom Delete Confirmation Modal */}
