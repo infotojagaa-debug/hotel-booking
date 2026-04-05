@@ -141,6 +141,58 @@ html, body {
     .elite-grid { gap: 16px; }
 }
 
+/* Common Layout Utilities (Restored) */
+.container {
+    width: 100%;
+    max-width: 1240px; /* Aligned with container-elite */
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.no-gutters > .col,
+.no-gutters > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+/* Common Layout Utilities (Restored) */
+.container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.no-gutters > .col,
+.no-gutters > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
 
 /* Modern Search Bar Styling */
 
@@ -425,15 +477,16 @@ html, body {
 }
 
 .custom-navbar.scrolled-solid {
-    background: rgba(26, 22, 45, 0.85);
-    backdrop-filter: blur(20px);
+    background: rgba(26, 22, 45, 0.95);
+    backdrop-filter: blur(24px);
     padding: 14px 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .custom-navbar.transparent-start {
-    background: transparent;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    backdrop-filter: blur(8px);
 }
 
 .navbar-brand-custom {
@@ -503,19 +556,25 @@ html, body {
 
 /* Glass Hamburger */
 .glass-hamburger {
+    display: none; /* Hidden on desktop by default */
     width: 44px;
     height: 44px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+    .glass-hamburger {
+        display: flex;
+    }
 }
 
 .glass-hamburger span {
@@ -1862,7 +1921,8 @@ html, body {
 }
 
 .slider-text {
-    height: auto !important;
+    height: 100%;
+    padding-top: 140px !important; /* Offset for fixed navbar */
     text-align: left !important;
 }
 
