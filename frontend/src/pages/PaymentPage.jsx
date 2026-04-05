@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
     FaCcVisa, FaCcMastercard, FaMobileAlt, FaUniversity, 
-    FaWallet, FaRegMoneyBillAlt, FaLock, FaCheckCircle,
+    FaRegMoneyBillAlt, FaLock, FaCheckCircle,
     FaArrowRight, FaMapMarkerAlt, FaCalendarAlt, FaUsers,
     FaChevronRight, FaCreditCard, FaTag, FaInfoCircle,
     FaTimes, FaWallet as FaWalletIcon, FaAmazon, FaShieldAlt,
     FaFingerprint, FaLockOpen
 } from 'react-icons/fa';
-import { SiGooglepay, SiPhonepe, SiPaytm, SiApplepay, SiStripe, SiRazorpay, SiAmazonpay } from 'react-icons/si';
+import { SiGooglepay, SiPhonepe, SiPaytm, SiApplepay, SiStripe, SiRazorpay } from 'react-icons/si';
 import BookingStepper from '../components/BookingStepper';
 import HotelMap from '../components/HotelMap';
 import API from '../utils/api';
@@ -283,7 +283,7 @@ const PaymentPage = () => {
                                     <p className="pane-subtitle-p">Digital Wallets</p>
                                     <div className="wallet-grid-p">
                                         {[
-                                            { id: 'amazon', name: 'Amazon Pay', icon: <SiAmazonpay style={{ color: '#FF9900' }} /> },
+                                            { id: 'amazon', name: 'Amazon Pay', icon: <FaAmazon style={{ color: '#FF9900' }} /> },
                                             { id: 'stripe', name: 'Stripe', icon: <SiStripe style={{ color: '#635BFF' }} /> },
                                             { id: 'razorpay', name: 'Razorpay', icon: <SiRazorpay style={{ color: '#3395FF' }} /> }
                                         ].map(wallet => (
