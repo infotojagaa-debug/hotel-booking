@@ -1819,9 +1819,14 @@ html, body {
 }
 
 .hero-slider-wrap .container {
-    padding-left: 5% !important;
-    max-width: 100ch !important;
-    margin-left: 0 !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    text-align: center;
 }
 
 .hero-slider-wrap .hero-title {
@@ -1871,10 +1876,27 @@ html, body {
 }
 
 @keyframes heroFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.animate-fade-up {
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-search-centering-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 20;
+    margin-top: 40px;
 }
 
 @media (max-width: 991.98px) {
@@ -1921,9 +1943,8 @@ html, body {
 }
 
 .slider-text {
-    height: 100%;
-    padding-top: 140px !important; /* Offset for fixed navbar */
-    text-align: left !important;
+    position: relative;
+    z-index: 10;
 }
 
 .city-wrap {

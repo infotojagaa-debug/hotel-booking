@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaStar, FaMapMarkerAlt, FaHeart, FaChevronRight, FaUmbrellaBeach, FaThumbsUp } from 'react-icons/fa';
+import { FaStar, FaMapMarkerAlt, FaHeart, FaChevronRight, FaUmbrellaBeach, FaThumbsUp, FaFire } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useWishlist } from '../context/WishlistContext';
 import { useToast } from './WishlistToast';
