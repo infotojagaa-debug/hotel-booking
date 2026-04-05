@@ -56,7 +56,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }));
-app.options('*', cors()); // Handle all preflight requests
+app.options(/.*/, cors()); // Handle all preflight OPTIONS requests (regex works with all path-to-regexp versions)
 
 // Stripe Webhook needs raw body (must be before express.json)
 app.post('/api/payments/webhook', express.raw({ type: 'application/json' }));
