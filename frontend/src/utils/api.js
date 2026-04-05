@@ -19,15 +19,19 @@ API.interceptors.response.use((response) => {
   if (response.data) {
     const sanitizeUrls = (obj) => {
       if (typeof obj === 'string') {
-        // If already an absolute URL (Cloudinary), don't touch it
+        // 1. Check for legacy local uploads (even if they have an old hostname)
+        const uploadMatch = obj.match(/\/uploads\/.+/i);
+        if (uploadMatch) {
+            // Found a local upload path. Extract it and prepend CURRENT backend.
+            const relativePath = uploadMatch[0]; // Gets '/uploads/...'
+            return `${BACKEND_URL}${relativePath}`;
+        }
+
+        // 2. Already an absolute external URL (Cloudinary, Unsplash, etc.)
         if (obj.startsWith('http')) return obj;
 
-        const cleaned = obj.replace(/http:\/\/localhost:5000/g, '');
-        if (cleaned.startsWith('/uploads/') || cleaned.startsWith('uploads/')) {
-            const prefix = cleaned.startsWith('/') ? '' : '/';
-            return `${BACKEND_URL}${prefix}${cleaned}`;
-        }
-        return cleaned;
+        // 3. Any other relative path
+        return obj;
       } else if (Array.isArray(obj)) {
         return obj.map(sanitizeUrls);
       } else if (obj !== null && typeof obj === 'object') {
