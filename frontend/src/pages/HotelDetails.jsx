@@ -141,7 +141,7 @@ const HotelDetails = () => {
     const hotelImages = hotel.images || [];
 
     return (
-        <div className="hotel-details-container">
+        <div className="container-elite pt-24 pb-20">
             
             {/* 🆕 Sticky Booking Summary Bar */}
             <BookingSummaryBar 

@@ -131,8 +131,14 @@
 /* Stat Cards - Modern Look */
 .admin-analytics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+@media (max-width: 640px) {
+    .admin-analytics-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .admin-stat-card {
@@ -281,7 +287,8 @@
     border-radius: 24px;
     padding: 10px;
     box-shadow: var(--card-shadow);
-    overflow: hidden;
+    overflow-x: auto; /* Enable horizontal scroll for tables on mobile */
+    -webkit-overflow-scrolling: touch;
 }
 
 .admin-table {
@@ -680,8 +687,14 @@
 /* ===== HOTEL PICKER GRID (Rooms tab) ===== */
 .hotel-pick-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
+}
+
+@media (max-width: 640px) {
+    .hotel-pick-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .hotel-pick-card {

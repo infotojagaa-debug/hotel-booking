@@ -128,7 +128,7 @@ const Home = () => {
 
       {/* Browse by Property Type */}
       <section className="prop-type-section mb-[60px]">
-        <div className="container">
+        <div className="container-elite">
           <h2 className="prop-type-heading" data-aos="fade-up">Browse by property type</h2>
           <div className="prop-type-grid" data-aos="fade-up" data-aos-delay="80">
             {[
@@ -153,7 +153,7 @@ const Home = () => {
 
       {/* 🔥 Exclusive Offers & Deals – always visible */}
       <section className="exclusive-offers-section mb-[60px]">
-        <div className="container">
+        <div className="container-elite">
           <div className="offers-section-header" data-aos="fade-up">
             <div className="offers-header-left">
               <div className="offers-fire-badge">🔥 Limited Time</div>
@@ -225,7 +225,7 @@ const Home = () => {
 
       {/* Trending Destinations - Bento Grid */}
       <section style={{ padding: '60px 0', background: '#fff', overflow: 'hidden', position: 'relative' }} className="mb-[60px]">
-        <div className="container">
+        <div className="container-elite">
           <div className="row mb-4">
             <div className="col-md-12 text-left" data-aos="fade-up">
               <h2 className="mb-1 font-weight-bold" style={{ color: '#222222', fontSize: '28px', fontFamily: "'Poppins', sans-serif" }}>Trending destinations</h2>
@@ -249,7 +249,7 @@ const Home = () => {
 
       {/* Explore India – Horizontal Scroll */}
       <section className="explore-section mb-[60px]">
-        <div className="container">
+        <div className="container-elite">
           <div className="explore-header" data-aos="fade-up">
             <div>
               <h2 className="explore-heading">Explore India</h2>
@@ -295,7 +295,7 @@ const Home = () => {
       {/* Featured Deals */}
 
       <section className="ftco-section mb-[60px]" style={{ background: '#f8f8f8', paddingTop: '60px', paddingBottom: '60px' }}>
-        <div className="container">
+        <div className="container-elite">
           <div className="row mb-4 align-items-end">
             <div className="col-md-8" data-aos="fade-up">
               <h2 className="mb-1 font-weight-bold" style={{ color: '#222222', fontSize: '28px', fontFamily: "'Poppins', sans-serif" }}>Featured deals</h2>
@@ -347,7 +347,7 @@ const Home = () => {
 
       {/* Trust Bar */}
       <section className="trust-bar-section mb-[60px]">
-        <div className="container">
+        <div className="container-elite">
           <div className="trust-bar-grid" data-aos="fade-up">
             {[
               { icon: '🛡️', title: 'Free cancellation', text: 'On most properties with no hidden fees' },
@@ -369,7 +369,7 @@ const Home = () => {
 
       {/* Newsletter Strip */}
       <section className="newsletter-section mb-[60px]">
-        <div className="container">
+        <div className="container-elite">
           <div className="newsletter-inner" data-aos="fade-up">
             <div className="newsletter-text">
               <h3>Get exclusive deals in your inbox</h3>

@@ -30,6 +30,55 @@
 .shadow-soft { box-shadow: var(--soft-shadow); }
 .rounded-premium { border-radius: var(--radius-md); }
 
+/* Elite Response Container System */
+.container-elite {
+    width: 100%;
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+    .container-elite {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* Global Reset & Layout Constraints */
+* {
+    box-sizing: border-box !important;
+}
+
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Elite Grid System Utilities */
+.elite-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.elite-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+.elite-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.elite-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.elite-grid-cols-1 { grid-template-columns: 1fr; }
+
+@media (max-width: 1024px) {
+    .elite-grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .elite-grid-cols-4, .elite-grid-cols-3, .elite-grid-cols-2 { grid-template-columns: 1fr; }
+    .elite-grid { gap: 16px; }
+}
+
 
 /* Modern Search Bar Styling */
 
@@ -3629,5 +3678,72 @@
         padding: 8px 4px !important;
         white-space: nowrap !important;
     }
+
+    /* Universal Spacing Overrides */
+    section {
+        margin-bottom: 40px !important;
+    }
+    
+    h1, h2 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   UNIVERSAL PREMIUM UPGRADES & ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Global Layout Safety */
+html, body {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Premium Entrance Animations */
+@keyframes eliteFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-elite-up {
+    animation: eliteFadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scroll Snap for Horizontal Tracks (Mobile) */
+@media (max-width: 768px) {
+    .offers-scroll-track, .explore-track {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    .offer-deal-card, .explore-card {
+        scroll-snap-align: center;
+    }
+}
+
+/* Global Button Touch Targets */
+@media (max-width: 768px) {
+    button, .btn, a.btn, .social-btn-v3, .mgr-btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 

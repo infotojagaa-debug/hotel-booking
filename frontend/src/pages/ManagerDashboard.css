@@ -326,7 +326,12 @@
 .mgr-card-body { padding: 20px; }
 
 /* ─── TABLE ──────────────────────────────────────────────── */
-.mgr-table-wrap { overflow-x: auto; width: 100%; border-radius: 0 0 var(--radius) var(--radius); }
+.mgr-table-wrap { 
+  overflow-x: auto; 
+  width: 100%; 
+  border-radius: 0 0 var(--radius) var(--radius); 
+  -webkit-overflow-scrolling: touch;
+}
 .mgr-table { width: 100%; border-collapse: collapse; white-space: nowrap; font-size: 0.85rem; }
 
 /* Hotel Selector Utility */
@@ -462,8 +467,22 @@ select.mgr-input { cursor: pointer; }
 .icon-btn.save { color: var(--success); }
 
 /* ─── TWO-COLUMN LAYOUT ──────────────────────────────────── */
-.mgr-two-col { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
-.mgr-three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.mgr-two-col { 
+  display: grid; 
+  grid-template-columns: 320px 1fr; 
+  gap: 20px; 
+}
+.mgr-three-col { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px; 
+}
+
+@media (max-width: 1024px) {
+  .mgr-two-col, .mgr-three-col {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ─── SECTION SPACING ────────────────────────────────────── */
 .mgr-section { margin-bottom: 24px; }
@@ -658,8 +677,15 @@ select.mgr-input { cursor: pointer; }
 /* ─── ROOM CARDS GRID ─────────────────────────────────────── */
 .room-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+@media (max-width: 640px) {
+    .room-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 }
 .room-card-item {
     background: #fff;

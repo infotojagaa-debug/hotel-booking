@@ -151,7 +151,7 @@ const Rooms = () => {
       
       {/* 1. Modern Centered Search Bar Section */}
       <div className="search-results-header-wrap">
-        <div className="max-w-[1350px] mx-auto px-5">
+        <div className="container-elite">
             <AdvancedSearch 
               isCompact={true} 
               initialLocation={locationName} 
@@ -162,7 +162,7 @@ const Rooms = () => {
         </div>
       </div>
 
-      <div className="search-results-wrapper">
+      <div className="container-elite search-results-wrapper">
         
         {/* 🔥 Promotion Banner Strip */}
         <div className={`listing-promo-strip ${activeOffer ? 'applied' : ''}`} data-aos="fade-down">
@@ -238,9 +238,9 @@ const Rooms = () => {
           <main className="results-column">
             
             {/* Results Title & Controls Header (New Template) */}
-            <div className="flex flex-col md:flex-row md:items-start justify-between mb-2 gap-4">
+            <div className="flex flex-col md:flex-row md:items-start justify-between mb-4 gap-4">
               <div className="flex-1">
-                <h2 className="text-[24px] font-bold text-[#1a1a1a] mb-4">
+                <h2 className="text-[20px] md:text-[24px] font-bold text-[#1a1a1a] mb-2 md:mb-4">
                   {locationName ? `${locationName}: ` : 'All stays: '} {rooms.length} properties found
                 </h2>
                 

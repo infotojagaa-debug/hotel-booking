@@ -1,10 +1,9 @@
 /* Hotel Details Page - Premium Layout Styling */
 
 .hotel-details-container {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 20px;
-    padding-top: 110px; /* Offset for navbar */
+    /* Main padding handled by container-elite but vertical padding is still needed */
+    padding-top: 40px; 
+    padding-bottom: 40px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -149,10 +148,11 @@
 @media (max-width: 768px) {
     .hotel-gallery-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: 250px 100px;
+        grid-template-rows: auto;
+        height: 250px; 
     }
     .gallery-sub-grid {
-        display: none; /* Hide subgrid on mobile for simplicity, or make it horizontal scroll */
+        display: none; 
     }
 }
 
@@ -297,6 +297,12 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+@media (max-width: 640px) {
+    .room-card-premium {
+        flex-direction: column !important;
+    }
+}
+
 .room-card-premium:hover {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
@@ -305,6 +311,13 @@
     width: 200px;
     flex-shrink: 0;
     background: #f1f5f9;
+}
+
+@media (max-width: 640px) {
+    .room-image-area {
+        width: 100% !important;
+        height: 180px !important;
+    }
 }
 
 .room-image-area img {
