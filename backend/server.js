@@ -71,6 +71,7 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }));
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Sessions
 app.use(
@@ -113,7 +114,7 @@ app.post('/api/upload', (req, res) => {
             }
             res.status(200).json({ 
                 message: 'Image uploaded successfully!',
-                url: req.file.path 
+                url: `/uploads/${req.file.filename}` 
             });
         });
     } catch (error) {
