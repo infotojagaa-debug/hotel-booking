@@ -5,7 +5,7 @@ import AdvancedSearch from '../components/AdvancedSearch';
 import BookingFilterSidebar from '../components/BookingFilterSidebar';
 import BookingHotelCard from '../components/BookingHotelCard';
 import CustomerFullScreenMap from '../components/CustomerFullScreenMap';
-import { FaChevronRight, FaFilter, FaTimes, FaSearch, FaFire, FaTag, FaClock } from 'react-icons/fa';
+import { FaChevronRight, FaFilter, FaTimes, FaSearch, FaFire, FaTag, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import './HotelSearchPage.css';
 
 const FALLBACK_PROMO = {
@@ -21,7 +21,6 @@ const Rooms = () => {
   const [viewMode, setViewMode] = useState('list');
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [activeOffer, setActiveOffer] = useState(null);
-  const [showFullMap, setShowFullMap] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -286,7 +285,7 @@ const Rooms = () => {
                 </div>
               </div>
               
-              <div className="flex items-center">
+              <div className="flex items-center gap-3">
                 {/* View Mode Dual-Pill Toggle */}
                 <div className="view-toggle-pill-container">
                     <button 
@@ -302,6 +301,13 @@ const Rooms = () => {
                         Grid
                     </button>
                 </div>
+                {/* Map View Button */}
+                <button
+                  onClick={() => navigate(`/hotels/map${location.search}`)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#6d5dfc] text-[#6d5dfc] text-[13px] font-bold hover:bg-[#6d5dfc] hover:text-white transition-all duration-200 shadow-sm"
+                >
+                  <FaMapMarkerAlt size={12} /> Map
+                </button>
               </div>
             </div>
 
@@ -410,7 +416,7 @@ const Rooms = () => {
       {/* 7. Floating Mobile Toggle: Map / Filters */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[400] lg:hidden flex gap-3">
         <button 
-          onClick={() => setShowFullMap(true)}
+          onClick={() => navigate(`/hotels/map${location.search}`)}
           className="bg-gray-900 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center gap-2 border border-white/20 active:scale-95 transition-transform"
         >
           <i className="fas fa-map-marker-alt"></i> Map

@@ -1,0 +1,977 @@
+/* ===== HOTEL MAP VIEW — PREMIUM SPLIT-SCREEN LAYOUT ===== */
+
+/* Base Reset & Root */
+.hmv-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #f8f9fc;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ===== HEADER ===== */
+.hmv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 68px;
+  background: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  z-index: 200;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.hmv-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.hmv-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.hmv-back-btn:hover {
+  background: #f5f5f5;
+  border-color: #d0d0d0;
+  transform: scale(0.96);
+}
+
+.hmv-logo-text {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -0.5px;
+}
+
+.hmv-logo-text span {
+  color: #6d5dfc;
+}
+
+.hmv-count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0eeff;
+  color: #6d5dfc;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.hmv-count-dot {
+  width: 7px;
+  height: 7px;
+  background: #6d5dfc;
+  border-radius: 999px;
+  animation: hmv-pulse 1.5s infinite;
+}
+
+@keyframes hmv-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.75); }
+}
+
+/* Header filters bar */
+.hmv-header-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+  max-width: 720px;
+}
+
+.hmv-date-group {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #ebebeb;
+  border-radius: 12px;
+  background: #fafafa;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  height: 42px;
+}
+
+.hmv-date-group:focus-within {
+  border-color: #6d5dfc;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(109, 93, 252, 0.08);
+}
+
+.hmv-date-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.hmv-date-input-wrap label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.hmv-date-input-wrap input[type="date"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a2e;
+  width: 120px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.hmv-date-divider {
+  width: 1px;
+  height: 24px;
+  background: #ebebeb;
+}
+
+.hmv-price-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1.5px solid #ebebeb;
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.hmv-price-filter:hover, .hmv-price-filter.active {
+  border-color: #6d5dfc;
+  background: #f0eeff;
+  color: #6d5dfc;
+}
+
+.hmv-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.hmv-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1.5px solid #ebebeb;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #444;
+}
+
+.hmv-toggle-btn:hover {
+  border-color: #6d5dfc;
+  color: #6d5dfc;
+}
+
+.hmv-toggle-btn.active {
+  background: #6d5dfc;
+  color: #fff;
+  border-color: #6d5dfc;
+}
+
+/* ===== PRICE RANGE DROPDOWN ===== */
+.hmv-price-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 18px;
+  padding: 20px 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
+  z-index: 300;
+  min-width: 280px;
+  animation: hmv-dropdown-in 0.18s ease;
+}
+
+@keyframes hmv-dropdown-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.hmv-price-dropdown h4 {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 14px;
+  letter-spacing: -0.2px;
+}
+
+.hmv-price-range-display {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: #6d5dfc;
+  margin-bottom: 10px;
+}
+
+.hmv-price-dropdown input[type="range"] {
+  width: 100%;
+  accent-color: #6d5dfc;
+  cursor: pointer;
+  height: 5px;
+  border-radius: 999px;
+}
+
+.hmv-price-dropdown-apply {
+  margin-top: 14px;
+  width: 100%;
+  height: 38px;
+  background: #6d5dfc;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.hmv-price-dropdown-apply:hover {
+  background: #5b4dec;
+}
+
+/* ===== MAIN SPLIT LAYOUT ===== */
+.hmv-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ===== LEFT PANEL — HOTEL LIST ===== */
+.hmv-list-panel {
+  width: 440px;
+  min-width: 380px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8f9fc;
+  border-right: 1px solid #ebebeb;
+  flex-shrink: 0;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hmv-list-panel.collapsed {
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.hmv-list-header {
+  padding: 16px 20px 12px;
+  background: #fff;
+  border-bottom: 1px solid #ebebeb;
+  flex-shrink: 0;
+}
+
+.hmv-list-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.hmv-list-subtitle {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+
+.hmv-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 14px 80px;
+  scrollbar-width: thin;
+  scrollbar-color: #ebebeb transparent;
+}
+
+.hmv-list-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.hmv-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hmv-list-scroll::-webkit-scrollbar-thumb {
+  background: #ebebeb;
+  border-radius: 999px;
+}
+
+/* ===== HOTEL CARD (LIST) ===== */
+.hmv-hotel-card {
+  display: flex;
+  gap: 14px;
+  background: #fff;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  padding: 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.hmv-hotel-card:hover {
+  border-color: #e0daff;
+  box-shadow: 0 8px 28px rgba(109, 93, 252, 0.1);
+  transform: translateY(-2px);
+}
+
+.hmv-hotel-card.active {
+  border-color: #6d5dfc;
+  box-shadow: 0 12px 40px rgba(109, 93, 252, 0.18);
+  background: #fdfcff;
+}
+
+.hmv-hotel-card.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #6d5dfc;
+  border-radius: 4px 0 0 4px;
+}
+
+.hmv-card-img-wrap {
+  width: 110px;
+  height: 90px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background: #f0f0f0;
+}
+
+.hmv-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.hmv-hotel-card:hover .hmv-card-img-wrap img {
+  transform: scale(1.06);
+}
+
+.hmv-card-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #10b981;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hmv-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hmv-card-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+  transition: color 0.2s;
+}
+
+.hmv-hotel-card:hover .hmv-card-name,
+.hmv-hotel-card.active .hmv-card-name {
+  color: #6d5dfc;
+}
+
+.hmv-card-location {
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.hmv-card-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.hmv-card-amenity-pill {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6d5dfc;
+  background: #f0eeff;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.hmv-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.hmv-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hmv-rating-badge {
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 6px 6px 6px 0;
+}
+
+.hmv-rating-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+}
+
+.hmv-card-price {
+  text-align: right;
+}
+
+.hmv-card-price-original {
+  font-size: 11px;
+  color: #ccc;
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
+.hmv-card-price-main {
+  font-size: 18px;
+  font-weight: 900;
+  color: #1a1a2e;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.hmv-card-price-night {
+  font-size: 10px;
+  color: #aaa;
+  font-weight: 600;
+}
+
+.hmv-card-view-btn {
+  display: none;
+}
+
+.hmv-hotel-card.active .hmv-card-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6d5dfc;
+  background: #f0eeff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.hmv-hotel-card.active .hmv-card-view-btn:hover {
+  background: #e0d9ff;
+}
+
+/* Map visible area notice */
+.hmv-map-notice {
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #aaa;
+  background: #f8f9fc;
+  border-top: 1px solid #ebebeb;
+  flex-shrink: 0;
+}
+
+.hmv-map-notice span {
+  color: #6d5dfc;
+  font-weight: 700;
+}
+
+/* ===== RIGHT PANEL — MAP ===== */
+.hmv-map-panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.hmv-map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== MAP OVERLAY CONTROLS ===== */
+.hmv-map-overlay-controls {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hmv-map-ctrl-btn {
+  width: 42px;
+  height: 42px;
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  transition: all 0.2s;
+  font-weight: 700;
+}
+
+.hmv-map-ctrl-btn:hover {
+  background: #6d5dfc;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* ===== PRICE PILL MARKERS ===== */
+.hmv-price-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.hmv-price-marker {
+  background: #1a1a2e;
+  color: #fff;
+  border: 2.5px solid #fff;
+  border-radius: 10px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hmv-price-marker::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid #1a1a2e;
+  transition: border-top-color 0.3s;
+}
+
+.hmv-price-marker.hovered {
+  background: #2d264d;
+  transform: scale(1.12) translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.hmv-price-marker.hovered::after {
+  border-top-color: #2d264d;
+}
+
+.hmv-price-marker.active {
+  background: #6d5dfc !important;
+  transform: scale(1.25) translateY(-6px);
+  box-shadow: 0 16px 48px rgba(109, 93, 252, 0.45);
+  z-index: 1000 !important;
+  border-color: #fff;
+}
+
+.hmv-price-marker.active::after {
+  border-top-color: #6d5dfc !important;
+}
+
+/* ===== MAP POPUP CARD ===== */
+.hmv-popup-wrapper .leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18) !important;
+  border: 1px solid #f0f0f0 !important;
+}
+
+.hmv-popup-wrapper .leaflet-popup-content {
+  margin: 0 !important;
+  width: 290px !important;
+}
+
+.hmv-popup-wrapper .leaflet-popup-tip-container {
+  display: none !important;
+}
+
+.hmv-popup-wrapper .leaflet-popup-close-button {
+  top: 8px !important;
+  right: 8px !important;
+  width: 26px !important;
+  height: 26px !important;
+  background: rgba(255,255,255,0.9) !important;
+  border-radius: 999px !important;
+  color: #333 !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10 !important;
+  backdrop-filter: blur(4px);
+}
+
+.hmv-popup-card {
+  cursor: pointer;
+}
+
+.hmv-popup-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.hmv-popup-body {
+  padding: 14px 16px 16px;
+}
+
+.hmv-popup-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hmv-popup-location {
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.hmv-popup-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.hmv-popup-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hmv-popup-rating-badge {
+  background: #6d5dfc;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 6px 6px 6px 0;
+}
+
+.hmv-popup-rating-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+}
+
+.hmv-popup-price {
+  text-align: right;
+}
+
+.hmv-popup-price-main {
+  font-size: 19px;
+  font-weight: 900;
+  color: #1a1a2e;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.hmv-popup-price-label {
+  font-size: 10px;
+  color: #aaa;
+  font-weight: 600;
+}
+
+.hmv-popup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 40px;
+  background: #6d5dfc;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hmv-popup-btn:hover {
+  background: #5b4dec;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(109, 93, 252, 0.3);
+}
+
+/* ===== EMPTY / LOADING STATES ===== */
+.hmv-loading-skeleton {
+  background: #fff;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  padding: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.hmv-skeleton-img {
+  width: 110px;
+  height: 90px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: hmv-shimmer 1.4s infinite;
+  flex-shrink: 0;
+}
+
+.hmv-skeleton-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.hmv-skeleton-line {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: hmv-shimmer 1.4s infinite;
+}
+
+@keyframes hmv-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.hmv-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 24px;
+  text-align: center;
+}
+
+.hmv-empty-icon {
+  font-size: 44px;
+  margin-bottom: 14px;
+}
+
+.hmv-empty-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 6px;
+}
+
+.hmv-empty-text {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.5;
+}
+
+/* ===== MAP TILE — LIGHT & ELEGANT ===== */
+.hmv-map-container .leaflet-tile-pane {
+  filter: saturate(0.85) brightness(1.02);
+}
+
+/* ===== CLUSTER STYLES ===== */
+.hmv-cluster-icon {
+  background: #6d5dfc !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  border: 3px solid #fff !important;
+  box-shadow: 0 6px 20px rgba(109, 93, 252, 0.35) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .hmv-body {
+    flex-direction: column-reverse;
+  }
+
+  .hmv-list-panel {
+    width: 100%;
+    min-width: 100%;
+    max-height: 45vh;
+    border-right: none;
+    border-top: 1px solid #ebebeb;
+  }
+
+  .hmv-map-panel {
+    height: 55vw;
+    min-height: 220px;
+    max-height: 55vh;
+  }
+
+  .hmv-header-filters {
+    display: none;
+  }
+
+  .hmv-logo-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hmv-header {
+    padding: 0 14px;
+    height: 58px;
+  }
+
+  .hmv-list-panel {
+    max-height: 40vh;
+  }
+
+  .hmv-map-panel {
+    max-height: 60vh;
+  }
+}
+
+/* ===== LEAFLET OVERRIDE ===== */
+.leaflet-container {
+  font-family: 'Inter', 'Segoe UI', sans-serif !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.12) !important;
+}
+
+.leaflet-control-zoom a {
+  border-radius: 10px !important;
+  border: none !important;
+  font-size: 18px !important;
+  color: #333 !important;
+  font-weight: 700 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #6d5dfc !important;
+  color: #fff !important;
+}
+
+/* Visibility notice */
+.hmv-visible-notice {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 26, 46, 0.85);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  z-index: 500;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.15);
+}

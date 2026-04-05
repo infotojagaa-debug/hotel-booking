@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     FaMapMarkerAlt, FaHotel, FaBuilding, FaSwimmingPool, FaWifi, 
     FaCar, FaDumbbell, FaUtensils, FaHome, FaCampground, 
@@ -10,6 +11,13 @@ import {
  * Redesigned for a premium, aligned and highly responsive interface.
  */
 const BookingFilterSidebar = ({ filters, onFilterChange, stats = {}, onShowMap }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleShowMap = () => {
+        if (onShowMap) onShowMap();
+        navigate(`/hotels/map${location.search}`);
+    };
 
     // Define sections with dynamic counts from stats
     const filterSections = [
@@ -50,7 +58,7 @@ const BookingFilterSidebar = ({ filters, onFilterChange, stats = {}, onShowMap }
             
             {/* 1. Map Interaction Card */}
             <div 
-                onClick={onShowMap}
+                onClick={handleShowMap}
                 className="relative w-full rounded-lg overflow-hidden border border-[#e7e7e7] cursor-pointer group shadow-sm hover:shadow-md transition-shadow"
             >
                 <div className="h-40 w-full relative">

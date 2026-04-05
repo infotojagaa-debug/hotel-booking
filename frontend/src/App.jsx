@@ -11,6 +11,7 @@ import AdminPanel from './pages/AdminPanel';
 import ManagerDashboard from './pages/ManagerDashboard';
 import ManagerSignup from './pages/ManagerSignup';
 import HotelDetails from './pages/HotelDetails';
+import HotelMapView from './pages/HotelMapView';
 import SuccessPage from './pages/SuccessPage';
 import Wishlist from './pages/Wishlist';
 import PaymentPage from './pages/PaymentPage';
@@ -36,7 +37,7 @@ import ScrollToTop from './components/ScrollToTop';
 
 const AppLayout = () => {
   const location = useLocation();
-  const isPanel = location.pathname.startsWith('/manager') || location.pathname.startsWith('/admin');
+  const isPanel = location.pathname.startsWith('/manager') || location.pathname.startsWith('/admin') || location.pathname === '/hotels/map';
   const isDashboard = location.pathname.startsWith('/dashboard');
 
   return (
@@ -45,6 +46,7 @@ const AppLayout = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/hotels" element={<Rooms />} />
+        <Route path="/hotels/map" element={<HotelMapView />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/manager-signup" element={<ManagerSignup />} />
