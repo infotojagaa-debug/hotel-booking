@@ -256,7 +256,60 @@
   border: 1px solid #f1f5f9;
 }
 
-/* Wallet Styles */
+/* Wallet Selection Grid */
+.wallet-grid-p {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.wallet-box-p {
+    background: #f8fafc;
+    border: 1.5px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.wallet-box-p:hover {
+    transform: translateY(-5px);
+    background: #ffffff;
+    border-color: #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.wallet-box-p.active {
+    background: #ffffff;
+    border-color: var(--ch-primary-solid);
+    box-shadow: 0 10px 30px rgba(106, 92, 255, 0.12);
+}
+
+.wallet-icon-wrap {
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.wallet-box-p:hover .wallet-icon-wrap {
+    transform: scale(1.1);
+}
+
+.wallet-name-p {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ch-text);
+}
+
+/* Wallet Styles (Legacy/Generic) */
 .wallet-list-p {
   display: flex;
   flex-direction: column;
@@ -639,7 +692,7 @@
     white-space: nowrap;
   }
   
-  .card-input-grid, .upi-apps-grid-p, .bank-grid-p, .guest-form-grid {
+  .card-input-grid, .upi-apps-grid-p, .bank-grid-p, .wallet-grid-p, .guest-form-grid {
     grid-template-columns: 1fr !important;
   }
 }

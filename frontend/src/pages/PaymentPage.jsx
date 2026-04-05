@@ -8,7 +8,7 @@ import {
     FaTimes, FaWallet as FaWalletIcon, FaAmazon, FaShieldAlt,
     FaFingerprint, FaLockOpen
 } from 'react-icons/fa';
-import { SiGooglepay, SiPhonepe, SiPaytm, SiApplepay } from 'react-icons/si';
+import { SiGooglepay, SiPhonepe, SiPaytm, SiApplepay, SiStripe, SiRazorpay, SiAmazonpay } from 'react-icons/si';
 import BookingStepper from '../components/BookingStepper';
 import HotelMap from '../components/HotelMap';
 import API from '../utils/api';
@@ -29,7 +29,7 @@ const PaymentPage = () => {
     const [processStep, setProcessStep] = useState(0); // 0-selection, 1-authenticating, 2-authorizing, 3-finalizing
     const [isVerified, setIsVerified] = useState(false);
     const [verifying, setVerifying] = useState(false);
-    const [reservationStep, setReservationStep] = useState(1); // 1-Details, 2-Payment, 3-Confirm
+    const [reservationStep, setReservationStep] = useState(2); // Start at 2 since we skip guest details manually as requested
     const [guestDetails, setGuestDetails] = useState({ firstName: '', lastName: '', email: '', phone: '' });
     
     // Payment States
@@ -37,7 +37,7 @@ const PaymentPage = () => {
     const [selectedApp, setSelectedApp] = useState('gpay');
     const [cardData, setCardData] = useState({ number: '', name: '', expiry: '', cvv: '' });
     const [selectedBank, setSelectedBank] = useState(null);
-    const [selectedWallet, setSelectedWallet] = useState('paytm');
+    const [selectedWallet, setSelectedWallet] = useState(null);
 
     // Promotion / Calculation
     const basePrice = totalPrice || 0;
@@ -64,6 +64,8 @@ const PaymentPage = () => {
                 setFormValid(selectedApp !== null || (upiId.includes('@') && isVerified));
             } else if (activeTab === 'netbanking') {
                 setFormValid(selectedBank !== null);
+            } else if (activeTab === 'wallet') {
+                setFormValid(selectedWallet !== null);
             } else {
                 setFormValid(true);
             }
@@ -161,6 +163,7 @@ const PaymentPage = () => {
                                 { id: 'upi', label: 'UPI', icon: <FaMobileAlt /> },
                                 { id: 'card', label: 'Credit/Debit Card', icon: <FaCreditCard /> },
                                 { id: 'netbanking', label: 'Net Banking', icon: <FaUniversity /> },
+                                { id: 'wallet', label: 'Wallet', icon: <FaWalletIcon /> },
                                 { id: 'pay_at_hotel', label: 'Pay at Hotel', icon: <FaRegMoneyBillAlt /> }
                             ].map(tab => (
                                 <button 
@@ -271,6 +274,28 @@ const PaymentPage = () => {
                                             <option value="Punjab National Bank">Punjab National Bank</option>
                                             <option value="Bank of Baroda">Bank of Baroda</option>
                                         </select>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'wallet' && (
+                                <div className="wallet-pane-premium animate-zoom-in">
+                                    <p className="pane-subtitle-p">Digital Wallets</p>
+                                    <div className="wallet-grid-p">
+                                        {[
+                                            { id: 'amazon', name: 'Amazon Pay', icon: <SiAmazonpay style={{ color: '#FF9900' }} /> },
+                                            { id: 'stripe', name: 'Stripe', icon: <SiStripe style={{ color: '#635BFF' }} /> },
+                                            { id: 'razorpay', name: 'Razorpay', icon: <SiRazorpay style={{ color: '#3395FF' }} /> }
+                                        ].map(wallet => (
+                                            <div 
+                                                key={wallet.id} 
+                                                className={`wallet-box-p ${selectedWallet === wallet.id ? 'active' : ''}`}
+                                                onClick={() => setSelectedWallet(wallet.id)}
+                                            >
+                                                <div className="wallet-icon-wrap">{wallet.icon}</div>
+                                                <span className="wallet-name-p">{wallet.name}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             )}
