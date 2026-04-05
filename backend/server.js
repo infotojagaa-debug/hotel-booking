@@ -9,10 +9,18 @@ const session = require('express-session');
 const connectDB = require('./config/db');
 const validateEnv = require('./utils/envValidator');
 
+// ⚠️  Capture Render's injected PORT *before* dotenv can overwrite it.
+// dotenv v17 changed override default — capture it first to be safe.
+const RENDER_PORT = process.env.PORT;
+
 // Passport config
 require('./config/passport')(passport);
 
-dotenv.config();
+// override: false ensures .env values never overwrite real system env vars
+dotenv.config({ override: false });
+
+// Restore Render's PORT after dotenv (guarantees correct binding in production)
+if (RENDER_PORT) process.env.PORT = RENDER_PORT;
 
 // Validate Environment before starting
 validateEnv();
@@ -141,20 +149,22 @@ const http = require('http');
 const { Server } = require('socket.io');
 const socketManager = require('./utils/socketManager');
 
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT, 10) || 5000;
+const HOST = '0.0.0.0'; // must bind to 0.0.0.0 so Render's load balancer can reach the service
 
 const server = http.createServer(app);
 
 // Initialize Socket.io
 const io = new Server(server, {
   cors: {
-    origin: '*', // Adjust to match frontend URL in production
+    origin: process.env.FRONTEND_URL || '*',
     methods: ['GET', 'POST']
   }
 });
 
 socketManager.init(io);
 
-server.listen(PORT, () => {
-    console.log(`Server & WebSockets running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+server.listen(PORT, HOST, () => {
+    console.log(`🚀 Server & WebSockets running in ${process.env.NODE_ENV} mode on ${HOST}:${PORT}`);
+    console.log(`   PORT env var = ${process.env.PORT} | Using port = ${PORT}`);
 });
