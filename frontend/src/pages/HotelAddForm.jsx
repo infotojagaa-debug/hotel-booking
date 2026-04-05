@@ -90,6 +90,9 @@ const HotelAddForm = ({ onSuccess }) => {
                 imagesList = [data.url || data.imagePath];
             }
 
+            console.log('--- ADMIN SAVING HOTEL ---', form.name);
+            console.log('IMAGE URLS:', imagesList);
+
             const extraServices = selectedAddOns.map(name => ({ name, price: 0, icon: '' }));
 
             await API.post('/admin/hotels', {
