@@ -3356,6 +3356,12 @@
     pointer-events: auto;
 }
 
+@media (min-width: 1025px) {
+    .dashboard-overlay {
+        display: none !important;
+    }
+}
+
 /* 5. Hero Section Responsiveness */
 @media (max-width: 768px) {
     .hero-slider-text h1 {
