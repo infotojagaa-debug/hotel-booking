@@ -164,35 +164,52 @@ const HotelPopupCard = ({ hotel, onNavigate }) => {
     : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=400';
 
   return (
-    <div className="hmv-popup-card" onClick={() => onNavigate(hotel._id)}>
-      <img src={imgSrc} alt={hotel.name} className="hmv-popup-img" />
-      <div className="hmv-popup-body">
-        <div className="hmv-popup-name">{hotel.name}</div>
-        <div className="hmv-popup-location">
-          <FaMapMarkerAlt size={9} />
-          {hotel.city || 'India'} • {hotel.type || 'Hotel'}
-        </div>
-        <div className="hmv-popup-meta">
-          <div className="hmv-popup-rating">
-            <div className="hmv-popup-rating-badge">{hotel.rating || '8.4'}</div>
-            <span className="hmv-popup-rating-text">
-              {hotel.reviews?.length > 0 ? `${hotel.reviews.length} reviews` : 'Very Good'}
-            </span>
-          </div>
-          <div className="hmv-popup-price">
-            <div className="hmv-popup-price-main">
-              ₹{(hotel.cheapestPrice || 0).toLocaleString('en-IN')}
+    <div 
+        className="map-elite-popup-card cursor-pointer group/popup"
+        onClick={() => onNavigate(hotel._id)}
+    >
+        {/* Elite Image Header */}
+        <div className="popup-premium-image h-[150px] overflow-hidden relative">
+            <img 
+                src={imgSrc}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover/popup:scale-110"
+                alt={hotel.name}
+            />
+            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-[10px] font-black text-slate-950 shadow-xl border border-white/20 uppercase">
+                {hotel.type || 'Stay'}
             </div>
-            <div className="hmv-popup-price-label">/night</div>
-          </div>
         </div>
-        <button
-          className="hmv-popup-btn"
-          onClick={(e) => { e.stopPropagation(); onNavigate(hotel._id); }}
-        >
-          <FaExternalLinkAlt size={10} /> View Details
-        </button>
-      </div>
+
+        {/* Elite Popup Content (Matches Screenshot) */}
+        <div className="p-6 bg-white flex flex-col gap-5">
+            <div className="popup-main-meta">
+                <h5 className="text-[24px] font-black text-slate-900 leading-[1.2] tracking-tight mb-2">
+                    {hotel.name}
+                </h5>
+                <div className="flex items-center gap-2 text-[#6d5dfc] font-black text-[12px] uppercase tracking-widest">
+                    <FaMapMarkerAlt size={12} />
+                    {hotel.city || 'LOCATION'}
+                </div>
+            </div>
+
+            <div className="h-[1px] w-full bg-slate-100" />
+
+            <div className="flex items-end justify-between">
+                <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Price From</span>
+                    <span className="text-[26px] font-black text-slate-950 tracking-tighter leading-none">₹{hotel.cheapestPrice?.toLocaleString('en-IN')}</span>
+                </div>
+                <button 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onNavigate(hotel._id);
+                    }}
+                    className="bg-[#6d5dfc] hover:bg-indigo-700 text-white font-black text-[12px] px-6 py-3.5 rounded-xl shadow-[0_10px_25px_rgba(109,93,252,0.3)] border-b-2 border-indigo-800/20 active:scale-95 transition-all"
+                >
+                    View Rooms
+                </button>
+            </div>
+        </div>
     </div>
   );
 };
@@ -232,6 +249,12 @@ const HotelMapView = () => {
       setLoading(true);
       try {
         const params = new URLSearchParams(routerLocation.search);
+        // 🔥 Ensure we show all property types (Villas, Apartments, etc.) on the map by default
+        // If the user wants a broader view, we remove the strict 'type' filter coming from the list
+        if (params.has('type')) {
+           params.delete('type');
+        }
+        
         const { data } = await API.get(`/hotels?${params.toString()}`);
         setHotels(data);
       } catch (err) {
@@ -467,7 +490,7 @@ const HotelMapView = () => {
                   mouseout: () => setHoveredId(null),
                 }}
               >
-                <Popup className="hmv-popup-wrapper" minWidth={290} offset={[0, -10]}>
+                <Popup className="hmv-popup-wrapper fs-marker-popup" minWidth={320} offset={[0, -10]}>
                   <HotelPopupCard hotel={hotel} onNavigate={handlePopupNavigate} />
                 </Popup>
               </Marker>

@@ -10,7 +10,7 @@ const createHotel = async (req, res) => {
             ...req.body,
             manager: req.user._id,
             isAdminHotel: req.user.role === 'Admin',
-            isApproved: req.user.role === 'Admin' // Auto-approve if created by admin
+            isApproved: true // Auto-approve all properties for immediate project visibility
         });
         const savedHotel = await hotel.save();
         res.status(201).json(savedHotel);
