@@ -45,11 +45,23 @@ connectDB().then(async () => {
 
 const app = express();
 
-// Stripe Webhook needs raw body
+// CORS must be first so preflight OPTIONS requests are handled before body parsing
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}));
+app.options('*', cors()); // Handle all preflight requests
+
+// Stripe Webhook needs raw body (must be before express.json)
 app.post('/api/payments/webhook', express.raw({ type: 'application/json' }));
 
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

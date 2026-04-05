@@ -110,71 +110,70 @@ const createBooking = async (req, res) => {
             );
         }
 
-        // 4. Send Confirmation Email with PDF Attachment
-        try {
-            // Generate the premium PDF buffer
-            const pdfBuffer = generateInvoicePDF(populatedBooking);
-
-            await sendEmail({
-                email: req.user.email,
-                subject: 'Booking Confirmation & Invoice - Elite Stays',
-                message: `Payment Success! Your room booking is done.\n\nBooking ID: ${createdBooking._id}\nPlease find your luxury invoice attached.`,
-                html: `
-                    <div style="font-family: 'Helvetica', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
-                        <div style="background: linear-gradient(135deg, #6d5dfc 0%, #8b5cf6 100%); padding: 40px 20px; border-radius: 16px 16px 0 0; text-align: center;">
-                            <h1 style="color: white; margin: 0; font-size: 28px; letter-spacing: 1px;">ELITE STAYS</h1>
-                            <p style="color: rgba(255,255,255,0.8); margin-top: 10px; font-size: 14px;">CONFIRMATION # ${createdBooking._id.toString().toUpperCase()}</p>
-                        </div>
-                        
-                        <div style="padding: 30px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 16px 16px;">
-                            <h2 style="color: #6d5dfc; margin-top: 0;">Payment Success & Booking Done!</h2>
-                            <p>Hi ${req.user.name}, your luxury stay at <strong>${populatedBooking.room.hotel.name}</strong> has been successfully booked.</p>
-                            
-                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin: 25px 0;">
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #64748b; font-size: 13px;">ROOM</td>
-                                        <td style="padding: 8px 0; text-align: right; font-weight: bold;">${populatedBooking.room.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #64748b; font-size: 13px;">CHECK-IN</td>
-                                        <td style="padding: 8px 0; text-align: right; font-weight: bold;">${new Date(populatedBooking.checkInDate).toLocaleDateString()}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #64748b; font-size: 13px;">CHECK-OUT</td>
-                                        <td style="padding: 8px 0; text-align: right; font-weight: bold;">${new Date(populatedBooking.checkOutDate).toLocaleDateString()}</td>
-                                    </tr>
-                                    <tr style="border-top: 1px solid #e2e8f0;">
-                                        <td style="padding: 15px 0 0 0; font-weight: bold; color: #1e293b;">TOTAL PAID</td>
-                                        <td style="padding: 15px 0 0 0; text-align: right; font-weight: bold; font-size: 18px; color: #10b981;">₹${populatedBooking.totalPrice?.toLocaleString()}</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <p style="text-align: center; margin: 30px 0;">
-                                <a href="#" style="background: #6d5dfc; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">Download Official Invoice</a>
-                            </p>
-
-                            <p style="font-size: 13px; color: #94a3b8; text-align: center; margin-top: 40px;">
-                                Questions? Reply to this mail or contact us at support@elitestays.com.
-                            </p>
-                        </div>
-                    </div>
-                `,
-                attachments: [
-                    {
-                        filename: `Invoice_${createdBooking._id}.pdf`,
-                        content: pdfBuffer,
-                        contentType: 'application/pdf'
-                    }
-                ]
-            });
-            console.log('Confirmation email with premium invoice sent to:', req.user.email);
-        } catch (emailErr) {
-            console.error('Email Sending Failed:', emailErr);
-        }
-
+        // 4. ✅ Return success IMMEDIATELY — don't wait for email
+        // This prevents SMTP timeouts from breaking the booking flow in production.
         res.status(201).json(createdBooking);
+
+        // 5. Send Confirmation Email in the BACKGROUND (non-blocking)
+        setImmediate(async () => {
+            try {
+                const pdfBuffer = generateInvoicePDF(populatedBooking);
+
+                await sendEmail({
+                    email: req.user.email,
+                    subject: 'Booking Confirmation & Invoice - Elite Stays',
+                    message: `Payment Success! Your room booking is done.\n\nBooking ID: ${createdBooking._id}\nPlease find your luxury invoice attached.`,
+                    html: `
+                        <div style="font-family: 'Helvetica', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
+                            <div style="background: linear-gradient(135deg, #6d5dfc 0%, #8b5cf6 100%); padding: 40px 20px; border-radius: 16px 16px 0 0; text-align: center;">
+                                <h1 style="color: white; margin: 0; font-size: 28px; letter-spacing: 1px;">ELITE STAYS</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin-top: 10px; font-size: 14px;">CONFIRMATION # ${createdBooking._id.toString().toUpperCase()}</p>
+                            </div>
+                            
+                            <div style="padding: 30px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 16px 16px;">
+                                <h2 style="color: #6d5dfc; margin-top: 0;">Payment Success &amp; Booking Done!</h2>
+                                <p>Hi ${req.user.name}, your luxury stay at <strong>${populatedBooking?.room?.hotel?.name || 'an Elite Stay property'}</strong> has been successfully booked.</p>
+                                
+                                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin: 25px 0;">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="padding: 8px 0; color: #64748b; font-size: 13px;">ROOM</td>
+                                            <td style="padding: 8px 0; text-align: right; font-weight: bold;">${populatedBooking?.room?.name || 'Premium Room'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 8px 0; color: #64748b; font-size: 13px;">CHECK-IN</td>
+                                            <td style="padding: 8px 0; text-align: right; font-weight: bold;">${new Date(populatedBooking.checkInDate).toLocaleDateString()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 8px 0; color: #64748b; font-size: 13px;">CHECK-OUT</td>
+                                            <td style="padding: 8px 0; text-align: right; font-weight: bold;">${new Date(populatedBooking.checkOutDate).toLocaleDateString()}</td>
+                                        </tr>
+                                        <tr style="border-top: 1px solid #e2e8f0;">
+                                            <td style="padding: 15px 0 0 0; font-weight: bold; color: #1e293b;">TOTAL PAID</td>
+                                            <td style="padding: 15px 0 0 0; text-align: right; font-weight: bold; font-size: 18px; color: #10b981;">₹${populatedBooking.totalPrice?.toLocaleString()}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <p style="font-size: 13px; color: #94a3b8; text-align: center; margin-top: 40px;">
+                                    Questions? Reply to this mail or contact us at support@elitestays.com.
+                                </p>
+                            </div>
+                        </div>
+                    `,
+                    attachments: [
+                        {
+                            filename: `Invoice_${createdBooking._id}.pdf`,
+                            content: pdfBuffer,
+                            contentType: 'application/pdf'
+                        }
+                    ]
+                });
+                console.log('✅ Background confirmation email sent to:', req.user.email);
+            } catch (emailErr) {
+                console.error('⚠️  Background Email Failed (booking still succeeded):', emailErr.message);
+            }
+        });
     } catch (error) {
         console.error('SERVER SIDE BOOKING ERROR:', {
             errorMessage: error.message,

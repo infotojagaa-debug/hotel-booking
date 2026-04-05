@@ -4,7 +4,7 @@ import API from '../utils/api';
 import AdvancedSearch from '../components/AdvancedSearch';
 import BookingFilterSidebar from '../components/BookingFilterSidebar';
 import BookingHotelCard from '../components/BookingHotelCard';
-import CustomerFullScreenMap from '../components/CustomerFullScreenMap';
+
 import { FaChevronRight, FaFilter, FaTimes, FaSearch, FaFire, FaTag, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import './HotelSearchPage.css';
 
@@ -223,7 +223,6 @@ const Rooms = () => {
               filters={filters} 
               onFilterChange={handleFilterChange} 
               stats={stats} 
-              onShowMap={() => setShowFullMap(true)}
             />
           </aside>
 
@@ -400,7 +399,7 @@ const Rooms = () => {
                   stats={stats} 
                   onShowMap={() => {
                     setShowMobileFilters(false);
-                    setShowFullMap(true);
+                    navigate(`/hotels/map${location.search}`);
                   }}
                 />
                 <button 
