@@ -92,11 +92,19 @@ const ManagerDashboard = () => {
     } catch {}
   };
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  // ── Fetch all data on mount ──────────────────────────────────────────────
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
+  // ── Collapse sidebar on mobile when tab changes ──────────────────────────
   useEffect(() => {
     if (window.innerWidth <= 1024) {
       setIsSidebarOpen(false);
     }
-    fetchRooms(selectedHotel?._id);
   }, [activeTab]);
 
   const handleSelectHotel = (h) => {
@@ -105,9 +113,6 @@ const ManagerDashboard = () => {
   };
 
   const handleLogout = () => { logout(); navigate('/login'); };
-
-  const [isSidebarOpen, setIsSidebarOpen]   = useState(window.innerWidth > 1024);
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   if (loading) {
     return (
