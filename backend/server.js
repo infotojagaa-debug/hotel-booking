@@ -56,16 +56,26 @@ const app = express();
 
 // CORS must be first so preflight OPTIONS requests are handled before body parsing
 app.use(cors({
-    origin: [
-        'http://localhost:5173',
-        'http://localhost:3000',
-        process.env.FRONTEND_URL
-    ].filter(Boolean),
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        
+        const allowedOrigins = [
+            'http://localhost:5173',
+            'http://localhost:3000',
+            process.env.FRONTEND_URL
+        ].filter(Boolean);
+
+        if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }));
-app.options(/.*/, cors()); // Handle all preflight OPTIONS requests (regex works with all path-to-regexp versions)
+app.options('*', cors()); // Handle all preflight OPTIONS requests
 
 // Stripe Webhook needs raw body (must be before express.json)
 app.post('/api/payments/webhook', express.raw({ type: 'application/json' }));
