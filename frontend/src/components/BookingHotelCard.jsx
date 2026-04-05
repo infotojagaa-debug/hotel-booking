@@ -5,7 +5,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useToast } from './WishlistToast';
 import { BACKEND_URL } from '../utils/api';
 
-const BookingHotelCard = ({ hotel, offer }) => {
+const BookingHotelCard = ({ hotel, offer, viewMode = 'list' }) => {
     const navigate = useNavigate();
     const { isSaved, toggleWishlist, loading } = useWishlist();
     const { showToast } = useToast();
@@ -33,9 +33,12 @@ const BookingHotelCard = ({ hotel, offer }) => {
     };
 
     return (
-        <div className="hotel-card-premium shadow-sm border border-gray-200 rounded-xl overflow-hidden bg-white hover:border-[#6d5dfc] transition-all duration-300 cursor-pointer" onClick={handleNavigate}>
-            {/* 1. Narrow Image Column (300px) */}
-            <div className="card-image-wrapper relative flex-shrink-0">
+        <div 
+            className={`elite-hotel-card ${viewMode === 'grid' ? 'is-grid' : 'is-list'} animate-fade-up`} 
+            onClick={handleNavigate}
+        >
+            {/* 1. Image Section */}
+            <div className="card-media-wrap">
                 <img 
                     src={
                         hotel.images?.[0] 
@@ -43,12 +46,12 @@ const BookingHotelCard = ({ hotel, offer }) => {
                         : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600'
                     } 
                     alt={hotel.name} 
-                    className="w-full h-full object-cover cursor-pointer"
-                    onClick={handleNavigate}
+                    className="media-img"
                 />
-                {/* Offer Badge (top-left, above or separate from wishlist) */}
+                
                 {offer && (
-                    <div className="hotel-card-offer-badge">
+                    <div className="media-badge-promo">
+                        <FaFire className="mr-1" />
                         {offer.discountType === 'Percentage' ? `${offer.discountValue}% OFF` : `₹${offer.discountValue} OFF`}
                     </div>
                 )}
@@ -56,101 +59,70 @@ const BookingHotelCard = ({ hotel, offer }) => {
                 <button 
                     onClick={handleWishlistClick}
                     disabled={toggling}
-                    title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
-                    className={`absolute top-3 left-3 w-9 h-9 flex items-center justify-center rounded-full shadow-lg transition-all border outline-none ${
-                        saved 
-                        ? 'bg-white border-[#e61e2d] text-[#e61e2d]' 
-                        : 'bg-white/90 backdrop-blur-sm border-gray-100 text-gray-400 hover:text-rose-500 hover:scale-110'
-                    }`}
+                    className={`media-wishlist-btn ${saved ? 'is-saved' : ''}`}
                 >
-                    <FaHeart className={saved ? 'text-[#e61e2d]' : ''} />
+                    <FaHeart />
                 </button>
+
+                <div className="media-rating-overlay">
+                    <FaStar className="text-amber-400 mr-1" />
+                    <span>{hotel.rating || '4.5'}</span>
+                </div>
             </div>
 
-            {/* 2. Main Content Area (Fluid Expansion) */}
-            <div className="card-content flex-grow flex flex-row gap-4 p-4 min-w-0">
-                
-                {/* 2a. Details Column (Expansive) */}
-                <div className="details-column flex-grow min-w-0 flex flex-col">
-                    <div className="flex items-center gap-3 mb-1">
-                        <h3 
-                            className="hotel-title-blue hover:underline cursor-pointer text-[#6d5dfc]"
-                            onClick={handleNavigate}
-                        >
-                            {hotel.name || 'Grand Hotel'}
-                        </h3>
+            {/* 2. Content Section */}
+            <div className="card-details-wrap">
+                <div className="details-main-info">
+                    <div className="info-header">
+                        <h3 className="info-title">{hotel.name || 'Elite Stay'}</h3>
+                        <p className="info-location">
+                            <FaMapMarkerAlt className="mr-1 text-indigo-500" />
+                            {hotel.city}, {hotel.state || 'India'}
+                        </p>
                     </div>
 
-                    <div className="location-row-links text-[#6d5dfc]">
-                        <span className="underline cursor-pointer">{hotel.city || 'Chennai'}</span>
-                        <span className="underline cursor-pointer ml-1">Show on map</span>
-                        <span className="text-gray-500 font-medium no-underline">{hotel.distanceFromCenter || '1 km from downtown'}</span>
-                        {hotel.distanceFromBeach && (
-                            <span className="text-gray-500 font-medium no-underline flex items-center gap-1">
-                                <FaUmbrellaBeach className="text-[14px]" />
-                                {hotel.distanceFromBeach}
-                            </span>
-                        )}
+                    <div className="info-amenities">
+                        {hotel.amenities?.slice(0, viewMode === 'grid' ? 2 : 4).map((a, i) => (
+                            <span key={i} className="amenity-pill">{a}</span>
+                        ))}
                     </div>
 
-                    {/* Hotel Overview Section (Instead of single room) */}
-                    <div className="room-inventory-section">
-                        <p className="text-[14px] font-bold text-[#1a1a1a]">{hotel.type || 'Hotel'} in {hotel.city}</p>
-                        <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-[12px] text-gray-600">
-                            {hotel.amenities?.slice(0, 3).map((a, i) => (
-                                <span key={i} className="flex items-center">
-                                    <span className="w-1 h-1 bg-gray-400 rounded-full mr-1.5" />
-                                    {a}
-                                </span>
-                            ))}
+                    {hotel.isBreakfastIncluded && (
+                        <div className="info-highlight">
+                            <FaThumbsUp className="mr-2" />
+                            Free Breakfast Included
                         </div>
-                        {hotel.isBreakfastIncluded && (
-                            <p className="text-[13px] font-bold text-[#6d5dfc] flex items-center gap-1.5 mt-1">
-                                <i className="fa fa-check text-[10px]"></i>
-                                Breakfast included
-                            </p>
-                        )}
-                    </div>
+                    )}
                 </div>
 
-                {/* 2b. Pricing & Rating Column (Anchored) */}
-                <div className="pricing-column-anchored">
-                    <div className="flex flex-col items-end">
-                        <div className="flex items-center gap-2">
-                            <div className="text-right">
-                                <p className="text-[16px] font-bold text-[#1a1a1a] leading-tight">Very Good</p>
-                                <p className="text-[12px] text-gray-500">{hotel.reviews?.length || 1415} reviews</p>
-                            </div>
-                            <div className="score-badge-dark-blue">{hotel.rating || '8.3'}</div>
+                <div className="details-pricing-box">
+                    <div className="pricing-header">
+                        <div className="rating-summary">
+                            <span className="rating-label">Excellent</span>
+                            <span className="rating-count">{hotel.reviews?.length || 240} reviews</span>
                         </div>
+                        <div className="rating-score">{hotel.rating || '9.2'}</div>
                     </div>
 
-                    <div className="flex flex-col items-end">
-                        <p className="text-[12px] text-gray-500">Starting from</p>
-                        {offer ? (
-                            <>
-                                <p className="text-[15px] text-gray-400 line-through leading-tight">
-                                    ₹ {hotel.cheapestPrice?.toLocaleString() || '3,999'}
-                                </p>
-                                <p className="text-[22px] font-black text-[#dc2626] leading-tight">
-                                    ₹ {offer.discountType === 'Percentage'
-                                        ? Math.round(hotel.cheapestPrice * (1 - offer.discountValue / 100)).toLocaleString()
-                                        : Math.max(0, hotel.cheapestPrice - offer.discountValue).toLocaleString()}
-                                </p>
-                                <p className="text-[11px] font-bold text-[#dc2626]">
-                                    Save {offer.discountType === 'Percentage' ? `${offer.discountValue}%` : `₹${offer.discountValue}`}!
-                                </p>
-                            </>
-                        ) : (
-                            <p className="text-[24px] font-bold text-[#1a1a1a] leading-tight">₹ {hotel.cheapestPrice?.toLocaleString() || '3,999'}</p>
-                        )}
-                        <p className="text-[12px] text-gray-500 mb-2">+ taxes and fees</p>
-                        <button 
-                            className="see-availability-btn-fluid group flex items-center justify-center"
-                            onClick={handleNavigate}
-                        >
-                            <span>See availability</span>
-                            <FaChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    <div className="pricing-footer">
+                        <div className="price-stack">
+                            <span className="price-hint">Starting from</span>
+                            <div className="price-row">
+                                {offer && <span className="price-old">₹{hotel.cheapestPrice?.toLocaleString()}</span>}
+                                <span className={`price-current ${offer ? 'text-rose-500' : ''}`}>
+                                    ₹{offer 
+                                        ? (offer.discountType === 'Percentage'
+                                            ? Math.round(hotel.cheapestPrice * (1 - offer.discountValue / 100)).toLocaleString()
+                                            : Math.max(0, hotel.cheapestPrice - offer.discountValue).toLocaleString())
+                                        : hotel.cheapestPrice?.toLocaleString()}
+                                </span>
+                            </div>
+                            <span className="price-tax">+ taxes & fees</span>
+                        </div>
+
+                        <button className="btn-availability group" onClick={(e) => { e.stopPropagation(); handleNavigate(); }}>
+                            <span>Reserve</span>
+                            <FaChevronRight className="group-hover:translate-x-1 transition-transform" />
                         </button>
                     </div>
                 </div>

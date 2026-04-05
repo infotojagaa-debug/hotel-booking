@@ -77,29 +77,28 @@ const HeroSlider = () => {
                 ></div>
             </div>
 
-            <div className="container" style={{ position: 'relative', zIndex: 3 }}>
-                <div className="row no-gutters slider-text align-items-center justify-content-start text-left">
-                    <div className="col-lg-12 pt-5">
-                        <h1 className="hero-title">
-                            Discover Your<br />
-                            Perfect Stay<br />
-                            <span className="hero-highlight">
-                                Anywhere
-                                <svg className="hero-swoosh" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11 28C11 28 5 18 10 7" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
-                                    <path d="M22 23C22 23 27 15 33 11" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
-                                </svg>
-                            </span>
+            <div className="container" style={{ position: 'relative', zIndex: 3, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div className="row no-gutters slider-text align-items-center justify-content-center text-center">
+                    <div className="col-lg-12">
+                        <h1 className="hero-title mb-4 animate-fade-up">
+                            Discover Your <span className="text-gradient">Perfect Stay</span><br />
+                            Across India
+                            <svg className="hero-swoosh" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '10px' }}>
+                                <path d="M11 28C11 28 5 18 10 7" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
+                                <path d="M22 23C22 23 27 15 33 11" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
+                            </svg>
                         </h1>
-                        <p className="hero-subtitle">
-                            Book unique stays that bring travelers<br />
-                            and locals together your gateway to shared<br />
-                            adventures
+                        <p className="hero-subtitle mb-10 animate-fade-up" style={{ animationDelay: '0.2s' }}>
+                            Book unique stays that bring travelers and locals together.<br />
+                            Your gateway to shared adventures and luxury retreats.
                         </p>
+                        
+                        <div className="hero-search-centering-wrap animate-fade-up" style={{ animationDelay: '0.4s' }}>
+                            <AdvancedSearch />
+                        </div>
                     </div>
                 </div>
             </div>
-            <AdvancedSearch />
         </section>
     );
 };

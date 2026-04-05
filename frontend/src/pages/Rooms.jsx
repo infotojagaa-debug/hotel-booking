@@ -237,31 +237,43 @@ const Rooms = () => {
           {/* 3b. Main Results Column */}
           <main className="results-column">
             
-            {/* Results Title & Controls Header (New Template) */}
-            <div className="flex flex-col md:flex-row md:items-start justify-between mb-4 gap-4">
+            <div className="flex flex-col md:flex-row md:items-start justify-between mb-8 gap-6">
               <div className="flex-1">
-                <h2 className="text-[20px] md:text-[24px] font-bold text-[#1a1a1a] mb-2 md:mb-4">
-                  {locationName ? `${locationName}: ` : 'All stays: '} {rooms.length} properties found
+                <h2 className="text-[24px] md:text-[28px] font-black text-slate-900 mb-2">
+                    {locationName ? `${locationName}: ` : 'All stays: '} 
+                    <span className="text-gradient">{rooms.length} properties</span>
                 </h2>
-                
-                {/* Sort Dropdown */}
+                <p className="text-slate-500 text-sm font-medium">Explore the best luxury stays curated for your comfort</p>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                {/* View Mode Dual-Pill Toggle */}
+                <div className="view-toggle-pill-container shadow-sm border border-slate-200 p-1.5 rounded-full bg-white flex gap-1">
+                    <button 
+                        onClick={() => setViewMode('list')}
+                        className={`px-6 py-2 rounded-full text-[13px] font-bold transition-all ${viewMode === 'list' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-50'}`}
+                    >
+                        <i className="fa fa-list-ul mr-2"></i> List
+                    </button>
+                    <button 
+                        onClick={() => setViewMode('grid')}
+                        className={`px-6 py-2 rounded-full text-[13px] font-bold transition-all ${viewMode === 'grid' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-50'}`}
+                    >
+                        <i className="fa fa-th-large mr-2"></i> Grid
+                    </button>
+                </div>
+
                 <div className="relative inline-block">
                   <button 
                     onClick={() => setIsSortOpen(!isSortOpen)}
-                    className="sort-pill-btn group"
+                    className="flex items-center gap-3 px-5 py-3 rounded-full border border-slate-200 bg-white shadow-sm hover:border-slate-300 transition-all font-bold text-slate-700 text-[14px]"
                   >
-                    <div className="flex items-center gap-2">
-                      <div className="flex flex-col text-[10px] text-gray-500 group-hover:text-[#6d5dfc]">
-                        <i className="fa fa-arrow-up -mb-1"></i>
-                        <i className="fa fa-arrow-down"></i>
-                      </div>
-                      <span className="text-[14px]">Sort by: {getSortLabel(filters.sort)}</span>
-                    </div>
-                    <i className={`fa fa-chevron-down text-[10px] text-gray-400 transition-transform ${isSortOpen ? 'rotate-180' : ''}`}></i>
+                    <i className="fa fa-sort-amount-down text-slate-400"></i>
+                    <span>{getSortLabel(filters.sort)}</span>
                   </button>
 
                   {isSortOpen && (
-                    <div className="absolute left-0 mt-2 w-56 bg-white border border-[#e7e7e7] rounded-xl shadow-xl z-50 overflow-hidden py-1">
+                    <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-[100] overflow-hidden py-2 animate-fade-up">
                       {[
                         { val: 'top', label: 'Our top picks' },
                         { val: 'price-low', label: 'Price: low to high' },
@@ -274,7 +286,7 @@ const Rooms = () => {
                             handleFilterChange('sort', opt.val);
                             setIsSortOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2.5 text-[14px] hover:bg-[#f8f6ff] transition-colors ${filters.sort === opt.val ? 'text-[#6d5dfc] font-bold bg-[#f8f6ff]' : 'text-gray-700'}`}
+                          className={`w-full text-left px-5 py-3 text-[14px] hover:bg-slate-50 transition-colors ${filters.sort === opt.val ? 'text-indigo-600 font-bold bg-indigo-50/50' : 'text-slate-600'}`}
                         >
                           {opt.label}
                         </button>
@@ -283,35 +295,10 @@ const Rooms = () => {
                   )}
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                {/* View Mode Dual-Pill Toggle */}
-                <div className="view-toggle-pill-container">
-                    <button 
-                        onClick={() => setViewMode('list')}
-                        className={`view-pill-segment ${viewMode === 'list' ? 'active' : ''}`}
-                    >
-                        List
-                    </button>
-                    <button 
-                        onClick={() => setViewMode('grid')}
-                        className={`view-pill-segment ${viewMode === 'grid' ? 'active' : ''}`}
-                    >
-                        Grid
-                    </button>
-                </div>
-                {/* Map View Button */}
-                <button
-                  onClick={() => navigate(`/hotels/map${location.search}`)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#6d5dfc] text-[#6d5dfc] text-[13px] font-bold hover:bg-[#6d5dfc] hover:text-white transition-all duration-200 shadow-sm"
-                >
-                  <FaMapMarkerAlt size={12} /> Map
-                </button>
-              </div>
             </div>
 
             {/* Results Area (Controlled by View Mode) */}
-            <div className={`results-container ${viewMode === 'list' ? 'list-view' : 'grid-view'} pt-4`}>
+            <div className={`results-layout-box ${viewMode === 'list' ? 'mode-list' : 'mode-grid'}`}>
               {loading ? (
                 [1, 2, 3].map(i => (
                   <div key={i} className="bg-white h-64 rounded-xl border border-[#e7e7e7] shadow-sm animate-pulse flex overflow-hidden">
@@ -371,6 +358,7 @@ const Rooms = () => {
                         key={hotel._id}
                         hotel={hotel}
                         offer={hotelOffer}
+                        viewMode={viewMode}
                     />
                   );
                 })

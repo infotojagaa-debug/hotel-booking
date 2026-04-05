@@ -5,33 +5,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --sidebar-w: 260px;
-  --topnav-h: 64px;
-  --primary: #6d5dfc; /* Elite Lavender */
-  --primary-dark: #5b4dec;
-  --primary-light: #f1f0ff;
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --danger: #f43f5e; /* Use rose accent from guest theme */
-  --danger-light: #fff1f2;
-  --info: #8c7efc;
-  --info-light: #f5f4ff;
-  --bg: #f8f7ff;
+  --sidebar-w: 280px;
+  --topnav-h: 72px;
+  --primary: var(--elite-lavender);
+  --primary-dark: var(--elite-lavender-dark);
+  --primary-light: var(--elite-lavender-soft);
+  
+  --bg: #f8fafc;
   --card: #ffffff;
-  --sidebar-bg: #1a162d; /* Deep Dark Lavender */
-  --sidebar-text: #a5a5c7;
-  --sidebar-active-bg: rgba(109,93,252,0.1);
-  --sidebar-active: #6d5dfc;
-  --text-primary: #1a162d;
-  --text-secondary: #6b7280;
-  --border: #e8eaff;
-  --shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-  --shadow-md: 0 10px 15px -3px rgba(109,93,252,0.08), 0 4px 6px -2px rgba(0,0,0,0.05);
-  --shadow-lg: 0 20px 25px -5px rgba(109,93,252,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-  --radius: 16px;
-  --radius-sm: 10px;
+  --sidebar-bg: var(--elite-indigo);
+  --sidebar-text: #94a3b8;
+  --sidebar-active: #fff;
+  
+  --text-primary: var(--elite-slate-dark);
+  --text-secondary: var(--elite-slate);
+  --border: #f1f5f9;
+  
+  --shadow: var(--shadow-soft);
+  --shadow-md: var(--shadow-card);
+  --shadow-lg: var(--shadow-premium);
+  
+  --radius: var(--radius-md);
+  --radius-sm: var(--radius-sm);
 }
 
 /* Mobile Helpers */
@@ -57,10 +52,13 @@
   background: var(--sidebar-bg);
   display: flex;
   flex-direction: column;
+  padding: 32px 0;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 100;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: sticky;
+  top: 0;
 }
 
 .mgr-sidebar.collapsed {
@@ -279,15 +277,20 @@
 .mgr-stat-card {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
   border: 1px solid var(--border);
 }
-.mgr-stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.mgr-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(109, 93, 252, 0.2);
+}
 .mgr-stat-card .stat-icon {
   width: 48px; height: 48px; border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;

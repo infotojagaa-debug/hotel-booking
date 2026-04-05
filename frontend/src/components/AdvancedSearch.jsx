@@ -225,22 +225,24 @@ const AdvancedSearch = ({
     };
 
     return (
-        <form onSubmit={handleSearch} className={`search-bar-wrapper ${isCompact ? 'is-compact' : ''}`}>
-            <div className="search-boxes-container">
+        <form onSubmit={handleSearch} className={`search-bar-modern ${isCompact ? 'is-compact-mode' : ''} ${isMobile ? 'is-mobile-search' : ''}`}>
+            <div className="search-pill-container">
                 {/* 1. Destination Box */}
                 <div 
-                    className={`search-box-item flex-1 destination-box ${showDropdown ? 'active-box' : ''}`} 
+                    className={`search-pill-item destination-pill ${showDropdown ? 'pill-active' : ''}`} 
                     onClick={() => triggerFocus(destinationRef)}
                 >
-                    <div className="search-item-content">
-                        {isCompact ? <i className="fas fa-search search-icon"></i> : <i className="fa fa-search search-icon"></i>}
-                        <div className="input-box">
-                            {!isCompact && <label>Destination</label>}
+                    <div className="pill-content">
+                        <div className="pill-icon">
+                            <i className="fa fa-map-marker-alt"></i>
+                        </div>
+                        <div className="pill-input-wrap">
+                            {!isCompact && <label className="pill-label">Destination</label>}
                             <input
                                 ref={destinationRef}
                                 type="text"
-                                id="location-input-autocomplete"
-                                placeholder={isCompact ? "Location" : "Search destinations (city, district, or state across India)"}
+                                className="pill-input"
+                                placeholder={isCompact ? "Where to?" : "Search destinations across India"}
                                 value={destination}
                                 onKeyDown={handleKeyDown}
                                 onChange={(e) => {
@@ -298,15 +300,17 @@ const AdvancedSearch = ({
                 </div>
 
                 {/* 2. Check-in/out Unified Box */}
-                <div className={`search-box-item flex-1 unified-date-box ${showDatePicker ? 'active-box' : ''}`} ref={datePickerContainerRef} onClick={triggerDatePicker}>
-                    <div className="search-item-content">
-                        <i className={isCompact ? "fas fa-calendar-alt search-icon" : "fa fa-calendar search-icon"}></i>
-                        <div className="input-box">
-                            {!isCompact && <label>Check-in/out</label>}
-                            <div className="date-display-text">
+                <div className={`search-pill-item date-pill ${showDatePicker ? 'pill-active' : ''}`} ref={datePickerContainerRef} onClick={triggerDatePicker}>
+                    <div className="pill-content">
+                        <div className="pill-icon">
+                            <i className="fa fa-calendar-day"></i>
+                        </div>
+                        <div className="pill-input-wrap">
+                            {!isCompact && <label className="pill-label">Dates</label>}
+                            <div className="pill-display-text">
                                 {startDate && endDate 
                                     ? `${format(startDate, 'd MMM')} - ${format(endDate, 'd MMM')}`
-                                    : 'Select dates'}
+                                    : 'Add dates'}
                             </div>
                         </div>
                     </div>
@@ -367,12 +371,14 @@ const AdvancedSearch = ({
                 </div>
 
                 {/* 3. Guests Box */}
-                <div className={`search-box-item flex-1 unified-guests-box ${showGuestDropdown ? 'active-box' : ''}`} ref={guestsBoxRef} onClick={() => setShowGuestDropdown(!showGuestDropdown)}>
-                    <div className="search-item-content">
-                        <i className={isCompact ? "fas fa-users search-icon" : "fa fa-users search-icon"}></i>
-                        <div className="input-box">
-                            {!isCompact && <label>Guests and rooms</label>}
-                            <div className="guest-display">
+                <div className={`search-pill-item guests-pill ${showGuestDropdown ? 'pill-active' : ''}`} ref={guestsBoxRef} onClick={() => setShowGuestDropdown(!showGuestDropdown)}>
+                    <div className="pill-content">
+                        <div className="pill-icon">
+                            <i className="fa fa-users"></i>
+                        </div>
+                        <div className="pill-input-wrap">
+                            {!isCompact && <label className="pill-label">Guests</label>}
+                            <div className="pill-display-text">
                                 {adults + children} Guests, {rooms} Room
                             </div>
                         </div>
@@ -427,10 +433,10 @@ const AdvancedSearch = ({
                 </div>
 
                 {/* Search Button */}
-                <div className="search-btn-container-standalone">
-                    <button type="submit" className="search-submit-btn-pill">
-                        <i className={`fa fa-search ${isCompact ? 'mr-2' : ''}`}></i>
-                        <span>Search</span>
+                <div className="search-pill-btn-wrap">
+                    <button type="submit" className="search-btn-gradient">
+                        <i className="fa fa-search"></i>
+                        {!isCompact && <span>Search Stays</span>}
                     </button>
                 </div>
             </div>

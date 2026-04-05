@@ -113,32 +113,21 @@
 .admin-main-content.full-width {
     margin-left: 85px;
     width: calc(100% - 85px);
+    max-width: calc(100% - 280px);
 }
 
-/* Header Premium Bar */
-.admin-header-premium {
-    background: var(--surface);
-    padding: 25px 40px;
-    border-radius: 24px;
+@media (max-width: 1024px) {
+    .admin-main {
+        max-width: 100%;
+        padding: 24px;
+    }
+}
+
+.admin-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
-    box-shadow: var(--card-shadow);
-    border-left: 6px solid var(--primary);
-}
-
-/* Stat Cards - Modern Look */
-.admin-analytics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-}
-
-@media (max-width: 640px) {
-    .admin-analytics-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 .admin-stat-card {
