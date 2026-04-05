@@ -143,17 +143,14 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
         return () => clearTimeout(timer);
     }, []);
 
-    const handleHotelSelect = (hotel) => {
-        setSelectedHotelId(hotel._id);
-        setForceCenter({ lat: hotel.latitude, lng: hotel.longitude });
-    };
-
     const handleMarkerClick = (hotel) => {
         setSelectedHotelId(hotel._id);
         setForceCenter({ lat: hotel.latitude, lng: hotel.longitude });
-        const card = document.getElementById(`hotel-card-${hotel._id}`);
-        if (card && listRef.current) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Ensure card scrolls into view on the sidebar
+        const cardTarget = document.getElementById(`hotel-card-${hotel._id}`);
+        if (cardTarget && listRef.current) {
+            cardTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
@@ -227,7 +224,7 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
                                             key={hotel._id} 
                                             hotel={hotel} 
                                             isActive={selectedHotelId === hotel._id}
-                                            onSelect={handleHotelSelect}
+                                            onSelect={handleMarkerClick}
                                             onHover={setHoveredHotelId}
                                         />
                                     ))
@@ -306,6 +303,10 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
                                                                 <span className="text-[26px] font-black text-slate-950 tracking-tighter leading-none">₹{hotel.cheapestPrice?.toLocaleString()}</span>
                                                             </div>
                                                             <button 
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    navigate(`/hotels/${hotel._id}`);
+                                                                }}
                                                                 className="bg-[#6d5dfc] hover:bg-indigo-700 text-white font-black text-[12px] px-6 py-3.5 rounded-xl shadow-[0_10px_25px_rgba(109,93,252,0.3)] border-b-2 border-indigo-800/20 active:scale-95 transition-all"
                                                             >
                                                                 View Rooms

@@ -29,6 +29,7 @@ const HotelDetails = () => {
     const [userRating, setUserRating] = useState(5);
     const [userComment, setUserComment] = useState('');
     const [submittingReview, setSubmittingReview] = useState(false);
+    const [cityHotels, setCityHotels] = useState([]);
 
     // Lightbox State
     const [lightbox, setLightbox] = useState({
@@ -83,6 +84,14 @@ const HotelDetails = () => {
                 
                 const { data: offersData } = await API.get(`/offers/hotel/${id}`).catch(() => ({ data: [] }));
                 setOffers(offersData);
+
+                // 🔥 Fetch all properties in the same city
+                if (hotelData.city) {
+                    const { data: allCityHotels } = await API.get(`/hotels?city=${hotelData.city}`);
+                    setCityHotels(allCityHotels);
+                } else {
+                    setCityHotels([hotelData]);
+                }
 
                 setLoading(false);
             } catch (error) {
@@ -360,9 +369,9 @@ const HotelDetails = () => {
                     {/* 📍 Location / Map Section */}
                     <div className="hotel-location-section" id="location-map" style={{ marginTop: '40px' }}>
                         <h2 className="section-title-premium">Where you'll stay</h2>
-                        <div className="location-map-wrapper" style={{ height: '350px', marginBottom: '16px', borderRadius: '24px', overflow: 'hidden', border: '1px solid #f1f5f9' }}>
+                        <div className="location-map-wrapper" style={{ height: '400px', marginBottom: '16px', borderRadius: '24px', overflow: 'hidden', border: '1px solid #f1f5f9', boxShadow: '0 20px 50px rgba(0,0,0,0.05)' }}>
                             <HotelMap 
-                                hotels={[hotel]} 
+                                hotels={cityHotels} 
                                 activeHotelId={hotel._id}
                                 center={{ lat: hotel.latitude || 13.08, lng: hotel.longitude || 80.27 }}
                             />
