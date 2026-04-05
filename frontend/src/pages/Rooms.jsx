@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import API from '../utils/api';
 import AdvancedSearch from '../components/AdvancedSearch';
@@ -9,7 +9,7 @@ import { FaChevronRight, FaFilter, FaTimes, FaSearch, FaFire, FaTag, FaClock, Fa
 import './HotelSearchPage.css';
 
 const FALLBACK_PROMO = {
-  title: '≡ƒöÑ Limited Time: Get 20% OFF on selected hotels',
+  title: '🔥 Limited Time: Get 20% OFF on selected hotels',
   label: 'EXCLUSIVE DEAL',
 };
 
@@ -164,10 +164,10 @@ const Rooms = () => {
 
       <div className="search-results-wrapper">
         
-        {/* ≡ƒöÑ Promotion Banner Strip */}
+        {/* 🔥 Promotion Banner Strip */}
         <div className={`listing-promo-strip ${activeOffer ? 'applied' : ''}`} data-aos="fade-down">
           <div className="listing-promo-strip-inner">
-            <span className="listing-promo-fire">≡ƒöÑ</span>
+            <span className="listing-promo-fire">🔥</span>
             <div className="listing-promo-content">
               <span className="listing-promo-label">
                 {activeOffer ? 'DISCOUNT APPLIED' : 'HOT DEALS'}
@@ -191,7 +191,7 @@ const Rooms = () => {
                 className="listing-promo-cta"
                 onClick={() => document.getElementById('hotel-results-anchor')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Browse deals Γåô
+                Browse deals ↓
               </button>
             )}
           </div>
