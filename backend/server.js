@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const upload = require('./utils/upload');
 const passport = require('passport');
 const session = require('express-session');
 const connectDB = require('./config/db');
@@ -21,6 +20,8 @@ dotenv.config({ override: false });
 
 // Restore Render's PORT after dotenv (guarantees correct binding in production)
 if (RENDER_PORT) process.env.PORT = RENDER_PORT;
+
+const upload = require('./utils/upload');
 
 // Validate Environment before starting
 validateEnv();
