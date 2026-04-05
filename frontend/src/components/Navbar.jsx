@@ -8,6 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -15,8 +16,13 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleLogout = () => {
     logout();
+    setIsMobileMenuOpen(false);
     navigate('/login');
   };
 
@@ -97,33 +103,37 @@ const Navbar = () => {
           )}
         </div>
         
-        {/* Mobile hamburger */}
-        <button className="glass-hamburger lg:hidden ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#userNavMobile">
+        <button 
+          className={`glass-hamburger lg:hidden ml-auto ${isMobileMenuOpen ? 'active' : ''}`} 
+          type="button" 
+          onClick={toggleMobileMenu}
+          aria-label="Toggle Navigation"
+        >
           <span className="bg-white"></span><span className="bg-white"></span><span className="bg-white"></span>
         </button>
       </div>
 
       {/* Mobile collapse */}
-      <div className="collapse" id="userNavMobile">
+      <div className={`mobile-menu-container lg:hidden ${isMobileMenuOpen ? 'show' : ''}`}>
         <div className="user-mobile-menu">
-          <NavLink className="user-nav-link" to="/">HOME</NavLink>
-          <NavLink className="user-nav-link" to="/hotels">HOTELS</NavLink>
+          <NavLink className="user-nav-link" to="/" onClick={() => setIsMobileMenuOpen(false)}>HOME</NavLink>
+          <NavLink className="user-nav-link" to="/hotels" onClick={() => setIsMobileMenuOpen(false)}>HOTELS</NavLink>
           {userInfo ? (
             <>
               <NavLink 
                 className="user-nav-link" 
                 to={userInfo.role === 'admin' ? '/admin/dashboard' : userInfo.role === 'manager' ? '/manager/dashboard' : '/dashboard'}
-                onClick={() => document.getElementById('userNavMobile').classList.remove('show')}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 DASHBOARD
               </NavLink>
-              <NavLink className="user-nav-link" to="/wishlist">WISHLIST</NavLink>
+              <NavLink className="user-nav-link" to="/wishlist" onClick={() => setIsMobileMenuOpen(false)}>WISHLIST</NavLink>
               <button className="user-nav-link logout-btn text-left" onClick={handleLogout}>LOGOUT</button>
             </>
           ) : (
             <>
-              <NavLink className="user-nav-link" to="/login">LOGIN</NavLink>
-              <NavLink className="user-nav-link" to="/signup">REGISTER</NavLink>
+              <NavLink className="user-nav-link" to="/login" onClick={() => setIsMobileMenuOpen(false)}>LOGIN</NavLink>
+              <NavLink className="user-nav-link" to="/signup" onClick={() => setIsMobileMenuOpen(false)}>REGISTER</NavLink>
             </>
           )}
         </div>

@@ -25,7 +25,14 @@ const AdvancedSearch = ({
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showGuestDropdown, setShowGuestDropdown] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [allLocations, setAllLocations] = useState(INDIAN_LOCATIONS);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     const [filteredResults, setFilteredResults] = useState([]);
     const [activeIndex, setActiveIndex] = useState(-1);
     const navigate = useNavigate();
@@ -317,7 +324,7 @@ const AdvancedSearch = ({
                                         setShowDatePicker(false);
                                     }
                                 }}
-                                monthsShown={2}
+                                monthsShown={isMobile ? 1 : 2}
                                 minDate={new Date()}
                                 inline
                                 showPopperArrow={false}

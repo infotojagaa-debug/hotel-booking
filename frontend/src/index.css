@@ -3430,3 +3430,204 @@
         margin-bottom: 40px !important;
     }
 }
+
+
+/* ============================
+   FINAL MOBILE RESPONSIVENESS (768px UPGRADE)
+   ============================ */
+@media (max-width: 768px) {
+    /* Navbar & Global */
+    html, body {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+    
+    * {
+        box-sizing: border-box !important;
+    }
+
+    .navbar-inner-user {
+        padding: 10px 16px !important;
+    }
+
+    .brand-name {
+        font-size: 18px !important;
+    }
+
+    /* Hamburger Menu Visibility */
+    .glass-hamburger {
+        display: flex !important;
+        position: relative;
+        z-index: 5002;
+        padding: 5px;
+        margin-right: -4px;
+        background: rgba(255,255,255,0.1) !important;
+        border-radius: 8px;
+    }
+    
+    .glass-hamburger span {
+        background-color: #fff !important;
+        width: 26px !important;
+        height: 2.5px !important;
+    }
+
+    /* Mobile Expandable Menu Overlay */
+    .mobile-menu-container {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(11, 17, 32, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        z-index: 5001 !important;
+        display: none !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    
+    .mobile-menu-container.show {
+        display: flex !important;
+    }
+
+    .user-mobile-menu {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+        width: 100% !important;
+        padding: 0 40px !important;
+    }
+
+    .user-mobile-menu .user-nav-link {
+        font-size: 26px !important;
+        font-weight: 700 !important;
+        letter-spacing: 2px !important;
+        color: #fff !important;
+        text-align: center !important;
+        width: 100% !important;
+        border: none !important;
+    }
+
+    .user-mobile-menu .user-nav-link::after {
+        display: none;
+    }
+
+    /* Hero & Search Card */
+    .hero-slider-wrap {
+        height: 85vh !important;
+    }
+
+    .hero-slider-wrap .hero-title {
+        font-size: 34px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 12px !important;
+        margin-top: -40px !important;
+    }
+
+    .hero-slider-wrap .hero-subtitle {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+    }
+
+    .search-bar-wrapper {
+        position: relative !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 20px 15px !important;
+        margin-top: -60px !important;
+        z-index: 20 !important;
+    }
+
+    .search-boxes-container {
+        flex-direction: column !important;
+        gap: 12px !important;
+        padding: 0 !important;
+    }
+
+    .search-box-item {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 64px !important;
+        padding: 10px 18px !important;
+        border-radius: 12px !important;
+        border: 2px solid #f1f5f9 !important;
+    }
+
+    .search-item-content label {
+        font-size: 10px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .search-item-content input {
+        font-size: 14px !important;
+    }
+
+    .search-submit-btn-pill {
+        width: 100% !important;
+        height: 56px !important;
+        border-radius: 12px !important;
+        font-size: 18px !important;
+        margin-top: 4px !important;
+        box-shadow: 0 8px 24px rgba(109, 93, 252, 0.3) !important;
+    }
+
+    /* Date Picker Responsive Fix */
+    .custom-date-picker-popover {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 92vw !important;
+        min-width: 280px !important;
+        max-width: 360px !important;
+        height: auto !important;
+        padding: 12px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 10px 50px rgba(0,0,0,0.4) !important;
+    }
+
+    .custom-date-picker-popover::after {
+        display: none !important; /* Hide arrow on mobile modal view */
+    }
+
+    .react-datepicker {
+        width: 100% !important;
+    }
+
+    .react-datepicker__month-container {
+        width: 100% !important;
+        float: none !important;
+    }
+
+    .react-datepicker__header {
+        padding: 12px 0 !important;
+    }
+
+    .react-datepicker__day-name, .react-datepicker__day {
+        width: 2.2rem !important;
+        line-height: 2.2rem !important;
+        margin: 0.1rem !important;
+        font-size: 13px !important;
+    }
+
+    .datepicker-footer {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        margin-top: 10px !important;
+    }
+
+    .quick-action-pill {
+        font-size: 11px !important;
+        padding: 8px 4px !important;
+        white-space: nowrap !important;
+    }
+}
+
