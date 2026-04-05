@@ -147,166 +147,164 @@ const PaymentPage = () => {
     return (
         <div className="checkout-page-root">
             <div className="checkout-bg-decoration" />
-            <BookingStepper currentStep={reservationStep === 3 ? 3 : reservationStep} />
+            <BookingStepper currentStep={3} />
             
             <div className="checkout-main-container container-elite">
-                {/* 1. RESERVATION WIZARD (LEFT) */}
+                {/* 1. PAYMENT OPTIONS (LEFT) */}
                 <div className="payment-stack">
-                    
-                    {/* STEP 1: GUEST DETAILS */}
-                    {reservationStep === 1 && (
-                        <div className="wizard-step-card animate-fade-up">
-                            <h2 className="step-title-premium">Enter Your Details</h2>
-                            <p className="step-subtitle-premium">We'll use these to secure your luxury reservation.</p>
-                            
-                            <div className="guest-form-grid">
-                                <div className="input-field-group">
-                                    <label>First Name</label>
-                                    <input 
-                                        type="text" placeholder="e.g. John" className="modern-input-field" 
-                                        value={guestDetails.firstName} onChange={(e) => setGuestDetails({...guestDetails, firstName: e.target.value})}
-                                    />
-                                </div>
-                                <div className="input-field-group">
-                                    <label>Last Name</label>
-                                    <input 
-                                        type="text" placeholder="e.g. Doe" className="modern-input-field"
-                                        value={guestDetails.lastName} onChange={(e) => setGuestDetails({...guestDetails, lastName: e.target.value})}
-                                    />
-                                </div>
-                                <div className="input-field-group full">
-                                    <label>Email Address</label>
-                                    <input 
-                                        type="email" placeholder="john@example.com" className="modern-input-field"
-                                        value={guestDetails.email} onChange={(e) => setGuestDetails({...guestDetails, email: e.target.value})}
-                                    />
-                                </div>
-                                <div className="input-field-group full">
-                                    <label>Phone Number</label>
-                                    <input 
-                                        type="tel" placeholder="+91 00000 00000" className="modern-input-field"
-                                        value={guestDetails.phone} onChange={(e) => setGuestDetails({...guestDetails, phone: e.target.value})}
-                                    />
-                                </div>
-                            </div>
+                    <div className="wizard-step-card animate-fade-up">
+                        <h2 className="step-title-premium">Payment Options</h2>
+                        <p className="step-subtitle-premium">Select your preferred way to pay securely for this luxury stay.</p>
+                        
+                        <div className="payment-method-tabs">
+                            {[
+                                { id: 'upi', label: 'UPI', icon: <FaMobileAlt /> },
+                                { id: 'card', label: 'Credit/Debit Card', icon: <FaCreditCard /> },
+                                { id: 'netbanking', label: 'Net Banking', icon: <FaUniversity /> },
+                                { id: 'pay_at_hotel', label: 'Pay at Hotel', icon: <FaRegMoneyBillAlt /> }
+                            ].map(tab => (
+                                <button 
+                                    key={tab.id}
+                                    className={`method-tab-btn ${activeTab === tab.id ? 'is-active' : ''}`}
+                                    onClick={() => setActiveTab(tab.id)}
+                                >
+                                    <div className="method-icon">{tab.icon}</div>
+                                    <span>{tab.label}</span>
+                                </button>
+                            ))}
                         </div>
-                    )}
 
-                    {/* STEP 2: PAYMENT METHOD */}
-                    {reservationStep === 2 && (
-                        <div className="wizard-step-card animate-fade-up">
-                            <h2 className="step-title-premium">Payment Method</h2>
-                            <p className="step-subtitle-premium">Select your preferred way to pay for this stay.</p>
-                            
-                            <div className="payment-method-tabs">
-                                {[
-                                    { id: 'upi', label: 'UPI', icon: <FaMobileAlt /> },
-                                    { id: 'card', label: 'Card', icon: <FaCreditCard /> },
-                                    { id: 'netbanking', label: 'Bank', icon: <FaUniversity /> },
-                                    { id: 'pay_at_hotel', label: 'Pay Later', icon: <FaRegMoneyBillAlt /> }
-                                ].map(tab => (
-                                    <button 
-                                        key={tab.id}
-                                        className={`method-tab-btn ${activeTab === tab.id ? 'is-active' : ''}`}
-                                        onClick={() => setActiveTab(tab.id)}
-                                    >
-                                        <div className="method-icon">{tab.icon}</div>
-                                        <span>{tab.label}</span>
-                                    </button>
-                                ))}
-                            </div>
-
-                            <div className="method-content-pane">
-                                {activeTab === 'upi' && (
-                                    <div className="upi-pane-premium">
-                                        <div className="upi-apps-row">
-                                            {['gpay', 'phonepe', 'paytm'].map(app => (
-                                                <div 
-                                                    key={app} 
-                                                    className={`upi-app-pill ${selectedApp === app ? 'is-selected' : ''}`}
-                                                    onClick={() => setSelectedApp(app)}
-                                                >
-                                                    {app === 'gpay' && <SiGooglepay />}
-                                                    {app === 'phonepe' && <SiPhonepe />}
-                                                    {app === 'paytm' && <SiPaytm />}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                                {activeTab === 'card' && (
-                                    <div className="card-pane-premium">
-                                        <div className="card-mock-input">
-                                            <input name="number" placeholder="Card Number" value={cardData.number} onChange={handleCardChange} className="modern-input-field mb-4" />
-                                            <div className="flex gap-4">
-                                                <input name="expiry" placeholder="MM/YY" value={cardData.expiry} onChange={handleCardChange} className="modern-input-field" />
-                                                <input name="cvv" placeholder="CVV" value={cardData.cvv} type="password" onChange={handleCardChange} className="modern-input-field" />
+                        <div className="method-content-pane">
+                            {activeTab === 'upi' && (
+                                <div className="upi-pane-premium animate-zoom-in">
+                                    <p className="pane-subtitle-p">Select a UPI App</p>
+                                    <div className="upi-apps-grid-p">
+                                        {[
+                                            { id: 'gpay', name: 'Google Pay', icon: <SiGooglepay style={{ color: '#4285F4' }} /> },
+                                            { id: 'phonepe', name: 'PhonePe', icon: <SiPhonepe style={{ color: '#5f259f' }} /> },
+                                            { id: 'paytm', name: 'Paytm', icon: <SiPaytm style={{ color: '#00BAF2' }} /> },
+                                            { id: 'amazon', name: 'Amazon Pay', icon: <FaAmazon style={{ color: '#FF9900' }} /> },
+                                            { id: 'bhim', name: 'BHIM UPI', icon: <FaMobileAlt style={{ color: '#0f172a' }} /> },
+                                            { id: 'cred', name: 'CRED Pay', icon: <FaShieldAlt style={{ color: '#1a1a1a' }} /> }
+                                        ].map(app => (
+                                            <div 
+                                                key={app.id} 
+                                                className={`upi-app-box ${selectedApp === app.id ? 'active' : ''}`}
+                                                onClick={() => { setSelectedApp(app.id); setUpiId(''); setIsVerified(false); }}
+                                            >
+                                                <div className="app-icon-wrap">{app.icon}</div>
+                                                <div className="app-name-p">{app.name}</div>
                                             </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="upi-id-divider">
+                                        <span>OR ENTER UPI ID</span>
+                                    </div>
+
+                                    <div className="upi-input-group">
+                                        <label>Virtual Payment Address (VPA)</label>
+                                        <div className="flex gap-4">
+                                            <input 
+                                                type="email" 
+                                                className="modern-input-p" 
+                                                placeholder="username@bank"
+                                                value={upiId}
+                                                onChange={(e) => { setUpiId(e.target.value); setSelectedApp(null); setIsVerified(false); }}
+                                            />
+                                            <button 
+                                                className={`verify-btn-p ${isVerified ? 'verified' : ''}`}
+                                                disabled={upiId.length < 5 || isVerified || verifying}
+                                                onClick={handleVerifyUpi}
+                                            >
+                                                {verifying ? '...' : isVerified ? 'Verified ✓' : 'Verify'}
+                                            </button>
                                         </div>
                                     </div>
-                                )}
-                                {activeTab === 'pay_at_hotel' && (
-                                    <div className="pay-later-notice">
-                                        <div className="notice-icon"><FaShieldAlt /></div>
-                                        <p>Secure this room now with <strong>Zero payment</strong>. Pay at the property during your stay.</p>
+                                </div>
+                            )}
+
+                            {activeTab === 'card' && (
+                                <div className="card-pane-premium animate-zoom-in">
+                                    <p className="pane-subtitle-p">Enter Card Details</p>
+                                    <div className="card-input-grid">
+                                        <div className="input-field-group full">
+                                            <label>Card Number</label>
+                                            <input name="number" placeholder="0000 0000 0000 0000" value={cardData.number} onChange={handleCardChange} className="modern-input-field" />
+                                        </div>
+                                        <div className="input-field-group full">
+                                            <label>Name on Card</label>
+                                            <input name="name" placeholder="John Doe" value={cardData.name} onChange={handleCardChange} className="modern-input-field" />
+                                        </div>
+                                        <div className="input-field-group">
+                                            <label>Expiry Date</label>
+                                            <input name="expiry" placeholder="MM/YY" value={cardData.expiry} onChange={handleCardChange} className="modern-input-field" />
+                                        </div>
+                                        <div className="input-field-group">
+                                            <label>CVV</label>
+                                            <input name="cvv" placeholder="•••" value={cardData.cvv} type="password" onChange={handleCardChange} className="modern-input-field" />
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
+                                </div>
+                            )}
 
-                    {/* STEP 3: FINAL CONFIRMATION */}
-                    {reservationStep === 3 && (
-                        <div className="wizard-step-card animate-fade-up">
-                            <h2 className="step-title-premium">Final Review</h2>
-                            <p className="step-subtitle-premium">Double check everything before completing your booking.</p>
-                            
-                            <div className="final-review-grid">
-                                <div className="review-item">
-                                    <label>Guest</label>
-                                    <p>{guestDetails.firstName} {guestDetails.lastName}</p>
+                            {activeTab === 'netbanking' && (
+                                <div className="netbanking-pane-premium animate-zoom-in">
+                                    <p className="pane-subtitle-p">Popular Banks</p>
+                                    <div className="bank-grid-p">
+                                        {['HDFC Bank', 'ICICI Bank', 'State Bank of India', 'Axis Bank', 'Kotak Mahindra', 'Yes Bank'].map(bank => (
+                                            <div 
+                                                key={bank} 
+                                                className={`bank-box-p ${selectedBank === bank ? 'active' : ''}`}
+                                                onClick={() => setSelectedBank(bank)}
+                                            >
+                                                <div className="bank-logo-placeholder">{bank.charAt(0)}</div>
+                                                <span>{bank}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="mt-6 input-field-group">
+                                        <label>Other Banks</label>
+                                        <select className="modern-input-field" onChange={(e) => setSelectedBank(e.target.value)}>
+                                            <option value="">Select your bank...</option>
+                                            <option value="IDFC First Bank">IDFC First Bank</option>
+                                            <option value="Punjab National Bank">Punjab National Bank</option>
+                                            <option value="Bank of Baroda">Bank of Baroda</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div className="review-item">
-                                    <label>Contact</label>
-                                    <p>{guestDetails.email}</p>
-                                </div>
-                                <div className="review-item">
-                                    <label>Payment</label>
-                                    <p className="capitalize">{activeTab.replace(/_/g, ' ')}</p>
-                                </div>
-                                <div className="review-item highlight">
-                                    <label>Total to Pay</label>
-                                    <p>₹{finalAmount.toLocaleString()}</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
 
-                    {/* Wizard Controls */}
-                    <div className="wizard-controls">
-                        {reservationStep > 1 && (
-                            <button className="btn-wizard-back" onClick={() => setReservationStep(prev => prev - 1)}>
-                                Back
+                            {activeTab === 'pay_at_hotel' && (
+                                <div className="pay-at-hotel-pane animate-zoom-in p-6 text-center border-2 border-dashed border-gray-200 rounded-2xl">
+                                    <div className="text-4xl text-emerald-500 mb-4 flex justify-center"><FaCheckCircle /></div>
+                                    <h3 className="text-xl font-bold mb-2">Zero Payment Now</h3>
+                                    <p className="text-gray-500 mb-6">Secure this room immediately. You pay absolutely nothing today. Settle your final bill directly at the property during your stay.</p>
+                                    <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl text-sm font-semibold inline-block">
+                                        100% Secure reservation guaranteed.
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Pay Button */}
+                        <div className="mt-8 pt-6 border-t border-gray-100">
+                            <button 
+                                className="pay-final-btn-p"
+                                disabled={!formValid && activeTab !== 'pay_at_hotel'}
+                                onClick={() => runSimulationSteps()}
+                            >
+                                <FaLock /> 
+                                {activeTab === 'pay_at_hotel' ? 'Complete Reservation' : `Pay ₹${finalAmount.toLocaleString()} Securely`}
                             </button>
-                        )}
-                        <button 
-                            className="btn-wizard-next btn-elite-primary" 
-                            disabled={!formValid}
-                            onClick={() => {
-                                if (reservationStep < 3) setReservationStep(prev => prev + 1);
-                                else runSimulationSteps();
-                            }}
-                        >
-                            <span>{reservationStep === 3 ? 'Confirm & Book' : 'Continue'}</span>
-                            <FaChevronRight />
-                        </button>
-                    </div>
-
-                    <div className="checkout-trust-badges">
-                        <div className="trust-badge"><FaLock /> 256-bit SSL</div>
-                        <div className="trust-badge"><FaShieldAlt /> Secure Payments</div>
+                            <div className="checkout-trust-badges">
+                                <span className="trust-badge"><FaShieldAlt /> 256-bit Encryption</span>
+                                <span className="trust-badge"><FaLockOpen /> Safe & Secure</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
 
                 {/* 2. BOOKING SUMMARY (RIGHT - STICKY) */}
                 <div className="summary-stack">

@@ -740,6 +740,7 @@
     border: 2px solid #fde68a;
     border-radius: 16px;
     padding: 20px 28px;
+    margin-top: 32px;
     margin-bottom: 28px;
     position: relative;
     z-index: 10;
