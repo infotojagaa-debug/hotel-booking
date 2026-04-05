@@ -639,9 +639,219 @@
     white-space: nowrap;
   }
   
-  .card-input-grid, .upi-apps-grid-p, .bank-grid-p {
-    grid-template-columns: 1fr;
+  .card-input-grid, .upi-apps-grid-p, .bank-grid-p, .guest-form-grid {
+    grid-template-columns: 1fr !important;
   }
+}
+
+/* Missing Layout Classes for Checkout Wizard */
+.payment-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wizard-step-card {
+  background: var(--ch-card);
+  border-radius: var(--ch-radius);
+  padding: 32px;
+  box-shadow: var(--ch-shadow);
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+.step-title-premium {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.step-subtitle-premium {
+  font-size: 14px;
+  color: var(--ch-text-muted);
+  margin-bottom: 24px;
+}
+
+.guest-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-field-group.full {
+  grid-column: span 2;
+}
+
+.input-field-group label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ch-text-muted);
+  text-transform: uppercase;
+}
+
+.modern-input-field {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.modern-input-field:focus {
+  outline: none;
+  border-color: var(--ch-primary-solid);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(106, 92, 255, 0.08);
+}
+
+.payment-method-tabs {
+  display: flex;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.method-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ch-text-muted);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.method-tab-btn.is-active {
+  background: #ffffff;
+  color: var(--ch-primary-solid);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.method-content-pane {
+  min-height: 200px;
+  background: #ffffff;
+}
+
+.final-review-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.review-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.review-item label {
+  font-weight: 700;
+  color: var(--ch-text-muted);
+}
+
+.review-item.highlight {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.review-item.highlight label,
+.review-item.highlight p {
+  color: #16a34a;
+  font-weight: 800;
+}
+
+.wizard-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  gap: 16px;
+}
+
+.btn-wizard-back {
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: var(--ch-text-muted);
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-wizard-back:hover {
+  background: #f1f5f9;
+}
+
+.btn-wizard-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 12px;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #ffffff;
+  background: var(--ch-primary);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(106, 92, 255, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-wizard-next:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(106, 92, 255, 0.35);
+}
+
+.btn-wizard-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.checkout-trust-badges {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ch-text-muted);
+  text-transform: uppercase;
+}
+
+.trust-badge svg {
+  color: var(--ch-success);
 }
 
 /* Pay at Hotel Specifics */

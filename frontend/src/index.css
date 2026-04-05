@@ -742,6 +742,7 @@
     padding: 20px 28px;
     margin-bottom: 28px;
     position: relative;
+    z-index: 10;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(245,158,11,0.12);
     animation: slideDownFade 0.4s ease-out;
