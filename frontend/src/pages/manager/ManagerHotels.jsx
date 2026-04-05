@@ -87,6 +87,8 @@ const ManagerHotels = ({ hotels, selectedHotel, onSelectHotel, onRefresh }) => {
                 ...form,
                 images: form.images ? form.images.split(',').map(s => s.trim()).filter(Boolean) : [],
             };
+            console.log('--- SAVING HOTEL ---', payload.name);
+            console.log('IMAGE URLS:', payload.images);
             if (editHotel) {
                 await API.put(`/manager/hotels/${editHotel}`, payload);
                 setMsg('✅ Hotel updated successfully!');

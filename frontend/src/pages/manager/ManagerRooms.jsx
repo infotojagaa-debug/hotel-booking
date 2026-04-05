@@ -69,6 +69,8 @@ const ManagerRooms = ({ rooms, hotels, selectedHotel, onSelectHotel, onRefresh }
         setSaving(true);
         try {
             const payload = { ...form, images: form.images ? form.images.split(',').map(s => s.trim()).filter(Boolean) : [], hotelId: selectedHotel?._id };
+            console.log('--- SAVING ROOM ---', payload.name);
+            console.log('IMAGE URLS:', payload.images);
             if (editId) { await API.put(`/manager/rooms/${editId}`, payload); setMsg('✅ Room updated!'); }
             else { await API.post('/manager/rooms', payload); setMsg('✅ Room created!'); }
             onRefresh();

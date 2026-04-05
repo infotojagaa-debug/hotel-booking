@@ -19,9 +19,13 @@ API.interceptors.response.use((response) => {
   if (response.data) {
     const sanitizeUrls = (obj) => {
       if (typeof obj === 'string') {
+        // If already an absolute URL (Cloudinary), don't touch it
+        if (obj.startsWith('http')) return obj;
+
         const cleaned = obj.replace(/http:\/\/localhost:5000/g, '');
-        if (cleaned.startsWith('/uploads/')) {
-            return `${BACKEND_URL}${cleaned}`;
+        if (cleaned.startsWith('/uploads/') || cleaned.startsWith('uploads/')) {
+            const prefix = cleaned.startsWith('/') ? '' : '/';
+            return `${BACKEND_URL}${prefix}${cleaned}`;
         }
         return cleaned;
       } else if (Array.isArray(obj)) {

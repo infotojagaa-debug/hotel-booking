@@ -113,9 +113,14 @@ app.post('/api/upload', (req, res) => {
             if (!req.file) {
                 return res.status(400).json({ message: 'No file provided' });
             }
+
+            // Cloudinary stores the full secure URL in .path or .secure_url
+            const fileUrl = req.file.path || req.file.secure_url || req.file.url;
+            console.log('UPLOAD SUCCESS:', fileUrl);
+
             res.status(200).json({ 
                 message: 'Image uploaded successfully!',
-                url: req.file.path 
+                url: fileUrl 
             });
         });
     } catch (error) {
