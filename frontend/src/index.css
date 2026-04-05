@@ -3439,8 +3439,8 @@
 .hero-slider-wrap {
     position: relative;
     width: 100%;
-    height: 100vh;
-    min-height: 620px;
+    height: 110vh;
+    min-height: 700px;
     overflow: hidden;
     background: #0f0f1a;
 }
@@ -3525,7 +3525,39 @@
     margin-bottom: 2.5rem;
 }
 
-/* Centering wrapper for the search form inside the hero */
+/* ── Two-zone flex layout inside the hero ── */
+.hero-content-layout {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 110px 20px 48px;   /* top clears the navbar */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Zone 1: heading block centred in the upper half */
+.hero-heading-zone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 32px;
+}
+
+/* Zone 2: search bar pinned to the bottom */
+.hero-search-bottom-wrap {
+    align-self: center;
+    width: 100%;
+    max-width: 980px;
+}
+
+/* Legacy centering wrapper - kept for backward compat */
 .hero-search-centering-wrap {
     width: 100%;
     max-width: 960px;
@@ -4098,9 +4130,17 @@
    ==================================================== */
 @media (max-width: 768px) {
     .hero-slider-wrap {
-        height: auto;
+        height: 100vh;
         min-height: 100svh;
-        padding-bottom: 30px;
+    }
+    .hero-content-layout {
+        padding: 80px 16px 28px;
+    }
+    .hero-heading-zone {
+        padding-bottom: 20px;
+    }
+    .hero-search-bottom-wrap {
+        max-width: 100%;
     }
     .hero-title {
         font-size: 1.85rem;
