@@ -3922,14 +3922,14 @@
 }
 
 .guest-dropdown-content {
-    padding: 8px 0;
+    padding: 6px 0;
 }
 
 .guest-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 22px;
+    padding: 8px 20px;
     cursor: default;
     border-bottom: 1px solid #f8fafc;
     transition: background 0.15s;
@@ -3943,8 +3943,8 @@
 
 .pet-row {
     cursor: pointer;
-    padding: 14px 22px;
-    gap: 12px;
+    padding: 8px 20px;
+    gap: 8px;
 }
 .pet-row:hover {
     background: rgba(109,93,252,0.03);

@@ -151,7 +151,7 @@ const Rooms = () => {
       
       {/* 1. Modern Centered Search Bar Section */}
       <div className="search-results-header-wrap">
-        <div className="max-w-[1350px] mx-auto px-5">
+        <div className="w-full md:w-[80%] lg:w-[60%] mx-auto px-4 lg:px-0">
             <AdvancedSearch 
               isCompact={true} 
               initialLocation={locationName} 
