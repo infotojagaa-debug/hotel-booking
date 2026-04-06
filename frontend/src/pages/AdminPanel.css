@@ -40,6 +40,9 @@
     padding: 30px 20px;
     z-index: 100;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
 
 .admin-sidebar.collapsed {
@@ -123,19 +126,21 @@
     }
 }
 
-.admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Admin Analytics Grid - Fixed Horizontal Layout */
+.admin-analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
     margin-bottom: 40px;
 }
 
+/* Base Stat Card Styles for Admin */
 .admin-stat-card {
     background: var(--surface);
     padding: 30px;
     border-radius: 24px;
     box-shadow: var(--card-shadow);
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
@@ -462,6 +467,12 @@
     .admin-welcome h2 {
         font-size: 1.4rem;
     }
+    .admin-analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
     .admin-analytics-grid {
         grid-template-columns: 1fr;
     }
