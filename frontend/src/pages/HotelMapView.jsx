@@ -338,7 +338,8 @@ const HotelMapView = () => {
   // Valid hotels (have lat/lng) — Relaxed to allow 0,0 but must be numbers
   const mappableHotels = React.useMemo(() => 
     displayedHotels.filter(h => 
-      typeof h.latitude === 'number' && typeof h.longitude === 'number'
+      typeof h.latitude === 'number' && typeof h.longitude === 'number' && 
+      (Math.abs(h.latitude) > 0.1 || Math.abs(h.longitude) > 0.1) // Exclude Null Island (0,0)
     ),
     [displayedHotels]
   );

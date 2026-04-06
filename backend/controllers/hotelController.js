@@ -32,14 +32,23 @@ const updateHotel = async (req, res) => {
         const hotel = await Hotel.findById(req.params.id);
         if (!hotel) return res.status(404).json({ message: 'Hotel not found' });
 
-        // Check if user is manager or admin
-        if (hotel.manager.toString() !== req.user._id.toString() && req.user.role !== 'Admin') {
+        // Check if user is manager or admin (FIXED: Restored missing auth check)
+        const managerId = hotel.managerId || hotel.manager; // Compatibility for both field names
+        if (managerId?.toString() !== req.user._id.toString() && req.user.role !== 'Admin') {
             return res.status(401).json({ message: 'User not authorized' });
         }
 
+        // 🔥 Assign smart coordinates if missing or changed
+        let updateData = { ...req.body };
+        const tempHotel = { ...hotel.toObject(), ...updateData };
+        const geoFixed = assignDefaultCoordinates(tempHotel);
+        
+        updateData.latitude = geoFixed.latitude;
+        updateData.longitude = geoFixed.longitude;
+
         const updatedHotel = await Hotel.findByIdAndUpdate(
             req.params.id,
-            { $set: req.body },
+            { $set: updateData },
             { new: true }
         );
         res.status(200).json(updatedHotel);

@@ -143,6 +143,11 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
         return () => clearTimeout(timer);
     }, []);
 
+    const mappableHotels = hotels.filter(h => 
+        typeof h.latitude === 'number' && typeof h.longitude === 'number' && 
+        (Math.abs(h.latitude || 0) > 0.1 || Math.abs(h.longitude || 0) > 0.1)
+    );
+
     const handleMarkerClick = (hotel) => {
         setSelectedHotelId(hotel._id);
         setForceCenter({ lat: hotel.latitude, lng: hotel.longitude });
@@ -171,7 +176,7 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
                             <h2 className="text-[24px] font-black text-slate-900 leading-none mb-2 tracking-tighter">Discovery Hub</h2>
                             <div className="flex items-center gap-2">
                                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] animate-pulse" />
-                                <span className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">{hotels.length} Stays Found</span>
+                                <span className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">{mappableHotels.length} Stays Found</span>
                             </div>
                         </div>
                     </div>
@@ -251,9 +256,9 @@ const CustomerFullScreenMap = ({ hotels, onClose }) => {
                                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                                     />
                                     
-                                    <MapController hotels={hotels} forceCenter={forceCenter} />
+                                    <MapController hotels={mappableHotels} forceCenter={forceCenter} />
 
-                                    {hotels.map(hotel => (
+                                    {mappableHotels.map(hotel => (
                                         <Marker
                                             key={hotel._id}
                                             position={[hotel.latitude, hotel.longitude]}

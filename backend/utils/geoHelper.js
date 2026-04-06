@@ -80,41 +80,45 @@ const assignDefaultCoordinates = (hotel) => {
     let lat = hotel.latitude !== undefined ? parseFloat(hotel.latitude) : NaN;
     let lng = hotel.longitude !== undefined ? parseFloat(hotel.longitude) : NaN;
     
-    const isMissingLat = isNaN(lat) || lat === 0;
-    const isMissingLng = isNaN(lng) || lng === 0;
+    const isMissingLat = isNaN(lat) || lat === 0 || lat === null;
+    const isMissingLng = isNaN(lng) || lng === 0 || lng === null;
 
     if (isMissingLat || isMissingLng) {
         const cityName = (hotel.city || hotel.district || '').trim().toLowerCase();
         
         let matchedCity = null;
-        // Only fuzzy match if we have a non-empty city name
         if (cityName.length >= 2) {
+            // Priority 1: Exact match
             matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName === c);
+            
+            // Priority 2: Fuzzy inclusion (e.g. "Chennai 600001" -> "chennai")
             if (!matchedCity) {
-                // Secondary check: does the city input contain a known city name?
                 matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName.includes(c));
+            }
+
+            // Priority 3: Reverse inclusion (Known city name in the input) - handles "Adyar, Chennai" etc.
+            if (!matchedCity) {
+                matchedCity = Object.keys(CITY_COORDINATES).find(c => c.includes(cityName));
             }
         }
 
         if (matchedCity) {
             const cityData = CITY_COORDINATES[matchedCity];
-            // Add a small random jitter (approx 2-5km) to prevent overlapping markers
-            const jitterLat = (Math.random() - 0.5) * 0.04;
-            const jitterLng = (Math.random() - 0.5) * 0.04;
+            // Narrower jitter (approx 1-2km) for tighter clustering in the city
+            const jitterLat = (Math.random() - 0.5) * 0.02;
+            const jitterLng = (Math.random() - 0.5) * 0.02;
             
             hotel.latitude = cityData.lat + jitterLat;
             hotel.longitude = cityData.lng + jitterLng;
-            // console.log(`Smart Allocation: ${hotel.name} -> ${matchedCity} [${hotel.latitude}, ${hotel.longitude}]`);
         } else {
             // THE ULTIMATE FALLBACK: Default to Central India (Nagpur Area)
             // NEVER allow [0,0] which results in markers in the Atlantic Ocean (Null Island)
             const fallbackLat = 21.1458; 
             const fallbackLng = 79.0882;
-            const jitter = (Math.random() - 0.5) * 2; // Spread randomly within a few hundred kms
+            const jitter = (Math.random() - 0.5) * 0.5; // Tighter random spread around center of India
             
             hotel.latitude = fallbackLat + jitter;
             hotel.longitude = fallbackLng + jitter;
-            // console.log(`Smart Fallback (India): ${hotel.name} [City UNKNOWN: ${cityName}]`);
         }
     }
     return hotel;

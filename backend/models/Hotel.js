@@ -15,8 +15,8 @@ const hotelSchema = new mongoose.Schema({
     description: { type: String, required: true },
     images: [{ type: String }],
     cheapestPrice: { type: Number, required: true },
-    latitude: { type: Number, default: 0 },
-    longitude: { type: Number, default: 0 },
+    latitude: { type: Number },
+    longitude: { type: Number },
     amenities: { type: [String], default: [] },
     extraServices: [{
         name: { type: String },
