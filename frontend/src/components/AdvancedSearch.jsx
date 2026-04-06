@@ -272,37 +272,51 @@ const AdvancedSearch = ({
                         )}
                         
                         {/* Multi-Level Location Dropdown */}
-                        {showDropdown && filteredResults.length > 0 && (
+                        {showDropdown && (
                             <>
                                 {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDropdown(false); }}></div>}
                                 <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
+                                    {isMobile && (
+                                        <div className="mob-dropdown-header">
+                                            <div className="mob-drag-handle"></div>
+                                            <h3>Select Destination</h3>
+                                            <p>Choose where you'd like to stay</p>
+                                        </div>
+                                    )}
                                     <div className="dropdown-list">
-                                        {filteredResults.map((loc, index) => (
-                                            <div 
-                                                key={index} 
-                                                className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
-                                                onMouseEnter={() => setActiveIndex(index)}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    selectLocation(loc);
-                                                }}
-                                            >
-                                                <div className="flex items-center gap-4 w-full text-left">
-                                                    <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
-                                                    <div className="loc-info flex-1">
-                                                        <div className="flex items-center justify-between">
-                                                            <span className="loc-name">{highlightMatch(loc.name, destination)}</span>
-                                                            <span className={`type-tag tag-${loc.type.toLowerCase()}`}>
-                                                                {loc.type}
-                                                            </span>
+                                        {filteredResults.length > 0 ? (
+                                            filteredResults.map((loc, index) => (
+                                                <div 
+                                                    key={index} 
+                                                    className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
+                                                    onMouseEnter={() => setActiveIndex(index)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        selectLocation(loc);
+                                                    }}
+                                                >
+                                                    <div className="flex items-center gap-4 w-full text-left">
+                                                        <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
+                                                        <div className="loc-info flex-1">
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="loc-name">{highlightMatch(loc.name, destination)}</span>
+                                                                <span className={`type-tag tag-${loc.type.toLowerCase()}`}>
+                                                                    {loc.type}
+                                                                </span>
+                                                            </div>
+                                                            {loc.type !== 'State' && (
+                                                                <span className="loc-state-text">{loc.state}</span>
+                                                            )}
                                                         </div>
-                                                        {loc.type !== 'State' && (
-                                                            <span className="loc-state-text">{loc.state}</span>
-                                                        )}
                                                     </div>
                                                 </div>
+                                            ))
+                                        ) : (
+                                            <div className="no-res-msg">
+                                                <i className="fa fa-info-circle"></i>
+                                                <p>No matching locations found. Try a different city.</p>
                                             </div>
-                                        ))}
+                                        )}
                                     </div>
                                 </div>
                             </>

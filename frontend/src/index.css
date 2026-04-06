@@ -3933,25 +3933,33 @@
 /* ── Mobile layout ── */
 .search-bar-modern.is-mobile-search .search-pill-container {
     flex-direction: column;
-    border-radius: 16px;
+    border-radius: 20px;
     gap: 0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    background: #fff;
+    border: 1px solid #f1f5f9;
 }
 .search-bar-modern.is-mobile-search .search-pill-item {
     border-right: none;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f8fafc;
     border-radius: 0 !important;
-    padding: 12px 16px;
+    padding: 14px 18px;
+    transition: background 0.2s;
+}
+.search-bar-modern.is-mobile-search .search-pill-item.pill-active {
+    background: #fafbff;
 }
 .search-bar-modern.is-mobile-search .search-pill-item:first-child {
-    border-radius: 16px 16px 0 0 !important;
+    border-radius: 20px 20px 0 0 !important;
 }
 .search-bar-modern.is-mobile-search .search-pill-btn-wrap {
-    padding: 10px 12px 12px;
+    padding: 12px 14px 14px;
 }
 .search-bar-modern.is-mobile-search .search-btn-gradient {
     width: 100%;
     justify-content: center;
     border-radius: 12px;
+    height: 52px;
 }
 
 /* ====================================================
@@ -4303,10 +4311,98 @@
 }
 
 /* ── In compact/page mode: location dropdown opens downward ── */
-.search-bar-modern.is-compact-mode .destination-pill .search-dropdown.modern-district-dropdown,
+/* ── Mobile Location Dropdown Hub ── */
 .search-bar-modern.is-mobile-search .destination-pill .search-dropdown.modern-district-dropdown {
-    bottom: auto;
-    top: calc(100% + 10px);
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 65vh !important;
+    border-radius: 30px 30px 0 0 !important;
+    z-index: 20000 !important;
+    box-shadow: 0 -10px 50px rgba(0,0,0,0.15) !important;
+    animation: slideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: none !important;
+    padding: 20px 12px;
+}
+
+.search-mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 15000;
+    transition: opacity 0.3s;
+}
+
+@keyframes slideUpMobile {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.search-bar-modern.is-mobile-search .loc-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.search-bar-modern.is-mobile-search .loc-state-text {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.search-bar-modern.is-mobile-search .district-item {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f8fafc;
+}
+
+/* ── Mobile Dropdown Header & Misc ── */
+.mob-dropdown-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 12px;
+}
+
+.mob-drag-handle {
+    width: 36px;
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    margin: -10px auto 16px;
+}
+
+.mob-dropdown-header h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0 0 4px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.mob-dropdown-header p {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.no-res-msg {
+    padding: 40px 20px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+.no-res-msg i {
+    font-size: 32px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+    display: block;
+}
+
+.no-res-msg p {
+    font-size: 14px;
+    font-weight: 500;
 }
 
 /* ====================================================

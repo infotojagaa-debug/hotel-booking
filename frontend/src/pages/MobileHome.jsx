@@ -178,17 +178,31 @@ const MobileHome = () => {
           <h1 className="mob-hero-title">Where to next?</h1>
           <p className="mob-hero-subtitle">Hotels, apartments, villas &amp; more</p>
 
-          {/* Tappable search trigger */}
-          <button className="mob-search-trigger" onClick={() => setShowSearch(true)}>
-            <div className="mob-search-icon-wrap">
+          {/* Redesigned Premium Search Hub Trigger */}
+          <div className="mob-search-hub" onClick={() => setShowSearch(true)}>
+            <div className="mob-search-hub-icon">
               <i className="fa fa-search"></i>
             </div>
-            <div className="mob-search-placeholder">
-              <span>Search destinations…</span>
-              <span>Any dates · Any guests</span>
+            <div className="mob-search-hub-content">
+              <div className="mob-search-hub-item">
+                <span className="mob-hub-label">Where to?</span>
+                <span className="mob-hub-value">Location</span>
+              </div>
+              <div className="mob-hub-divider"></div>
+              <div className="mob-search-hub-item">
+                <span className="mob-hub-label">When?</span>
+                <span className="mob-hub-value">Any Dates</span>
+              </div>
+              <div className="mob-hub-divider"></div>
+              <div className="mob-search-hub-item">
+                <span className="mob-hub-label">Who?</span>
+                <span className="mob-hub-value">Guests</span>
+              </div>
             </div>
-            <i className="fa fa-chevron-right mob-search-chevron"></i>
-          </button>
+            <div className="mob-search-hub-filter">
+              <i className="fa fa-sliders-h"></i>
+            </div>
+          </div>
 
           {/* Quick filter buttons */}
           <div className="mob-quick-filters">
