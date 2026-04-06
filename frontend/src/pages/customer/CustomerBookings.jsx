@@ -46,14 +46,10 @@ const CustomerBookings = () => {
 
     const handleDownloadInvoice = async (bookingId) => {
         try {
-            const downloadUrl = `${BACKEND_URL}/api/bookings/${bookingId}/invoice`;
-            console.log('Final Download URL:', downloadUrl);
-            
             const response = await API.get(`/bookings/${bookingId}/invoice`, {
                 responseType: 'blob'
             });
             
-            // Check if response is JSON (error) despite blob request
             if (response.data.type === 'application/json') {
                 const text = await response.data.text();
                 const errorData = JSON.parse(text);
@@ -67,7 +63,6 @@ const CustomerBookings = () => {
             document.body.appendChild(link);
             link.click();
             
-            // Cleanup
             setTimeout(() => {
                 link.remove();
                 window.URL.revokeObjectURL(url);
@@ -75,8 +70,7 @@ const CustomerBookings = () => {
             
         } catch (err) {
             console.error('Invoice download failed:', err);
-            const errorMsg = err.response?.data?.message || err.message || 'Could not download invoice. Please try again.';
-            alert(`Download Failed: ${errorMsg}`);
+            alert(`Download Failed: ${err.message || 'Could not download invoice'}`);
         }
     };
 
@@ -102,15 +96,15 @@ const CustomerBookings = () => {
             </div>
 
             {/* Premium Filter Tab Bar */}
-            <div className="cd-filters-row">
-                <div className="flex items-center gap-3 mr-4 text-slate-400">
+            <div className="cd-filters-row mb-8 overflow-x-auto pb-2 flex flex-nowrap scrollbar-hide">
+                <div className="flex items-center gap-3 mr-4 text-slate-400 flex-shrink-0">
                     <FaFilter className="text-[10px]" />
                 </div>
                 {filters.map(f => (
                     <button
                         key={f}
                         onClick={() => setFilter(f)}
-                        className={`cd-filter-tab ${filter === f ? 'active' : ''}`}
+                        className={`cd-filter-tab flex-shrink-0 ${filter === f ? 'active' : ''}`}
                     >
                         {f}
                     </button>
@@ -136,9 +130,9 @@ const CustomerBookings = () => {
             ) : (
                 <div className="space-y-6">
                     {displayed.map((b, idx) => (
-                        <div key={b._id} className="cd-booking-card-premium p-6 group" data-aos="fade-up" data-aos-delay={idx * 50}>
+                        <div key={b._id} className="cd-booking-card-premium p-6 group flex flex-col xl:flex-row gap-6 border border-slate-100 bg-white rounded-3xl" data-aos="fade-up" data-aos-delay={idx * 50}>
                             {/* Main Info Column */}
-                            <div className="cd-booking-img-wrap w-full md:w-[240px] h-[160px] rounded-24">
+                            <div className="cd-booking-img-wrap w-full xl:w-[260px] h-[180px] rounded-[24px] overflow-hidden relative flex-shrink-0">
                                 <img
                                     src={
                                         (b.room?.images?.[0] || b.hotel?.images?.[0]) 
@@ -147,8 +141,8 @@ const CustomerBookings = () => {
                                             : `${BACKEND_URL}${b.room?.images?.[0] || b.hotel?.images?.[0]}`)
                                         : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
                                     }
-                                    alt="hotel"
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    alt="Stay"
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 <div className="absolute top-4 left-4">
                                     <span className={`cd-status-badge ${b.status?.toLowerCase()}`}>
@@ -157,75 +151,71 @@ const CustomerBookings = () => {
                                 </div>
                             </div>
 
-                            <div className="cd-booking-main flex-1">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="flex items-center gap-2 text-[9px] uppercase font-black tracking-[0.15em] text-[#6d5dfc] bg-[#f5f3ff] w-fit px-3 py-1 rounded-full border border-[#6d5dfc1a]">
+                            <div className="cd-booking-main flex-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-4 mb-3">
+                                    <div className="flex items-center gap-2 text-[10px] uppercase font-black tracking-[0.15em] text-[#6d5dfc] bg-[#f5f3ff] w-fit px-3 py-1 rounded-full border border-[#6d5dfc1a]">
                                         <FaClock /> ID: #{b._id?.slice(-6).toUpperCase()}
                                     </div>
                                     <div className="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-widest border-l border-slate-100 pl-4">
-                                        <span className="flex items-center gap-1.5"><FaCalendarAlt className="text-[9px] text-[#6d5dfc]" /> {new Date(b.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                                        <span className="flex items-center gap-1.5"><FaClock className="text-[9px] text-[#6d5dfc]" /> {new Date(b.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
+                                        <span className="flex items-center gap-1.5"><FaCalendarAlt className="text-[9px] text-[#6d5dfc]" /> {new Date(b.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>
-                                <h3 className="cd-booking-title">{b.hotel?.name || b.room?.hotel?.name || 'Luxury Elite Stay'}</h3>
                                 
-                                <div className="cd-booking-meta-row mt-4">
-                                    <div className="flex items-center gap-8 border-b border-slate-50 pb-4 mb-4">
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-1">Check-in</span>
-                                            <span className="text-sm font-black text-slate-700 flex items-center gap-2">
-                                                <FaCalendarAlt className="text-[#6d5dfc]" /> {new Date(b.checkInDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                            </span>
-                                        </div>
-                                        <FaArrowRight className="text-slate-200 mt-4" />
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-1">Check-out</span>
-                                            <span className="text-sm font-black text-slate-700 flex items-center gap-2">
-                                                <FaCalendarAlt className="text-[#6d5dfc]" /> {new Date(b.checkOutDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                            </span>
-                                        </div>
+                                <h3 className="text-xl font-black text-slate-800 leading-tight mb-2 truncate">
+                                    {b.hotel?.name || b.room?.hotel?.name || 'Luxury Elite Stay'}
+                                </h3>
+                                
+                                <div className="mt-5 p-4 bg-slate-50/50 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                                    <div className="flex flex-col">
+                                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] mb-1">Check-in</span>
+                                        <span className="text-sm font-black text-slate-700 flex items-center gap-2">
+                                            {new Date(b.checkInDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                                        </span>
                                     </div>
-                                    
-                                    <div className="flex items-center justify-between w-full">
-                                        {(b.hotel?.city || 'Global City') && (
-                                            <span className="text-xs font-bold text-slate-500 flex items-center gap-2">
-                                                <FaMapMarkerAlt className="text-red-400" /> {b.hotel?.city || 'Global Destination'}
-                                            </span>
-                                        )}
-                                        {b.paymentStatus === 'Paid' ? (
-                                            <span className="text-[11px] font-black text-green-600 flex items-center gap-1.5 uppercase tracking-wide">
-                                                <FaCheckCircle /> Payment Verified
-                                            </span>
-                                        ) : (
-                                            <span className="text-[11px] font-black text-amber-500 flex items-center gap-1.5 uppercase tracking-wide">
-                                                <FaExclamationCircle /> Awaiting Payment
-                                            </span>
-                                        )}
+                                    <div className="hidden sm:block">
+                                        <FaArrowRight className="text-slate-200" />
                                     </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] mb-1">Check-out</span>
+                                        <span className="text-sm font-black text-slate-700 flex items-center gap-2">
+                                            {new Date(b.checkOutDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                                        </span>
+                                    </div>
+                                    <div className="sm:ml-auto flex flex-col items-end">
+                                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] mb-1">Status</span>
+                                        <span className={`text-[10px] font-black px-2 py-0.5 rounded uppercase ${b.paymentStatus === 'Paid' ? 'text-green-600 bg-green-50' : 'text-amber-600 bg-amber-50'}`}>
+                                            {b.paymentStatus === 'Paid' ? 'Paid' : 'Unpaid'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 mt-4 text-xs font-bold text-slate-500">
+                                    <FaMapMarkerAlt className="text-[#6d5dfc]" />
+                                    {b.hotel?.city || b.hotel?.district || 'Global Destination'}
                                 </div>
                             </div>
 
                             {/* Actions Column */}
-                            <div className="cd-booking-side flex flex-col items-end justify-between min-w-[200px]">
-                                <div className="text-right">
-                                    <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Total Stay Value</span>
-                                    <div className="cd-price-tag">₹{b.totalPrice?.toLocaleString()}</div>
+                            <div className="cd-booking-side flex flex-col justify-between items-center xl:items-end min-w-[180px] border-t xl:border-t-0 xl:border-l border-slate-50 pt-6 xl:pt-0 xl:pl-6 mt-2 xl:mt-0">
+                                <div className="text-center xl:text-right w-full">
+                                    <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1 opacity-60">Total Value</span>
+                                    <div className="text-2xl font-black text-slate-900 tracking-tighter">₹{b.totalPrice?.toLocaleString()}</div>
                                 </div>
-                                <div className="flex gap-3 mt-8">
-                                    {(b.status === 'Confirmed' || b.status === 'Pending') && (
-                                        <button
-                                            onClick={() => handleCancel(b._id)}
-                                            className="cd-btn-ghost text-red-500 border-red-50 hover:bg-red-50 hover:border-red-100"
-                                        >
-                                            Cancel Stay
-                                        </button>
-                                    )}
+                                <div className="flex flex-col w-full gap-3 mt-6">
                                     <button 
                                         onClick={() => handleDownloadInvoice(b._id)}
-                                        className="cd-btn-primary py-3 px-6 shadow-none flex items-center gap-2"
+                                        className="cd-btn-primary py-3 px-6 shadow-none flex items-center justify-center gap-3 w-full"
                                     >
                                         <FaDownload className="text-[10px]" /> Get Invoice
                                     </button>
+                                    {(b.status === 'Confirmed' || b.status === 'Pending') && (
+                                        <button
+                                            onClick={() => handleCancel(b._id)}
+                                            className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-red-500 transition-colors w-full text-center"
+                                        >
+                                            Cancel Booking
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

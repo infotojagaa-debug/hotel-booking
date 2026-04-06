@@ -7,6 +7,36 @@ const CustomerPayments = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const handleDownloadInvoice = async (bookingId) => {
+        try {
+            const response = await API.get(`/bookings/${bookingId}/invoice`, {
+                responseType: 'blob'
+            });
+            
+            if (response.data.type === 'application/json') {
+                const text = await response.data.text();
+                const errorData = JSON.parse(text);
+                throw new Error(errorData.message || 'Server error generating invoice');
+            }
+
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `EliteStays_Invoice_${bookingId.slice(-6).toUpperCase()}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            
+            setTimeout(() => {
+                link.remove();
+                window.URL.revokeObjectURL(url);
+            }, 100);
+            
+        } catch (err) {
+            console.error('Invoice download failed:', err);
+            alert(`Download Failed: ${err.message || 'Could not download invoice'}`);
+        }
+    };
+
     useEffect(() => {
         // Fetch bookings directly to ensure real-time status of recent transactions
         API.get('/bookings/mybookings')
@@ -87,7 +117,11 @@ const CustomerPayments = () => {
                                         </span>
                                     </td>
                                     <td style={{ textAlign: 'right' }}>
-                                        <button className="w-10 h-10 rounded-full bg-[#f8fafc] border border-slate-100 flex items-center justify-center text-[#64748b] hover:bg-[#6d5dfc] hover:text-white hover:shadow-lg transition-all m-auto" title="Download Official Invoice">
+                                        <button 
+                                            onClick={() => handleDownloadInvoice(p._id)}
+                                            className="w-10 h-10 rounded-full bg-[#f8fafc] border border-slate-100 flex items-center justify-center text-[#64748b] hover:bg-[#6d5dfc] hover:text-white hover:shadow-lg transition-all m-auto" 
+                                            title="Download Official Invoice"
+                                        >
                                             <FaDownload />
                                         </button>
                                     </td>

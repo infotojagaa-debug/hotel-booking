@@ -133,6 +133,30 @@ const AdvancedSearch = ({
         return () => { document.body.style.overflow = 'unset'; };
     }, [isMobile, showDropdown, showDatePicker, showGuestDropdown]);
 
+    const handlePillClick = (e, type) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (type === 'destination') {
+            if (isMobile) {
+                setShowMobSearchOverlay(true);
+            } else {
+                setShowDropdown(!showDropdown);
+                setShowDatePicker(false);
+                setShowGuestDropdown(false);
+            }
+        } else if (type === 'date') {
+            setShowDatePicker(!showDatePicker);
+            setShowDropdown(false);
+            setShowGuestDropdown(false);
+        } else if (type === 'guests') {
+            setShowGuestDropdown(!showGuestDropdown);
+            setShowDropdown(false);
+            setShowDatePicker(false);
+        }
+    };
+
     // Handle clicking outside to close
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -269,8 +293,7 @@ const AdvancedSearch = ({
                 {/* 1. Destination Box */}
                 <div 
                     className={`search-pill-item destination-pill ${showDropdown ? 'pill-active' : ''}`} 
-                    onClick={() => triggerFocus(destinationRef)}
-                    onTouchStart={() => triggerFocus(destinationRef)}
+                    onClick={(e) => handlePillClick(e, 'destination')}
                 >
                     <div className="pill-content">
                         <div className="pill-icon">
@@ -369,8 +392,7 @@ const AdvancedSearch = ({
 
                 {/* 2. Check-in/out Unified Box */}
                 <div className={`search-pill-item date-pill ${showDatePicker ? 'pill-active' : ''}`} ref={datePickerContainerRef} 
-                    onClick={triggerDatePicker}
-                    onTouchStart={triggerDatePicker}
+                    onClick={(e) => handlePillClick(e, 'date')}
                 >
                     <div className="pill-content">
                         <div className="pill-icon">
@@ -436,8 +458,7 @@ const AdvancedSearch = ({
 
                 {/* 3. Guests Box */}
                 <div className={`search-pill-item guests-pill ${showGuestDropdown ? 'pill-active' : ''}`} ref={guestsBoxRef} 
-                    onClick={() => setShowGuestDropdown(!showGuestDropdown)}
-                    onTouchStart={() => setShowGuestDropdown(!showGuestDropdown)}
+                    onClick={(e) => handlePillClick(e, 'guests')}
                 >
                     <div className="pill-content">
                         <div className="pill-icon">
