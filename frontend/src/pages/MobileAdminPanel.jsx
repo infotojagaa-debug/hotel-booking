@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import API from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import './MobileAdminPanel.css';
-import { formatCurrency } from '../utils/helpers'; // Assuming we have or we can redefine it
+// import { formatCurrency } from '../utils/helpers'; // Removed non-existent import causing build error
 
 const MobileAdminPanel = () => {
     const { userInfo, logout } = useContext(AuthContext);
