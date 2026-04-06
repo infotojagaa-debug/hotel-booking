@@ -6,6 +6,13 @@ import 'leaflet/dist/leaflet.css';
 import { FaStar, FaBuilding, FaMapMarkerAlt, FaGlobe } from 'react-icons/fa';
 import { BACKEND_URL } from '../utils/api';
 
+// --- UTILS ---
+const isValidCoords = (lat, lng) => {
+    const latNum = Number(lat);
+    const lngNum = Number(lng);
+    return !isNaN(latNum) && !isNaN(lngNum) && isFinite(latNum) && isFinite(lngNum);
+};
+
 // --- CUSTOM MARKER CREATORS ---
 
 // 1. City Level Badge Marker
@@ -42,8 +49,12 @@ const createPriceIcon = (price, isActive, isHovered) => {
 const MapController = ({ center, zoom }) => {
     const map = useMap();
     useEffect(() => {
-        if (center) {
-            map.flyTo([center.lat, center.lng], zoom || 15, { duration: 1.5 });
+        if (center && isValidCoords(center.lat, center.lng)) {
+            try {
+                map.flyTo([Number(center.lat), Number(center.lng)], zoom || 15, { duration: 1.5 });
+            } catch (err) {
+                console.error('Leaflet flyTo Error:', err);
+            }
         }
     }, [center, zoom, map]);
     return null;
@@ -70,19 +81,22 @@ const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center
         const groups = {};
         hotels.forEach(hotel => {
             const city = hotel.city || 'Other';
+            const lat = Number(hotel.latitude);
+            const lng = Number(hotel.longitude);
+            
+            if (!isValidCoords(lat, lng)) return; // Skip invalid data for mapping
+
             if (!groups[city]) {
                 groups[city] = {
                     name: city,
                     count: 0,
-                    lat: hotel.latitude,
-                    lng: hotel.longitude,
+                    lat: lat,
+                    lng: lng,
                     hotels: []
                 };
             }
             groups[city].count++;
             groups[city].hotels.push(hotel);
-            // Simple center point (first hotel found in that city)
-            // In a real app we'd average the coords
         });
         return Object.values(groups);
     }, [hotels]);

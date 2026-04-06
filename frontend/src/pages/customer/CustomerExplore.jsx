@@ -22,11 +22,15 @@ const CustomerExplore = () => {
         try {
             const { data } = await API.get('/hotels');
             if (data && Array.isArray(data)) {
-                const processed = data.map((h, i) => ({
-                    ...h,
-                    latitude: h.latitude || (13.08 + (Math.random() - 0.5) * 0.1),
-                    longitude: h.longitude || (80.27 + (Math.random() - 0.5) * 0.1)
-                }));
+                const processed = data.map((h, i) => {
+                    const lat = Number(h.latitude);
+                    const lng = Number(h.longitude);
+                    return {
+                        ...h,
+                        latitude: (lat && !isNaN(lat) && isFinite(lat)) ? lat : (13.08 + (Math.random() - 0.5) * 0.1),
+                        longitude: (lng && !isNaN(lng) && isFinite(lng)) ? lng : (80.27 + (Math.random() - 0.5) * 0.1)
+                    };
+                });
                 setHotels(processed);
             } else {
                 setHotels([]);
