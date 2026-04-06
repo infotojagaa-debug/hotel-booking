@@ -265,36 +265,39 @@ const AdvancedSearch = ({
                         
                         {/* Multi-Level Location Dropdown */}
                         {showDropdown && filteredResults.length > 0 && (
-                            <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
-                                <div className="dropdown-list">
-                                    {filteredResults.map((loc, index) => (
-                                        <div 
-                                            key={index} 
-                                            className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
-                                            onMouseEnter={() => setActiveIndex(index)}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                selectLocation(loc);
-                                            }}
-                                        >
-                                            <div className="flex items-center gap-4 w-full text-left">
-                                                <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
-                                                <div className="loc-info flex-1">
-                                                    <div className="flex items-center justify-between">
-                                                        <span className="loc-name">{highlightMatch(loc.name, destination)}</span>
-                                                        <span className={`type-tag tag-${loc.type.toLowerCase()}`}>
-                                                            {loc.type}
-                                                        </span>
+                            <>
+                                {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDropdown(false); }}></div>}
+                                <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
+                                    <div className="dropdown-list">
+                                        {filteredResults.map((loc, index) => (
+                                            <div 
+                                                key={index} 
+                                                className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
+                                                onMouseEnter={() => setActiveIndex(index)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    selectLocation(loc);
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-4 w-full text-left">
+                                                    <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
+                                                    <div className="loc-info flex-1">
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="loc-name">{highlightMatch(loc.name, destination)}</span>
+                                                            <span className={`type-tag tag-${loc.type.toLowerCase()}`}>
+                                                                {loc.type}
+                                                            </span>
+                                                        </div>
+                                                        {loc.type !== 'State' && (
+                                                            <span className="loc-state-text">{loc.state}</span>
+                                                        )}
                                                     </div>
-                                                    {loc.type !== 'State' && (
-                                                        <span className="loc-state-text">{loc.state}</span>
-                                                    )}
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            </>
                         )}
                     </div>
                 </div>
@@ -320,43 +323,46 @@ const AdvancedSearch = ({
 
                     {/* Unified Date Range Picker Popover (Upward) */}
                     {showDatePicker && (
-                        <div className="custom-date-picker-popover" onClick={(e) => e.stopPropagation()}>
-                            <DatePicker
-                                selectsRange={true}
-                                startDate={startDate}
-                                endDate={endDate}
-                                onChange={(update) => {
-                                    setDateRange(update);
-                                    if (update[0] && update[1]) {
-                                        setShowDatePicker(false);
-                                    }
-                                }}
-                                monthsShown={1}
-                                minDate={new Date()}
-                                inline
-                                showPopperArrow={false}
-                                formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 2)}
-                            >
-                                <div className="datepicker-footer">
-                                    <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(), new Date(new Date().setDate(new Date().getDate() + 1))])}>
-                                         Tonight
-                                    </button>
-                                    <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(new Date().setDate(new Date().getDate() + 1)), new Date(new Date().setDate(new Date().getDate() + 2))])}>
-                                         Tomorrow
-                                    </button>
-                                    <button type="button" className="quick-action-pill" onClick={() => {
-                                        const today = new Date();
-                                        const friday = new Date(today);
-                                        friday.setDate(today.getDate() + ((5 - today.getDay() + 7) % 7));
-                                        const sunday = new Date(friday);
-                                        sunday.setDate(friday.getDate() + 2);
-                                        setDateRange([friday, sunday]);
-                                    }}>
-                                         This weekend
-                                    </button>
-                                </div>
-                            </DatePicker>
-                        </div>
+                        <>
+                            {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDatePicker(false); }}></div>}
+                            <div className="custom-date-picker-popover" onClick={(e) => e.stopPropagation()}>
+                                <DatePicker
+                                    selectsRange={true}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    onChange={(update) => {
+                                        setDateRange(update);
+                                        if (update[0] && update[1]) {
+                                            setShowDatePicker(false);
+                                        }
+                                    }}
+                                    monthsShown={1}
+                                    minDate={new Date()}
+                                    inline
+                                    showPopperArrow={false}
+                                    formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 2)}
+                                >
+                                    <div className="datepicker-footer">
+                                        <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(), new Date(new Date().setDate(new Date().getDate() + 1))])}>
+                                             Tonight
+                                        </button>
+                                        <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(new Date().setDate(new Date().getDate() + 1)), new Date(new Date().setDate(new Date().getDate() + 2))])}>
+                                             Tomorrow
+                                        </button>
+                                        <button type="button" className="quick-action-pill" onClick={() => {
+                                            const today = new Date();
+                                            const friday = new Date(today);
+                                            friday.setDate(today.getDate() + ((5 - today.getDay() + 7) % 7));
+                                            const sunday = new Date(friday);
+                                            sunday.setDate(friday.getDate() + 2);
+                                            setDateRange([friday, sunday]);
+                                        }}>
+                                             This weekend
+                                        </button>
+                                    </div>
+                                </DatePicker>
+                            </div>
+                        </>
                     )}
                 </div>
 
@@ -381,58 +387,61 @@ const AdvancedSearch = ({
 
                     {/* Custom Guest Dropdown - Positioned Right on Desktop */}
                     {showGuestDropdown && (
-                        <div className="guest-dropdown-popover is-right-aligned" ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
-                            <div className="guest-dropdown-content">
-                                <div className="guest-row">
-                                    <div className="guest-info">
-                                        <span className="guest-label-main">Adults</span>
-                                        <span className="guest-label-sub">Ages 13 or above</span>
+                        <>
+                            {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}></div>}
+                            <div className="guest-dropdown-popover is-right-aligned" ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
+                                <div className="guest-dropdown-content">
+                                    <div className="guest-row">
+                                        <div className="guest-info">
+                                            <span className="guest-label-main">Adults</span>
+                                            <span className="guest-label-sub">Ages 13 or above</span>
+                                        </div>
+                                        <div className="guest-counter">
+                                            <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={() => setAdults(Math.max(1, adults - 1))}>−</button>
+                                            <div className="counter-val-box">{adults}</div>
+                                            <button type="button" className="counter-btn" onClick={() => setAdults(adults + 1)}>+</button>
+                                        </div>
                                     </div>
-                                    <div className="guest-counter">
-                                        <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={() => setAdults(Math.max(1, adults - 1))}>−</button>
-                                        <span className="counter-val">{adults}</span>
-                                        <button type="button" className="counter-btn" onClick={() => setAdults(adults + 1)}>+</button>
+                                    <div className="guest-row">
+                                        <div className="guest-info">
+                                            <span className="guest-label-main">Children</span>
+                                            <span className="guest-label-sub">Ages 2–12</span>
+                                        </div>
+                                        <div className="guest-counter">
+                                            <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={() => setChildren(Math.max(0, children - 1))}>−</button>
+                                            <div className="counter-val-box">{children}</div>
+                                            <button type="button" className="counter-btn" onClick={() => setChildren(children + 1)}>+</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="guest-row">
-                                    <div className="guest-info">
-                                        <span className="guest-label-main">Children</span>
-                                        <span className="guest-label-sub">Ages 2–12</span>
+                                    <div className="guest-row">
+                                        <div className="guest-info">
+                                            <span className="guest-label-main">Rooms</span>
+                                            <span className="guest-label-sub">Required units</span>
+                                        </div>
+                                        <div className="guest-counter">
+                                            <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={() => setRooms(Math.max(1, rooms - 1))}>−</button>
+                                            <div className="counter-val-box">{rooms}</div>
+                                            <button type="button" className="counter-btn" onClick={() => setRooms(rooms + 1)}>+</button>
+                                        </div>
                                     </div>
-                                    <div className="guest-counter">
-                                        <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={() => setChildren(Math.max(0, children - 1))}>−</button>
-                                        <span className="counter-val">{children}</span>
-                                        <button type="button" className="counter-btn" onClick={() => setChildren(children + 1)}>+</button>
-                                    </div>
-                                </div>
-                                <div className="guest-row">
-                                    <div className="guest-info">
-                                        <span className="guest-label-main">Rooms</span>
-                                        <span className="guest-label-sub">Required units</span>
-                                    </div>
-                                    <div className="guest-counter">
-                                        <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={() => setRooms(Math.max(1, rooms - 1))}>−</button>
-                                        <span className="counter-val">{rooms}</span>
-                                        <button type="button" className="counter-btn" onClick={() => setRooms(rooms + 1)}>+</button>
-                                    </div>
-                                </div>
 
-                                <div className="guest-row pet-row" onClick={() => setIsPetFriendly(!isPetFriendly)}>
-                                    <div className="pet-info">
-                                        <span className="guest-label-main">Pet-friendly</span>
-                                        <span className="guest-label-sub">Only show stays that allow pets</span>
+                                    <div className="guest-row pet-row" onClick={() => setIsPetFriendly(!isPetFriendly)}>
+                                        <div className="pet-info">
+                                            <span className="guest-label-main">Pet-friendly</span>
+                                            <span className="guest-label-sub">Only show stays that allow pets</span>
+                                        </div>
+                                        <div className={`custom-switch ${isPetFriendly ? 'active' : ''}`}>
+                                            <div className="switch-inner"></div>
+                                        </div>
                                     </div>
-                                    <label className="custom-checkbox" onClick={(e) => e.stopPropagation()}>
-                                        <input type="checkbox" checked={isPetFriendly} onChange={(e) => setIsPetFriendly(e.target.checked)} />
-                                    </label>
-                                </div>
-                                
-                                <div className="guest-dropdown-footer">
-                                    <button type="button" className="guest-reset-btn" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>Reset</button>
-                                    <button type="button" className="guest-apply-btn" onClick={() => setShowGuestDropdown(false)}>Apply</button>
+                                    
+                                    <div className="guest-dropdown-footer">
+                                        <button type="button" className="guest-reset-btn" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>Reset</button>
+                                        <button type="button" className="guest-apply-btn" onClick={() => setShowGuestDropdown(false)}>Apply</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </>
                     )}
                 </div>
 
