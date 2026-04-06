@@ -269,25 +269,60 @@
 .guest-dropdown-popover,
 .custom-date-picker-popover {
     position: absolute;
-    top: calc(100% + 10px);
+    bottom: calc(100% + 15px); /* Unified upward opening */
     left: 0;
     background: #ffffff;
-    border-radius: 16px;
-    padding: 8px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 24px; /* Image Match: Smoother rounding */
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Deep premium shadow */
+    border: 1px solid rgba(0, 0, 0, 0.05);
     z-index: 1100;
-    animation: premiumFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: premiumPopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.guest-dropdown-popover {
-    width: 400px;
-    padding: 10px 18px; /* Compressed vertical */
-    max-height: 380px; /* Constrain height */
-    overflow-y: auto; /* Enable scroll if content exceeds */
-    margin-bottom: 12px; /* Gap from search pill when opening upwards */
+/* Bottom Triangle Caret Tip */
+.search-dropdown.modern-district-dropdown::after,
+.guest-dropdown-popover::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 45px; /* Alignment with pill icon area */
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 10px solid #ffffff;
+    filter: drop-shadow(0 2px 1px rgba(0,0,0,0.02));
+}
+
+@keyframes premiumPopUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.guest-dropdown-popover,
+.search-dropdown.modern-district-dropdown {
+    width: 420px; /* Exact Size Match */
+    padding: 12px 20px;
+    max-height: 380px;
+    overflow-y: auto;
+    margin-bottom: 0;
     top: auto;
-    bottom: calc(100% + 12px); /* Force opening upwards with gap */
+}
+
+/* Custom Premium Scrollbar (Match Image) */
+.guest-dropdown-popover::-webkit-scrollbar,
+.search-dropdown.modern-district-dropdown::-webkit-scrollbar {
+    width: 5px;
+}
+
+.guest-dropdown-popover::-webkit-scrollbar-track,
+.search-dropdown.modern-district-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.guest-dropdown-popover::-webkit-scrollbar-thumb,
+.search-dropdown.modern-district-dropdown::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
 }
 
 .custom-date-picker-popover {
