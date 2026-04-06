@@ -5,6 +5,7 @@ import './AdminPanel.css';
 import NotificationBell from '../components/notifications/NotificationBell';
 import HotelAddForm from './HotelAddForm';
 import { AuthContext } from '../context/AuthContext';
+import MobileAdminPanel from './MobileAdminPanel';
 import { 
     XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area 
 } from 'recharts';
@@ -28,6 +29,7 @@ const AdminPanel = () => {
     
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('analytics');
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     // Financial Dashboard specialized state
     const [finRange, setFinRange] = useState({
@@ -57,6 +59,12 @@ const AdminPanel = () => {
     const [newOffer, setNewOffer] = useState({ code: '', title: '', description: '', discountType: 'Percentage', discountValue: '', minBookingAmount: '', usageCount: 0, validFrom: '', validTo: '', bannerImage: '', hotel: '' });
     const [editingOffer, setEditingOffer] = useState(null);
     const [submitting, setSubmitting] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const fetchAllData = async () => {
@@ -333,6 +341,10 @@ const AdminPanel = () => {
                 <h3 style={{color: '#6d5dfc', fontWeight: 800, fontSize: '1.5rem', marginTop: '20px'}}>Accessing Elite Command Center...</h3>
             </div>
         );
+    }
+
+    if (isMobile) {
+        return <MobileAdminPanel />;
     }
 
     return (

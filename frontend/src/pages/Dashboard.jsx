@@ -3,11 +3,19 @@ import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaCreditCard, FaHotel, FaHeart, FaChevronRight } from 'react-icons/fa';
 import API from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
+import MobileDashboard from './MobileDashboard';
 
 const Dashboard = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const { userInfo } = useContext(AuthContext);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const fetchMyBookings = async () => {
@@ -43,6 +51,10 @@ const Dashboard = () => {
             </div>
         </div>
     );
+
+    if (isMobile) {
+        return <MobileDashboard />;
+    }
 
     return (
         <div className="min-h-screen bg-[#f3f4e6] pt-28 pb-16 font-sans">

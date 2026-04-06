@@ -15,6 +15,7 @@ import ManagerOffers        from './manager/ManagerOffers';
 import ManagerNotifications from './manager/ManagerNotifications';
 import ManagerProfile       from './manager/ManagerProfile';
 import NotificationBell     from '../components/notifications/NotificationBell';
+import MobileManagerDashboard from './MobileManagerDashboard';
 
 const NAV = [
   { id: 'overview',       label: 'Dashboard',      icon: 'fas fa-chart-pie', section: 'MAIN' },
@@ -52,6 +53,7 @@ const ManagerDashboard = () => {
   const [reviews, setReviews]             = useState([]);
   const [offers, setOffers]               = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [isMobile, setIsMobile]           = useState(window.innerWidth <= 768);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
@@ -107,6 +109,12 @@ const ManagerDashboard = () => {
     }
   }, [activeTab]);
 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleSelectHotel = (h) => {
     setSelectedHotel(h);
     fetchRooms(h._id);
@@ -121,6 +129,10 @@ const ManagerDashboard = () => {
         <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Loading Manager Portal…</span>
       </div>
     );
+  }
+
+  if (isMobile) {
+    return <MobileManagerDashboard />;
   }
 
   const initials = userInfo?.name ? userInfo.name.substring(0, 2).toUpperCase() : 'HM';
