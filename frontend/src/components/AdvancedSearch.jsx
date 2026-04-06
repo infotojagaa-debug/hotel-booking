@@ -425,19 +425,22 @@ const AdvancedSearch = ({
                                         </div>
                                     </div>
 
+                                    {/* Pet Friendly - Image 2 Style Square Checkbox */}
                                     <div className="guest-row pet-row" onClick={() => setIsPetFriendly(!isPetFriendly)}>
                                         <div className="pet-info">
                                             <span className="guest-label-main">Pet-friendly</span>
                                             <span className="guest-label-sub">Only show stays that allow pets</span>
                                         </div>
-                                        <div className={`custom-switch ${isPetFriendly ? 'active' : ''}`}>
-                                            <div className="switch-inner"></div>
+                                        <div className="pet-checkbox-wrapper">
+                                            <div className={`square-checkbox ${isPetFriendly ? 'active' : ''}`}>
+                                                {isPetFriendly && <i className="fa fa-check"></i>}
+                                            </div>
                                         </div>
                                     </div>
                                     
                                     <div className="guest-dropdown-footer">
-                                        <button type="button" className="guest-reset-btn" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>Reset</button>
-                                        <button type="button" className="guest-apply-btn" onClick={() => setShowGuestDropdown(false)}>Apply</button>
+                                        <button type="button" className="guest-reset-text" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>RESET</button>
+                                        <button type="button" className="guest-apply-btn-rect" onClick={() => setShowGuestDropdown(false)}>Apply</button>
                                     </div>
                                 </div>
                             </div>

@@ -281,9 +281,9 @@
 }
 
 .guest-dropdown-popover {
-    width: 290px;
-    max-height: 400px;
-    overflow-y: auto;
+    width: 400px;
+    padding: 15px 20px;
+    margin-top: -5px; /* Offset to prevent touching navbar */
 }
 
 .custom-date-picker-popover {
@@ -2164,106 +2164,122 @@
 
 
 .guest-row {
-    padding: 10px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.guest-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
 }
 
 .guest-label-main {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
-    color: var(--b-text-dark);
+    color: #000;
 }
 
 .guest-label-sub {
-    font-size: 11px;
-    color: var(--b-text-muted);
+    font-size: 12px;
+    color: #4b5563;
 }
 
 .guest-counter {
-    gap: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .counter-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-    border: 1px solid var(--b-lightblue);
-    background: #ffffff;
-    color: var(--b-lightblue);
+    width: 36px;
+    height: 36px;
+    border: 1px solid #0071c2;
     border-radius: 50%;
+    background: #ffffff;
+    color: #0071c2;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.counter-btn:hover:not(.disabled) {
-    background: rgba(109, 93, 252, 0.05);
+.counter-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    border-color: #cbd5e1;
+    color: #cbd5e1;
 }
 
 .counter-val-box {
-    min-width: 40px;
-    height: 32px;
+    width: 60px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* Pet Friendly Square Checkbox Style (Image 2) */
+.square-checkbox {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: all 0.2s;
     font-size: 14px;
-    font-weight: 700;
-    color: var(--b-text-dark);
-    margin: 0 -1px; /* Overlap borders if needed */
+    color: #0071c2;
 }
 
-/* Toggle Switch Styling for Pet Friendly */
-.pet-row {
-    cursor: pointer;
-}
-
-.custom-switch {
-    width: 44px;
-    height: 24px;
-    background: #e2e8f0;
-    border-radius: 20px;
-    position: relative;
-    transition: all 0.3s;
-}
-
-.custom-switch.active {
-    background: var(--b-lightblue);
-}
-
-.switch-inner {
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    transition: all 0.3s;
-}
-
-.custom-switch.active .switch-inner {
-    left: 22px;
+.square-checkbox.active {
+    border-color: #0071c2;
 }
 
 .guest-dropdown-footer {
-    padding-top: 12px;
-    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    margin-top: 5px;
     border-top: 1px solid #f1f5f9;
 }
 
-.guest-apply-btn {
-    padding: 10px 24px;
-    background: var(--b-lightblue);
-    color: #ffffff;
-    border-radius: 100px;
-    font-weight: 800;
-    font-size: 14px;
-    transition: all 0.3s;
+.guest-reset-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #d1d5db; /* Light gray */
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
-.guest-apply-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(109, 93, 252, 0.2);
+.guest-apply-btn-rect {
+    padding: 12px 30px;
+    background: #0071c2;
+    color: #ffffff;
+    border-radius: 4px; /* Image 2 shows slightly rounded corners */
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.guest-apply-btn-rect:hover {
+    background: #005999;
 }
 
 .guest-reset-btn {
