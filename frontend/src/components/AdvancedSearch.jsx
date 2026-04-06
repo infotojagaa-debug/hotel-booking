@@ -420,8 +420,9 @@ const AdvancedSearch = ({
                                     endDate={endDate}
                                     onChange={(update) => {
                                         setDateRange(update);
+                                        // Stop auto-navigation: only close the picker on mobile
                                         if (update[0] && update[1]) {
-                                            setShowDatePicker(false);
+                                            setTimeout(() => setShowDatePicker(false), 200);
                                         }
                                     }}
                                     monthsShown={1}
@@ -479,7 +480,7 @@ const AdvancedSearch = ({
                     {showGuestDropdown && (
                         <>
                             {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}></div>}
-                            <div className={`guest-dropdown-popover is-right-aligned solid-dropdown ${isMobile ? 'centered-mobile-dropdown' : ''}`} ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
+                            <div className={`guest-dropdown-popover is-right-aligned ${isMobile ? 'centered-mobile-dropdown' : ''}`} ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
                                 <div className="guest-dropdown-content">
                                     <div className="guest-row">
                                         <div className="guest-info">
