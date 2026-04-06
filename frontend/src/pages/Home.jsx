@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import HeroSlider from '../components/HeroSlider';
 import API, { BACKEND_URL } from '../utils/api';
+import MobileHome from './MobileHome';
 
 // Trending destination images
 import imgChennai    from '../assets/trending destination/Chennai.jpg';
@@ -94,6 +95,13 @@ const Home = () => {
   const [featuredHotels, setFeaturedHotels] = useState([]);
   const [exclusiveOffers, setExclusiveOffers] = useState(DUMMY_OFFERS);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,6 +130,11 @@ const Home = () => {
     if (hotel.cheapestPrice < 3000) return 'BEST VALUE';
     return 'TRENDING';
   };
+
+  if (isMobile) {
+    return <MobileHome />;
+  }
+
   return (
     <>
       <HeroSlider />
