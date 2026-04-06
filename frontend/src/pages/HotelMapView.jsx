@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fa';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import API, { BACKEND_URL } from '../utils/api';
+import MobileHotels from './MobileHotels';
 import './HotelMapView.css';
 
 // ─── Fix Leaflet default icon ─────────────────────────────────────────────────
@@ -261,10 +262,17 @@ const HotelMapView = () => {
   const [checkOut, setCheckOut] = useState(tomorrow);
   const [maxPrice, setMaxPrice] = useState(50000);
   const [appliedMaxPrice, setAppliedMaxPrice] = useState(50000);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const listRef = useRef(null);
   const mapRef = useRef(null);
   const priceDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
+  }, []);
 
   // ── Fetch Hotels ───────────────────────────────────────────────────────────
   useEffect(() => {
@@ -345,6 +353,10 @@ const HotelMapView = () => {
   );
 
   // ── Render ─────────────────────────────────────────────────────────────────
+  if (isMobile) {
+    return <MobileHotels />;
+  }
+
   return (
     <div className="hmv-root">
 

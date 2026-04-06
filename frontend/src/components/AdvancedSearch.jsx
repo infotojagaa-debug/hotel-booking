@@ -246,8 +246,16 @@ const AdvancedSearch = ({
                                 value={destination}
                                 onKeyDown={handleKeyDown}
                                 onChange={(e) => {
-                                    setDestination(e.target.value);
+                                    const val = e.target.value;
+                                    const caret = e.target.selectionStart;
+                                    setDestination(val);
                                     setShowDropdown(true);
+                                    // Hack to prevent cursor jumping on async re-renders
+                                    requestAnimationFrame(() => {
+                                        if (destinationRef.current) {
+                                            destinationRef.current.setSelectionRange(caret, caret);
+                                        }
+                                    });
                                 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
