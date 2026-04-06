@@ -16,17 +16,27 @@
   --sidebar-bg: var(--elite-indigo);
   --sidebar-text: #94a3b8;
   --sidebar-active: #fff;
+  --sidebar-active-bg: rgba(255, 255, 255, 0.08);
   
   --text-primary: var(--elite-slate-dark);
   --text-secondary: var(--elite-slate);
   --border: #f1f5f9;
+
+  --success: #10b981;
+  --success-light: rgba(16, 185, 129, 0.1);
+  --warning: #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.1);
+  --danger: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.1);
+  --info: #3b82f6;
+  --info-light: rgba(59, 130, 246, 0.1);
   
-  --shadow: var(--shadow-soft);
-  --shadow-md: var(--shadow-card);
-  --shadow-lg: var(--shadow-premium);
+  --shadow: var(--soft-shadow);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.04);
+  --shadow-lg: var(--premium-shadow);
   
   --radius: var(--radius-md);
-  --radius-sm: var(--radius-sm);
+  --radius-sm: 8px;
 }
 
 /* Mobile Helpers */

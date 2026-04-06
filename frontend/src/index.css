@@ -13,17 +13,37 @@
     --b-text-dark: #0f172a;
     --b-text-muted: #64748b;
 
-    /* Premium Design Tokens */
+    /* Premium Design Tokens & Brand Colors */
     --primary-blue: #6d5dfc;
     --primary-blue-gradient: linear-gradient(135deg, #6d5dfc 0%, #4f46e5 100%);
     --accent-gold: #8c7efc;
     --accent-gold-hover: #7b6ae0;
-    --soft-shadow: 0 4px 24px rgba(109, 93, 252, 0.08); /* Tinted Shadow */
+    --soft-shadow: 0 4px 24px rgba(109, 93, 252, 0.08);
     --premium-shadow: 0 10px 40px rgba(45, 38, 77, 0.12);
     --radius-sm: 6px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --grid-unit: 8px;
+
+    /* Elite Stays Legacy/Manager Tokens */
+    --elite-lavender: #6d5dfc;
+    --elite-lavender-dark: #5b4ee0;
+    --elite-lavender-soft: rgba(109, 93, 252, 0.1);
+    --elite-indigo: #1a162d;
+    --elite-slate-dark: #0f172a;
+    --elite-slate: #64748b;
+    --elite-slate-light: #94a3b8;
+    --elite-white: #ffffff;
+    
+    /* Global Status Colors */
+    --success: #10b981;
+    --success-light: rgba(16, 185, 129, 0.1);
+    --warning: #f59e0b;
+    --warning-light: rgba(245, 158, 11, 0.1);
+    --danger: #ef4444;
+    --danger-light: rgba(239, 68, 68, 0.1);
+    --info: #3b82f6;
+    --info-light: rgba(59, 130, 246, 0.1);
 }
 
 .shadow-premium { box-shadow: var(--premium-shadow); }
