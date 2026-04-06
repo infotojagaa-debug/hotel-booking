@@ -22,6 +22,7 @@ const MobileHotels = ({ onToggleMap }) => {
     const fetchHotels = async () => {
       setLoading(true);
       try {
+        const params = new URLSearchParams(location.search);
         // RETAIN 'type' parameter for "Browse by property" functionality
         // removed params.delete('type') bug
         const { data } = await API.get(`/hotels?${params.toString()}`);

@@ -394,7 +394,7 @@ const AdvancedSearch = ({
                     {showDatePicker && (
                         <>
                             {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDatePicker(false); }}></div>}
-                            <div className="custom-date-picker-popover" onClick={(e) => e.stopPropagation()}>
+                            <div className="custom-date-picker-popover solid-dropdown" onClick={(e) => e.stopPropagation()}>
                                 <DatePicker
                                     selectsRange={true}
                                     startDate={startDate}
@@ -461,7 +461,7 @@ const AdvancedSearch = ({
                     {showGuestDropdown && (
                         <>
                             {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}></div>}
-                            <div className="guest-dropdown-popover is-right-aligned" ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
+                            <div className={`guest-dropdown-popover is-right-aligned solid-dropdown ${isMobile ? 'centered-mobile-dropdown' : ''}`} ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
                                 <div className="guest-dropdown-content">
                                     <div className="guest-row">
                                         <div className="guest-info">

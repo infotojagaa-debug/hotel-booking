@@ -4335,7 +4335,7 @@
 .search-mobile-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.95); /* Deeper solid backdrop */
+    background: rgba(15, 23, 42, 0.6); /* Reduced opacity for better feel */
     backdrop-filter: none !important; /* REMOVED GLASS */
     z-index: 15000;
     animation: fadeIn 0.2s ease;
@@ -4397,6 +4397,42 @@
     letter-spacing: 0.5px;
     background: #f1f5f9;
     color: #475569;
+}
+
+/* ── Mobile Date & Guest Dropdown Fixes ── */
+.search-bar-modern.is-mobile-search .solid-dropdown,
+.search-bar-modern.is-mobile-search .custom-date-picker-popover,
+.search-bar-modern.is-mobile-search .guest-dropdown-popover {
+    background: #ffffff !important;
+    z-index: 20005 !important;
+    border: none !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3) !important;
+}
+
+.centered-mobile-dropdown {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 92% !important;
+    max-width: 420px !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    border-radius: 24px !important;
+    padding: 24px !important;
+}
+
+/* Fix obscured guest controls in images */
+.search-bar-modern.is-mobile-search .guest-dropdown-content {
+    background: #ffffff !important;
+    color: #111827 !important;
+    padding: 0 !important;
+}
+
+.search-bar-modern.is-mobile-search .guest-row {
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
 }
 
 @keyframes fadeIn {
