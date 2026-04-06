@@ -1,182 +1,119 @@
-body.mobile-manager-active {
-  background: #f8fafc;
+/* Mobile Manager Dashboard - Advanced Responsive Sync */
+
+/* The root and header/nav styles are shared from MobileAdminPanel.css or copied here if not shared */
+
+.mob-mgr-pane {
+    padding: 20px;
+    animation: fadeIn 0.4s ease-out;
 }
 
-.mob-mgr-root {
-  background: #f8fafc;
-  min-height: 100vh;
-  padding-bottom: 80px;
+.mob-mgr-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    color: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
 }
 
-.mob-mgr-hdr {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: max(20px, env(safe-area-inset-top)) 20px 20px;
-  background: white;
-  border-bottom: 1px solid #f1f5f9;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+.mob-mgr-meta {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
 }
 
-.mob-mgr-pic {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #4f46e5, #818cf8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: 800;
-  color: white;
+.mob-mgr-meta span {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1a162d;
+    line-height: 1;
 }
 
-.mob-mgr-hdr-text {
-  flex: 1;
-}
-.mob-mgr-hdr-text h2 {
-  margin: 0 0 4px;
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
-}
-.mob-mgr-hdr-text p {
-  margin: 0;
-  font-size: 12px;
-  color: #64748b;
-  font-weight: 600;
+.mob-mgr-meta small {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 2px;
 }
 
-.mob-mgr-logout {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #fee2e2;
-  color: #ef4444;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Room Inventory Card */
+.rm-inv-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
 }
 
-.mob-mgr-main {
-  padding: 20px;
+.rm-inv-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.mob-mgr-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.mob-mstat {
-  background: white;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-}
-.mob-mstat i {
-  font-size: 20px;
-  margin-bottom: 8px;
-  display: block;
-}
-.mob-mstat span {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #64748b;
-}
-.mob-mstat h3 {
-  margin: 4px 0 0;
-  font-size: 20px;
-  font-weight: 900;
-  color: #0f172a;
+.rm-st {
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    background: #f1f5f9;
 }
 
-.mob-mstat.rev i { color: #10b981; }
-.mob-mstat.occ i { color: #f59e0b; }
-.mob-mstat.book i { color: #6366f1; }
-.mob-mstat.prop i { color: #e11d48; }
+.rm-st.available { background: #dcfce7; color: #15803d; }
+.rm-st.maintenance { background: #fee2e2; color: #b91c1c; }
+.rm-st.blocked { background: #fef3c7; color: #b45309; }
 
-.mob-mgr-main h3 {
-  font-size: 16px;
-  font-weight: 800;
-  margin: 0 0 16px;
-  color: #0f172a;
-}
-
-.mob-mgr-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.mob-mgr-card {
-  background: white;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
-}
-.mob-mc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.mob-mc-header h4 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 800;
-  color: #0f172a;
+.rm-inv-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: #64748b;
 }
 
-.mob-m-status {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-.mob-m-status.confirmed { background: #dcfce7; color: #166534; }
-.mob-m-status.pending { background: #fef9c3; color: #854d0e; }
-.mob-m-status.cancelled { background: #fee2e2; color: #991b1b; }
-.mob-m-status.active { background: #dcfce7; color: #166534; }
-
-.mob-mc-select {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #475569;
+.rm-inv-meta i {
+    font-size: 10px;
+    margin-right: 4px;
 }
 
-.mob-mgr-bot {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-  display: flex;
-  padding: 12px 16px max(12px, env(safe-area-inset-bottom));
-  border-top: 1px solid #e2e8f0;
-  z-index: 100;
+/* Booking Status Select in Card */
+.bkg-st-sel {
+    border: none;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 4px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    outline: none;
 }
-.mob-mgr-tab {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: #94a3b8;
-  font-size: 10px;
-  font-weight: 800;
+
+.bkg-st-sel.pending { background: #fef3c7; color: #b45309; }
+.bkg-st-sel.confirmed { background: #dcfce7; color: #15803d; }
+.bkg-st-sel.checked-in { background: #e0f2fe; color: #0369a1; }
+.bkg-st-sel.checked-out { background: #f1f5f9; color: #475569; }
+.bkg-st-sel.cancelled { background: #fee2e2; color: #b91c1c; }
+
+/* Review Card Fixes */
+.rev-hdr {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
 }
-.mob-mgr-tab i {
-  font-size: 20px;
+
+.rev-hdr span {
+    color: #f59e0b;
+    font-weight: 800;
 }
-.mob-mgr-tab.active {
-  color: #4f46e5;
+
+/* Shared components from Admin CSS */
+@media (min-width: 769px) {
+    .mob-admin-root { display: none; }
+}
+
+/* Specific utilities for manager */
+.mob-save-btn.bg-red-50 {
+    background: #fff1f2 !important;
+    color: #f43f5e !important;
 }
