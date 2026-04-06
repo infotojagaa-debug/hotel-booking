@@ -947,3 +947,38 @@ body.mobile-home-active .custom-navbar {
   color: #6d5dfc;
   background: rgba(109,93,252,0.05);
 }
+
+/* ── Search Dropdown inside Mobile Overlay (Inline Accordion Style) ── */
+.mob-overlay-body .search-dropdown.modern-district-dropdown,
+.mob-overlay-body .search-dropdown {
+  position: static !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  margin-top: 10px !important;
+  padding: 0 !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+.mob-overlay-body .search-dropdown::after {
+  display: none !important; /* Hide beak */
+}
+
+.mob-overlay-body .dropdown-list {
+  max-height: 220px !important;
+  background: transparent !important;
+  border-radius: 12px;
+  overflow-y: auto;
+}
+
+/* Clean up item padding inside the overlay */
+.mob-overlay-body .district-item {
+  padding: 10px 0 !important;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.mob-overlay-body .district-item:last-child {
+  border-bottom: none;
+}
+
