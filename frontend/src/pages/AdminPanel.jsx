@@ -444,23 +444,31 @@ const AdminPanel = () => {
                         <div className="admin-analytics-grid" style={{marginBottom: '32px'}}>
                             <div className="admin-stat-card stat-blue">
                                 <div className="stat-icon-wrap"><i className="fas fa-users"></i></div>
-                                <span className="admin-stat-title">Total Users</span>
-                                <h3 className="admin-stat-value">{analytics?.totalUsers ?? users.length}</h3>
+                                <div className="stat-content">
+                                    <span className="admin-stat-title">Total Users</span>
+                                    <h3 className="admin-stat-value">{analytics?.totalUsers ?? users.length}</h3>
+                                </div>
                             </div>
                             <div className="admin-stat-card stat-green">
                                 <div className="stat-icon-wrap"><i className="fas fa-building"></i></div>
-                                <span className="admin-stat-title">Total Hotels</span>
-                                <h3 className="admin-stat-value">{analytics?.totalHotels ?? hotels.length}</h3>
+                                <div className="stat-content">
+                                    <span className="admin-stat-title">Total Hotels</span>
+                                    <h3 className="admin-stat-value">{analytics?.totalHotels ?? hotels.length}</h3>
+                                </div>
                             </div>
                             <div className="admin-stat-card stat-orange">
                                 <div className="stat-icon-wrap"><i className="fas fa-clipboard-list"></i></div>
-                                <span className="admin-stat-title">Total Bookings</span>
-                                <h3 className="admin-stat-value">{analytics?.totalBookings ?? bookings.length}</h3>
+                                <div className="stat-content">
+                                    <span className="admin-stat-title">Total Bookings</span>
+                                    <h3 className="admin-stat-value">{analytics?.totalBookings ?? bookings.length}</h3>
+                                </div>
                             </div>
                             <div className="admin-stat-card stat-pink">
                                 <div className="stat-icon-wrap"><i className="fas fa-rupee-sign"></i></div>
-                                <span className="admin-stat-title">Revenue</span>
-                                <h3 className="admin-stat-value">{formatCurrency(analytics?.totalRevenue ?? 0)}</h3>
+                                <div className="stat-content">
+                                    <span className="admin-stat-title">Revenue</span>
+                                    <h3 className="admin-stat-value">{formatCurrency(analytics?.totalRevenue ?? 0)}</h3>
+                                </div>
                             </div>
                         </div>
 

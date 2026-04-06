@@ -28,9 +28,11 @@ const ManagerOverview = ({ analytics, reservations }) => {
                 {stats.map((s) => (
                     <div className={`admin-stat-card ${s.colorClass}`} key={s.label}>
                         <div className="stat-icon-wrap"><i className={s.icon}></i></div>
-                        <span className="admin-stat-title">{s.label}</span>
-                        <h3 className="admin-stat-value">{s.value}</h3>
-                        <div className="admin-stat-sub">{s.sub}</div>
+                        <div className="stat-content">
+                            <span className="admin-stat-title">{s.label}</span>
+                            <h3 className="admin-stat-value">{s.value}</h3>
+                            <div className="admin-stat-sub">{s.sub}</div>
+                        </div>
                     </div>
                 ))}
             </div>
