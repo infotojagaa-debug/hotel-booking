@@ -28,6 +28,7 @@ const AdvancedSearch = ({
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [allLocations, setAllLocations] = useState(INDIAN_LOCATIONS);
     const [propertyType, setPropertyType] = useState('All');
+    const [showMobSearchOverlay, setShowMobSearchOverlay] = useState(false);
     const [searchDebounce, setSearchDebounce] = useState(null);
 
     useEffect(() => {
@@ -208,6 +209,7 @@ const AdvancedSearch = ({
     const selectLocation = (loc) => {
         setDestination(loc.name);
         setShowDropdown(false);
+        setShowMobSearchOverlay(false);
         setActiveIndex(-1);
     };
 
@@ -297,10 +299,18 @@ const AdvancedSearch = ({
                                 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    if (destination.length > 0) setShowDropdown(true);
+                                    if (isMobile) {
+                                        setShowMobSearchOverlay(true);
+                                    } else if (destination.length > 0) {
+                                        setShowDropdown(true);
+                                    }
                                 }}
                                 onTouchStart={(e) => {
-                                    if (destination.length > 0) setShowDropdown(true);
+                                    if (isMobile) {
+                                        setShowMobSearchOverlay(true);
+                                    } else if (destination.length > 0) {
+                                        setShowDropdown(true);
+                                    }
                                 }}
                                 autoComplete="off"
                                 required
@@ -312,58 +322,45 @@ const AdvancedSearch = ({
                             </button>
                         )}
                         
-                        {/* Multi-Level Location Dropdown */}
-                        {showDropdown && (
-                            <>
-                                {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDropdown(false); }}></div>}
-                                <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
-                                    {isMobile && (
-                                        <div className="mob-dropdown-header solid-header">
-                                            <h3>Select Destination</h3>
-                                            <p>Choose where you'd like to stay</p>
-                                        </div>
-                                    )}
-                                    <div className="dropdown-list">
-                                        {filteredResults.length > 0 ? (
-                                            filteredResults.map((loc, index) => (
-                                                <div 
-                                                    key={index} 
-                                                    className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
-                                                    onMouseEnter={() => setActiveIndex(index)}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        selectLocation(loc);
-                                                    }}
-                                                    onTouchStart={(e) => {
-                                                        e.stopPropagation();
-                                                        selectLocation(loc);
-                                                    }}
-                                                >
-                                                    <div className="flex items-center gap-4 w-full text-left">
-                                                        <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
-                                                        <div className="loc-info flex-1">
-                                                            <div className="flex items-center justify-between">
-                                                                <span className="loc-name">{highlightMatch(loc.name, destination)}</span>
-                                                                <span className={`type-tag tag-${loc.type.toLowerCase()}`}>
-                                                                    {loc.type}
-                                                                </span>
-                                                            </div>
-                                                            {loc.type !== 'State' && (
-                                                                <span className="loc-state-text">{loc.state}</span>
-                                                            )}
+                        {/* Multi-Level Location Dropdown (Desktop Only) */}
+                        {!isMobile && showDropdown && (
+                            <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
+                                <div className="dropdown-list">
+                                    {filteredResults.length > 0 ? (
+                                        filteredResults.map((loc, index) => (
+                                            <div 
+                                                key={index} 
+                                                className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
+                                                onMouseEnter={() => setActiveIndex(index)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    selectLocation(loc);
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-4 w-full text-left">
+                                                    <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
+                                                    <div className="loc-info flex-1">
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="loc-name">{highlightMatch(loc.name, destination)}</span>
+                                                            <span className={`type-tag tag-${loc.type.toLowerCase()}`}>
+                                                                {loc.type}
+                                                            </span>
                                                         </div>
+                                                        {loc.type !== 'State' && (
+                                                            <span className="loc-state-text">{loc.state}</span>
+                                                        )}
                                                     </div>
                                                 </div>
-                                            ))
-                                        ) : (
-                                            <div className="no-res-msg">
-                                                <i className="fa fa-info-circle"></i>
-                                                <p>No matching locations found. Try a different city.</p>
                                             </div>
-                                        )}
-                                    </div>
+                                        ))
+                                    ) : (
+                                        <div className="no-res-msg">
+                                            <i className="fa fa-info-circle"></i>
+                                            <p>No matching locations found. Try a different city.</p>
+                                        </div>
+                                    )}
                                 </div>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -528,6 +525,80 @@ const AdvancedSearch = ({
                     </button>
                 </div>
             </div>
+            {/* 6. Modern Full-Screen Mobile Location Search Overlay */}
+            {isMobile && showMobSearchOverlay && (
+                <div className="mob-search-full-overlay">
+                    <div className="mob-search-full-header">
+                        <button type="button" className="mob-overlay-back-btn" onClick={() => setShowMobSearchOverlay(false)}>
+                            <i className="fa fa-arrow-left"></i>
+                        </button>
+                        <div className="mob-active-input-wrap">
+                            <i className="fa fa-search mob-search-input-icon"></i>
+                            <input
+                                autoFocus
+                                type="text"
+                                className="mob-active-search-input"
+                                placeholder="Search City, District, or State..."
+                                value={destination}
+                                onChange={(e) => {
+                                    setDestination(e.target.value);
+                                }}
+                            />
+                            {destination && (
+                                <button type="button" className="mob-overlay-clear-btn" onClick={() => setDestination('')}>
+                                    <i className="fas fa-times-circle"></i>
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="mob-search-full-body">
+                        {destination.length === 0 && (
+                            <div className="mob-popular-section">
+                                <h4 className="mob-popular-title">Popular Destinations</h4>
+                                <div className="mob-popular-grid">
+                                    {['Chennai', 'Salem', 'Madurai', 'Coimbatore', 'Bengaluru'].map(city => (
+                                        <div key={city} className="mob-pop-chip" onClick={() => { setDestination(city); }}>
+                                            <i className="fa fa-map-marker-alt"></i>
+                                            <span>{city}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="mob-full-results-list">
+                            {filteredResults.length > 0 ? (
+                                filteredResults.map((loc, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="mob-full-result-item"
+                                        onClick={() => selectLocation(loc)}
+                                    >
+                                        <div className="mob-result-icon-box">
+                                            <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'}`}></i>
+                                        </div>
+                                        <div className="mob-result-info">
+                                            <div className="mob-result-main">
+                                                <span className="mob-result-name">{highlightMatch(loc.name, destination)}</span>
+                                                <span className={`mob-result-type ${loc.type.toLowerCase()}`}>{loc.type}</span>
+                                            </div>
+                                            {loc.type !== 'State' && <span className="mob-result-sub">{loc.state}</span>}
+                                        </div>
+                                        <i className="fa fa-chevron-right mob-result-arrow"></i>
+                                    </div>
+                                ))
+                            ) : destination.length > 0 && (
+                                <div className="mob-no-results">
+                                    <i className="fa fa-map-marked-alt"></i>
+                                    <p>We couldn't find matches for "{destination}"</p>
+                                    <span>Check your spelling or try another city</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </form>
     );
 };

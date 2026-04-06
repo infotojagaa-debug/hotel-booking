@@ -4310,93 +4310,213 @@
     top: auto;
 }
 
-/* ── In compact/page mode: location dropdown opens downward ── */
-/* ── Mobile Location Dropdown Hub (SOLID TOP-ANCHORED DESIGN) ── */
-.search-bar-modern.is-mobile-search .destination-pill .search-dropdown.modern-district-dropdown {
-    position: fixed !important;
-    top: 60px !important; /* Position below the top-pill or header */
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    transform: none !important;
-    bottom: auto !important;
-    max-width: none !important;
-    height: calc(100vh - 60px) !important;
-    border-radius: 0 !important;
-    z-index: 20000 !important;
-    background: #ffffff !important; /* Solid background */
-    box-shadow: none !important;
-    animation: slideDownMobile 0.3s ease-out;
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow-y: auto !important;
-}
-
-.search-mobile-backdrop {
+/* ── Modern Full-Screen Mobile Location Search Overlay ── */
+.mob-search-full-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.6); /* Reduced opacity for better feel */
-    backdrop-filter: none !important; /* REMOVED GLASS */
-    z-index: 15000;
-    animation: fadeIn 0.2s ease;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 30000; /* Stays above everything */
+    display: flex;
+    flex-direction: column;
+    animation: mobSlideUpFull 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes slideDownMobile {
-    from { transform: translateY(-5px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+@keyframes mobSlideUpFull {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
 }
 
-/* Redesign Desktop-Style Items on Mobile */
-.search-bar-modern.is-mobile-search .district-item {
-    padding: 16px !important;
-    border-bottom: 1px solid #f1f5f9;
-    background: #ffffff !important;
-    transition: background 0.2s;
+.mob-search-full-header {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 16px 12px;
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-.search-bar-modern.is-mobile-search .district-item:active {
-    background: #f8fafc !important;
+.mob-overlay-back-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: #f8fafc;
+    color: #0f172a;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
-.search-bar-modern.is-mobile-search .dropdown-icon {
-    width: 40px;
-    height: 40px;
+.mob-active-input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 0 16px;
+    border-radius: 12px;
+    height: 48px;
+}
+
+.mob-search-input-icon {
+    color: #94a3b8;
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+.mob-active-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 500;
+    color: #0f172a;
+    outline: none;
+    width: 100%;
+}
+
+.mob-overlay-clear-btn {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 18px;
+    padding: 4px;
+}
+
+/* Results Content Area */
+.mob-search-full-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0;
+}
+
+.mob-popular-section {
+    padding: 0 16px 24px;
+}
+
+.mob-popular-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.mob-popular-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.mob-pop-chip {
+    padding: 10px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Full Results List */
+.mob-full-results-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.mob-full-result-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-bottom: 1px solid #f8fafc;
+    transition: background 0.2s;
+}
+
+.mob-full-result-item:active {
+    background: #f1f5f9;
+}
+
+.mob-result-icon-box {
+    width: 48px;
+    height: 48px;
     background: #f1f5f9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #64748b;
-    font-size: 16px;
-    margin-right: 0 !important;
+    font-size: 20px;
 }
 
-.search-bar-modern.is-mobile-search .loc-name {
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    color: #0f172a !important;
-    margin-bottom: 2px;
+.mob-result-info {
+    flex: 1;
 }
 
-.search-bar-modern.is-mobile-search .loc-state-text {
-    font-size: 12px !important;
-    color: #64748b !important;
-    font-weight: 400 !important;
+.mob-result-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
 }
 
-.search-bar-modern.is-mobile-search .loc-type-badge {
-    margin-left: auto;
-    padding: 4px 8px;
-    border-radius: 4px;
+.mob-result-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.mob-result-type {
     font-size: 10px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: #f1f5f9;
-    color: #475569;
+    padding: 4px 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 4px;
+}
+
+.mob-result-type.district { background: #f0fdf4; color: #16a34a; }
+.mob-result-type.state { background: #fef2f2; color: #dc2626; }
+
+.mob-result-sub {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.mob-result-arrow {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.mob-no-results {
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.mob-no-results i {
+    font-size: 48px;
+    color: #e2e8f0;
+    margin-bottom: 16px;
+}
+
+.mob-no-results p {
+    font-size: 18px;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.mob-no-results span {
+    font-size: 14px;
+    color: #94a3b8;
 }
 
 /* ── Mobile Date & Guest Dropdown Fixes ── */
