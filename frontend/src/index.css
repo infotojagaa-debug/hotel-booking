@@ -4310,52 +4310,264 @@
 }
 
 /* ====================================================
-   HERO SLIDER RESPONSIVE
+   HERO SLIDER RESPONSIVE — COMPREHENSIVE MOBILE FIX
    ==================================================== */
 @media (max-width: 768px) {
+
+    /* ── 1. Hero: allow height to grow so stacked search form
+          doesn't overflow into the next section ── */
     .hero-slider-wrap {
-        height: 100vh;
-        min-height: 100svh;
+        height: auto !important;
+        min-height: 100svh !important;
+        overflow: hidden !important;   /* prevent bleed into next section */
     }
+
+    /* slider-bg fills the hero using position absolute + 100% height;
+       give hero-content-layout an explicit min-height so the bg fills fully */
     .hero-content-layout {
-        padding: 80px 16px 28px;
+        padding: 84px 14px 28px;
+        min-height: 100svh;
+        box-sizing: border-box;
     }
+
     .hero-heading-zone {
-        padding-bottom: 20px;
+        padding-bottom: 14px;
+        justify-content: flex-end;
     }
+
     .hero-search-bottom-wrap {
         max-width: 100%;
+        padding-bottom: 20px;
     }
+
     .hero-title {
-        font-size: 1.85rem;
+        font-size: 1.7rem !important;
+        letter-spacing: -0.4px;
     }
+
     .hero-subtitle {
-        font-size: 0.92rem;
+        font-size: 0.88rem !important;
+        margin-bottom: 1.25rem;
     }
+
+    /* ── 2. Search form: proper stacked layout ── */
+    .search-bar-modern {
+        padding: 0;
+    }
+
     .search-pill-container {
-        border-radius: 14px;
+        border-radius: 18px !important;
+        flex-direction: column;
+        gap: 0;
+        padding: 6px;
+        align-items: stretch;
     }
+
+    .search-pill-divider {
+        display: none !important;
+    }
+
     .search-pill-item {
-        padding: 10px 14px;
+        padding: 10px 12px;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+        border-radius: 12px;
+        flex: unset;
     }
+
+    .search-pill-item:last-of-type {
+        border-bottom: none;
+    }
+
+    .search-pill-btn-wrap {
+        padding: 6px 0 0;
+        width: 100%;
+    }
+
+    .search-btn-gradient {
+        width: 100% !important;
+        justify-content: center;
+        height: 50px;
+        border-radius: 12px;
+    }
+
+    /* ── 3. Dropdowns: fixed to bottom on mobile ── */
     .custom-date-picker-popover {
-        left: 0;
-        right: 0;
-        transform: none;
-        border-radius: 16px;
-        min-width: unset;
-        width: calc(100vw - 32px);
-        position: fixed;
-        bottom: 0;
-        border-radius: 20px 20px 0 0;
+        position: fixed !important;
+        bottom: 0 !important;
+        top: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        min-width: unset !important;
+        border-radius: 24px 24px 0 0 !important;
+        transform: none !important;
+        padding: 20px 12px 24px !important;
+        z-index: 9999 !important;
+        max-height: 80vh;
+        overflow-y: auto;
     }
+
     .guest-dropdown-popover {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-radius: 20px 20px 0 0;
-        min-width: unset;
+        position: fixed !important;
+        bottom: 0 !important;
+        top: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        min-width: unset !important;
+        border-radius: 24px 24px 0 0 !important;
+        z-index: 9999 !important;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 24px 20px;
+    }
+
+    /* ── 4. Date picker: single month on mobile ── */
+    .react-datepicker {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+    }
+    .react-datepicker__children-container {
+        grid-column: 1 !important;
+        width: 100% !important;
+    }
+    .react-datepicker__month-container {
+        width: 100% !important;
+        padding: 0 4px !important;
+    }
+}
+
+/* ====================================================
+   HOME PAGE SECTIONS — MOBILE RESPONSIVENESS
+   ==================================================== */
+@media (max-width: 768px) {
+
+    /* ── Section padding reduction ── */
+    .prop-type-section {
+        padding-top: 36px !important;
+        padding-bottom: 16px !important;
+    }
+    .exclusive-offers-section {
+        padding-top: 36px !important;
+        padding-bottom: 16px !important;
+    }
+    .explore-section {
+        padding-top: 32px !important;
+        padding-bottom: 16px !important;
+    }
+    .trust-bar-section {
+        padding-top: 32px !important;
+        padding-bottom: 24px !important;
+    }
+    .newsletter-section {
+        padding-top: 36px !important;
+        padding-bottom: 36px !important;
+    }
+
+    /* ── Bento grid: horizontal scroll instead of tall stack ── */
+    .bento-grid-container {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        gap: 12px !important;
+        padding-bottom: 8px !important;
+        grid-template-columns: unset !important;
+        grid-template-rows: unset !important;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .bento-grid-container::-webkit-scrollbar { display: none; }
+    .bento-item {
+        flex: 0 0 72vw !important;
+        height: 200px !important;
+        grid-column: unset !important;
+        scroll-snap-align: start;
+    }
+
+    /* ── Featured Deals: single column ── */
+    .deals-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+
+    /* ── Trust bar: single column ── */
+    .trust-bar-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .trust-bar-item {
+        padding: 14px !important;
+    }
+
+    /* ── Newsletter: stack ── */
+    .newsletter-inner {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 20px !important;
+    }
+    .newsletter-text h3 {
+        font-size: 20px !important;
+    }
+    .newsletter-form {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+    .newsletter-input {
+        width: 100% !important;
+    }
+
+    /* ── Offers section header: stack ── */
+    .offers-section-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        margin-bottom: 20px !important;
+    }
+    .offers-main-heading {
+        font-size: 22px !important;
+    }
+    .offer-deal-card {
+        flex: 0 0 260px;
+    }
+
+    /* ── Explore section ── */
+    .explore-heading {
+        font-size: 20px !important;
+    }
+    .explore-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* ── Property type heading ── */
+    .prop-type-heading {
+        font-size: 20px !important;
+        margin-bottom: 14px !important;
+    }
+
+    /* ── Section headings (inline style overrides via Bootstrap) ── */
+    .row .col-md-12 h2,
+    .row .col-md-8 h2 {
+        font-size: 20px !important;
+    }
+
+    /* ── ftco-section (Featured Deals wrapper) ── */
+    .ftco-section {
+        padding-top: 36px !important;
+        padding-bottom: 24px !important;
+    }
+    .ftco-section .row.mb-4 {
+        margin-bottom: 16px !important;
+    }
+    .home-see-all-link {
+        font-size: 13px;
+    }
+
+    /* ── mb-[60px] Tailwind spacing override ── */
+    .mb-\[60px\] {
+        margin-bottom: 24px !important;
     }
 }
 
