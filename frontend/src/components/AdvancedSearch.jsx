@@ -331,7 +331,7 @@ const AdvancedSearch = ({
                                         setShowDatePicker(false);
                                     }
                                 }}
-                                monthsShown={isMobile ? 1 : 2}
+                                monthsShown={1}
                                 minDate={new Date()}
                                 inline
                                 showPopperArrow={false}
@@ -372,16 +372,16 @@ const AdvancedSearch = ({
                             <label className="pill-label">Guests</label>
                             <div className="pill-display-text text-left">
                                 <span className={totalGuests > 0 ? "text-slate-900 font-bold" : "text-slate-400"}>
-                                    {totalGuests} Guests, {rooms} Room
+                                    {totalGuests} Guests, {rooms} Rms
                                 </span>
                             </div>
                         </div>
                         <i className={`fa fa-chevron-down pill-chevron ${showGuestDropdown ? 'rotated' : ''}`}></i>
                     </div>
 
-                    {/* Custom Guest Dropdown */}
+                    {/* Custom Guest Dropdown - Positioned Right on Desktop */}
                     {showGuestDropdown && (
-                        <div className="guest-dropdown-popover" ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
+                        <div className="guest-dropdown-popover is-right-aligned" ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
                             <div className="guest-dropdown-content">
                                 <div className="guest-row">
                                     <div className="guest-info">
