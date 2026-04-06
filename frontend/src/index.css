@@ -282,8 +282,12 @@
 
 .guest-dropdown-popover {
     width: 400px;
-    padding: 15px 20px;
-    margin-top: -5px; /* Offset to prevent touching navbar */
+    padding: 10px 18px; /* Compressed vertical */
+    max-height: 380px; /* Constrain height */
+    overflow-y: auto; /* Enable scroll if content exceeds */
+    margin-bottom: 12px; /* Gap from search pill when opening upwards */
+    top: auto;
+    bottom: calc(100% + 12px); /* Force opening upwards with gap */
 }
 
 .custom-date-picker-popover {
@@ -2167,24 +2171,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 4px 0; /* Dense rows */
 }
 
 .guest-info {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 0px;
 }
 
 .guest-label-main {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #000;
+    line-height: 1.2;
 }
 
 .guest-label-sub {
-    font-size: 12px;
-    color: #4b5563;
+    font-size: 11px;
+    color: #64748b;
 }
 
 .guest-counter {
@@ -2251,15 +2256,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 15px;
-    margin-top: 5px;
+    padding-top: 10px; /* Compressed footer */
+    margin-top: 4px;
     border-top: 1px solid #f1f5f9;
 }
 
 .guest-reset-text {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    color: #d1d5db; /* Light gray */
+    color: #94a3b8; /* Slightly visible gray */
     background: none;
     border: none;
     cursor: pointer;
@@ -2267,10 +2272,10 @@
 }
 
 .guest-apply-btn-rect {
-    padding: 12px 30px;
+    padding: 10px 24px; /* Compressed button */
     background: #0071c2;
     color: #ffffff;
-    border-radius: 4px; /* Image 2 shows slightly rounded corners */
+    border-radius: 4px;
     font-weight: 700;
     font-size: 14px;
     border: none;
