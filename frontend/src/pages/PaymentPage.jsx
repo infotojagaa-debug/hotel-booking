@@ -12,6 +12,7 @@ import { SiGooglepay, SiPhonepe, SiPaytm, SiApplepay, SiStripe, SiRazorpay } fro
 import BookingStepper from '../components/BookingStepper';
 import HotelMap from '../components/HotelMap';
 import API from '../utils/api';
+import MobilePaymentPage from './MobilePaymentPage';
 import './PaymentPage.css';
 
 const PaymentPage = () => {
@@ -22,6 +23,13 @@ const PaymentPage = () => {
     const [activeTab, setActiveTab] = useState('upi');
     const [loading, setLoading] = useState(false);
     const [formValid, setFormValid] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // --- REAL-TIME CHECKOUT SIMULATION ---
     const [isProcessing, setIsProcessing] = useState(false);
@@ -145,6 +153,10 @@ const PaymentPage = () => {
             navigate('/');
         }
     };
+
+    if (isMobile) {
+        return <MobilePaymentPage />;
+    }
 
     return (
         <div className="checkout-page-root">

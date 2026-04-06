@@ -14,6 +14,7 @@ import { AuthContext } from '../context/AuthContext';
 import BookingStepper from '../components/BookingStepper';
 import ImageLightbox from '../components/ImageLightbox';
 import BookingSummaryBar from '../components/BookingSummaryBar';
+import MobileRoomDetails from './MobileRoomDetails';
 import './RoomDetails.css';
 import './HotelDetails.css'; // Import for promotion card styling
 
@@ -49,6 +50,13 @@ const RoomDetails = () => {
     const [userRating, setUserRating] = useState(5);
     const [userComment, setUserComment] = useState('');
     const [submitLoading, setSubmitLoading] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Lightbox State
     const [lightbox, setLightbox] = useState({
@@ -231,6 +239,10 @@ const RoomDetails = () => {
     if (!room) return <div className="container py-20 text-center">Room not found.</div>;
 
     const roomImages = room.images || [];
+
+    if (isMobile) {
+        return <MobileRoomDetails />;
+    }
 
     return (
         <>
