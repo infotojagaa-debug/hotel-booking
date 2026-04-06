@@ -264,24 +264,31 @@
     font-size: 16px;
 }
 
-/* Dropdowns & Popovers (Matched Theme) - Refined Size */
+/* Dropdowns & Popovers - Highly Compressed Size */
 .search-dropdown.modern-district-dropdown,
 .guest-dropdown-popover,
 .custom-date-picker-popover {
     position: absolute;
-    top: calc(100% + 15px);
+    top: calc(100% + 10px);
     left: 0;
     background: #ffffff;
-    border-radius: 20px;
-    padding: 10px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
     border: 1px solid rgba(0, 0, 0, 0.04);
     z-index: 1100;
     animation: premiumFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .guest-dropdown-popover {
-    width: 320px;
+    width: 290px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.custom-date-picker-popover {
+    transform: scale(0.9);
+    transform-origin: top left;
 }
 
 .guest-dropdown-popover.is-right-aligned {
@@ -295,9 +302,9 @@
 }
 
 .district-item {
-    padding: 14px 20px;
-    border-radius: 16px;
-    margin-bottom: 2px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    margin-bottom: 1px;
 }
 
 /* DatePicker Modernization */
@@ -2127,69 +2134,36 @@
 
 
 .guest-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 4px;
-}
-
-.guest-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    padding: 6px 4px;
 }
 
 .guest-label-main {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    color: #1a1a1a;
 }
 
 .guest-label-sub {
-    font-size: 11px;
-    color: var(--b-text-muted);
+    font-size: 10px;
 }
 
 .guest-counter {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .counter-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
-    color: var(--b-text-dark);
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.counter-btn:hover:not(.disabled) {
-    background: #f8fafc;
-    border-color: var(--b-lightblue);
-    color: var(--b-lightblue);
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
 }
 
 .counter-val {
-    font-size: 14px;
-    font-weight: 700;
-    min-width: 20px;
-    text-align: center;
+    font-size: 13px;
+    min-width: 18px;
 }
 
 .guest-dropdown-footer {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 12px;
-    margin-top: 12px;
-    border-top: 1px solid #f1f5f9;
+    padding-top: 8px;
+    margin-top: 8px;
 }
 
 .guest-reset-btn {
@@ -3584,8 +3558,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 110px 20px 48px;   /* top clears the navbar */
-    max-width: 1200px;
+    padding: 110px 20px 20px;   /* Reduced bottom padding to move search bar down */
+    max-width: 1350px;
     margin: 0 auto;
 }
 
@@ -3606,7 +3580,7 @@
     width: 100%;
     max-width: 980px;
     margin-top: auto; /* Push to bottom of hero zone */
-    padding-bottom: 110px; /* Moved up slightly from 60px for better visibility */
+    padding-bottom: 40px; /* Reduced from 110px to sit at the absolute bottom */
     position: relative;
     z-index: 1010;
 }
