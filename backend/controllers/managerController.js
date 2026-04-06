@@ -246,8 +246,17 @@ const updateManagerHotel = async (req, res) => {
         const hotel = await Hotel.findOne({ _id: req.params.id, managerId: req.user._id });
         if (!hotel) return res.status(404).json({ message: 'Hotel not found or not authorized' });
 
-        const updated = await Hotel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(updated);
+        const updated = await Hotel.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true }
+        );
+
+        // 🔥 Reinforce coordinates if the city changed and they are missing/zero
+        const finalized = assignDefaultCoordinates(updated);
+        await finalized.save();
+
+        res.json(finalized);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
