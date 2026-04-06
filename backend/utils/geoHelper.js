@@ -18,12 +18,15 @@ const CITY_COORDINATES = {
     'thanjavur': { lat: 10.7852, lng: 79.1391 },
     'tirunelveli': { lat: 8.7139, lng: 77.7567 },
     'tuticorin': { lat: 8.8053, lng: 78.1460 },
+    'thoothukudi': { lat: 8.8053, lng: 78.1460 },
     'hosur': { lat: 12.7409, lng: 77.8253 },
     'namakkal': { lat: 11.2189, lng: 78.1673 },
     'karur': { lat: 10.9601, lng: 78.0766 },
     'dindigul': { lat: 10.3673, lng: 77.9803 },
     'kanyakumari': { lat: 8.0883, lng: 77.5385 },
     'pondicherry': { lat: 11.9416, lng: 79.8083 },
+    'kanchipuram': { lat: 12.8342, lng: 79.7036 },
+    'ecr': { lat: 12.8230, lng: 80.2443 }, // East Coast Road specialized coords
 
     // Karnataka
     'bengaluru': { lat: 12.9716, lng: 77.5946 },
@@ -81,23 +84,29 @@ const assignDefaultCoordinates = (hotel) => {
     const isMissingLng = isNaN(lng) || lng === 0;
 
     if (isMissingLat || isMissingLng) {
-        const cityName = (hotel.city || '').trim().toLowerCase();
-        const cityData = CITY_COORDINATES[cityName];
+        const cityName = (hotel.city || hotel.district || '').trim().toLowerCase();
+        
+        // Find best match in our database (fuzzy match)
+        let matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName === c);
+        if (!matchedCity) {
+            matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName.includes(c) || c.includes(cityName));
+        }
 
-        if (cityData) {
+        if (matchedCity) {
+            const cityData = CITY_COORDINATES[matchedCity];
             // Add a small random jitter (approx 2-5km) to prevent overlapping markers
             const jitterLat = (Math.random() - 0.5) * 0.04;
             const jitterLng = (Math.random() - 0.5) * 0.04;
             
             hotel.latitude = cityData.lat + jitterLat;
             hotel.longitude = cityData.lng + jitterLng;
-            // console.log(`Smart Allocation: ${hotel.name} -> ${cityName} [${hotel.latitude}, ${hotel.longitude}]`);
+            // console.log(`Smart Allocation: ${hotel.name} -> ${matchedCity} [${hotel.latitude}, ${hotel.longitude}]`);
         } else {
             // Fallback: Default to a coordinate within India (Nagpur/Center area) if city unknown
             // This prevents markers from appearing in Africa/Null Island (0,0)
             const fallbackLat = 21.1458; 
             const fallbackLng = 79.0882;
-            const jitter = (Math.random() - 0.5) * 5; // Wider spread for unknown cities
+            const jitter = (Math.random() - 0.5) * 3; // Wider spread for unknown cities
             
             hotel.latitude = fallbackLat + jitter;
             hotel.longitude = fallbackLng + jitter;

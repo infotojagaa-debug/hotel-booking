@@ -84,7 +84,7 @@ const MapMoveListener = ({ hotels, onVisibleChange }) => {
   const update = useCallback(() => {
     const bounds = map.getBounds();
     const visible = hotels.filter(h =>
-      h.latitude && h.longitude && bounds.contains([h.latitude, h.longitude])
+      typeof h.latitude === 'number' && typeof h.longitude === 'number' && bounds.contains([h.latitude, h.longitude])
     );
     onVisibleChange(visible);
   }, [map, hotels, onVisibleChange]);
@@ -297,7 +297,10 @@ const HotelMapView = () => {
   }, []);
 
   // ── Filter hotels by price ─────────────────────────────────────────────────
-  const displayedHotels = hotels.filter(h => (h.cheapestPrice || 0) <= appliedMaxPrice);
+  const displayedHotels = React.useMemo(() => 
+    hotels.filter(h => (h.cheapestPrice || 0) <= appliedMaxPrice),
+    [hotels, appliedMaxPrice]
+  );
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleCardClick = useCallback((hotel) => {
@@ -329,8 +332,11 @@ const HotelMapView = () => {
   }, []);
 
   // Valid hotels (have lat/lng) — Relaxed to allow 0,0 but must be numbers
-  const mappableHotels = displayedHotels.filter(h => 
-    typeof h.latitude === 'number' && typeof h.longitude === 'number'
+  const mappableHotels = React.useMemo(() => 
+    displayedHotels.filter(h => 
+      typeof h.latitude === 'number' && typeof h.longitude === 'number'
+    ),
+    [displayedHotels]
   );
 
   // ── Render ─────────────────────────────────────────────────────────────────
