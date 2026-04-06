@@ -318,8 +318,7 @@ const AdvancedSearch = ({
                                 {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDropdown(false); }}></div>}
                                 <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
                                     {isMobile && (
-                                        <div className="mob-dropdown-header">
-                                            <div className="mob-drag-handle" onTouchStart={() => setShowDropdown(false)}></div>
+                                        <div className="mob-dropdown-header solid-header">
                                             <h3>Select Destination</h3>
                                             <p>Choose where you'd like to stay</p>
                                         </div>

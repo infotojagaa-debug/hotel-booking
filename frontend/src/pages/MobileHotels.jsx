@@ -22,11 +22,8 @@ const MobileHotels = ({ onToggleMap }) => {
     const fetchHotels = async () => {
       setLoading(true);
       try {
-        const params = new URLSearchParams(location.search);
-        // Ensure all types show unless explicitly set
-        if (params.has('type')) {
-           params.delete('type');
-        }
+        // RETAIN 'type' parameter for "Browse by property" functionality
+        // removed params.delete('type') bug
         const { data } = await API.get(`/hotels?${params.toString()}`);
         setHotels(data);
       } catch (err) {

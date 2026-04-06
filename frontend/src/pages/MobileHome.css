@@ -58,12 +58,11 @@ body.mobile-home-active .custom-navbar {
   font-size: 13px;
   font-weight: 700;
   color: #fff;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.15); /* Solid transparent but no blur */
   padding: 7px 16px;
   border-radius: 50px;
   text-decoration: none !important;
-  border: 1px solid rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.25);
   transition: background 0.2s;
 }
 .mob-login-link:hover { background: rgba(255,255,255,0.3); color: #fff; }
@@ -238,9 +237,8 @@ body.mobile-home-active .custom-navbar {
 .mob-quick-filter-btn {
   flex: 1;
   padding: 8px 6px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.25);
+  background: #1e293b; /* Solid dark Slate */
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   color: #fff;
   font-size: 11px;
