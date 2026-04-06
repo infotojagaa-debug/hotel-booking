@@ -199,47 +199,171 @@
 }
 
 /* Recent Activity */
-.recent-activity-list { display: flex; flex-direction: column; gap: 0; }
+.mgr-header-icon-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mgr-header-icon-wrap i {
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.mgr-card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-header);
+}
+
+.mgr-btn-view-all {
+    background: #f8fafc;
+    border: 1.5px solid #edf2f7;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-body);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mgr-btn-view-all:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.recent-activity-list {
+    display: flex;
+    flex-direction: column;
+}
 
 .activity-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 18px 0;
-    border-bottom: 1px solid #f8fafc;
+    gap: 20px;
+    padding: 20px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.2s;
 }
-.activity-row:last-child { border-bottom: none; }
 
-.activity-dot {
-    width: 10px;
-    height: 10px;
+.activity-row:hover {
+    background: #fcfdfe;
+}
+
+.activity-row:last-child {
+    border-bottom: none;
+}
+
+.activity-status-dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--primary);
     flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(109, 93, 252, 0.3);
 }
 
 .activity-info {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
 }
 
-.activity-name {
-    font-weight: 700;
-    font-size: 0.95rem;
+.activity-primary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.activity-guest-name {
+    font-weight: 800;
+    font-size: 1rem;
     color: var(--text-header);
 }
 
-.activity-time {
-    font-size: 0.8rem;
+.activity-prop-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: rgba(109, 93, 252, 0.08);
+    padding: 2px 10px;
+    border-radius: 6px;
+}
+
+.activity-secondary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.activity-checkin-date {
+    font-size: 0.85rem;
+    font-weight: 600;
     color: var(--text-muted);
 }
 
-.activity-amount {
-    font-weight: 800;
-    font-size: 1rem;
-    color: #10b981;
+.activity-checkin-date i {
+    margin-right: 4px;
+}
+
+.activity-price {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--success);
+}
+
+/* Status Breakdown Pills */
+.breakdown-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+}
+
+.status-pill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1.5px solid #edf2f7;
+    transition: all 0.3s;
+}
+
+.status-pill-row:hover {
+    border-color: var(--primary);
+    background: #fff;
+    transform: translateX(5px);
+}
+
+.status-pill-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-body);
+}
+
+.status-pill-value-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-pill-count {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--text-header);
+}
+
+.status-indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
 }
 
 .admin-stat-title {
@@ -1076,4 +1200,136 @@
 @keyframes shimmer {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+}
+
+/* Updated Manager Dashboard - Premium Additions */
+.mgr-occupancy-card-premium {
+    background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%) !important;
+    border: none !important;
+    color: #fff !important;
+    padding: 30px !important;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(109, 93, 252, 0.25) !important;
+    border-radius: 24px !important;
+}
+
+.mgr-occupancy-card-premium::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.mgr-occupancy-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 25px;
+}
+
+.mgr-occupancy-header i {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.mgr-occupancy-header h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff !important;
+    margin: 0;
+}
+
+.occupancy-value-wrap {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.occupancy-number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+}
+
+.occupancy-tag {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.occupancy-progress-track {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.occupancy-progress-bar {
+    height: 100%;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occupancy-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+/* Dashboard Layout Grid Fix */
+.mgr-two-col {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.mgr-col-main, .mgr-col-side {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.mgr-card {
+    background: #fff;
+    border-radius: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 10px 30px rgba(109, 93, 252, 0.04);
+}
+
+.mgr-card-header {
+    padding: 24px 30px;
+    border-bottom: 1px solid #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mgr-card-body {
+    padding: 0 0 10px 0;
+}
+
+@media (max-width: 1200px) {
+    .mgr-two-col {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }

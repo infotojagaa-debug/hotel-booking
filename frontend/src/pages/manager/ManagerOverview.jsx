@@ -40,26 +40,38 @@ const ManagerOverview = ({ analytics, reservations }) => {
             <div className="mgr-two-col">
                 <div className="mgr-col-main">
                     {/* Recent Reservations as Activity List */}
-                    <div className="mgr-card mgr-section">
+                    <div className="mgr-card mgr-section activity-card">
                         <div className="mgr-card-header">
-                            <h3>🕐 Recent Activity</h3>
-                            <button className="mgr-btn mgr-btn-xs mgr-btn-outline">View All</button>
+                            <div className="mgr-header-icon-wrap">
+                                <i className="fas fa-history"></i>
+                                <h3>Recent Activity</h3>
+                            </div>
+                            <button className="mgr-btn-view-all">View All</button>
                         </div>
-                        <div className="mgr-card-body" style={{ padding: '0 20px' }}>
+                        <div className="mgr-card-body">
                             <div className="recent-activity-list">
                                 {reservations.slice(0, 6).map(r => (
                                     <div key={r._id} className="activity-row">
-                                        <div className="activity-dot"></div>
+                                        <div className="activity-status-dot"></div>
                                         <div className="activity-info">
-                                            <span className="activity-name">{r.user?.name || 'Guest'} · {r.room?.hotel?.name || 'Hotel'}</span>
-                                            <span className="activity-time">Check-in: {new Date(r.checkInDate).toLocaleDateString('en-IN')}</span>
+                                            <div className="activity-primary">
+                                                <span className="activity-guest-name">{r.user?.name || 'Guest'}</span>
+                                                <span className="activity-prop-tag">{r.room?.hotel?.name || 'Hotel'}</span>
+                                            </div>
+                                            <div className="activity-secondary">
+                                                <span className="activity-checkin-date">
+                                                    <i className="far fa-calendar-alt"></i> Check-in: {new Date(r.checkInDate).toLocaleDateString('en-IN')}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <span className="activity-amount">{formatCurrency(r.managerEarnings)}</span>
+                                        <div className="activity-financial">
+                                            <span className="activity-price">{formatCurrency(r.managerEarnings)}</span>
+                                        </div>
                                     </div>
                                 ))}
                                 {reservations.length === 0 && (
-                                    <div className="mgr-empty">
-                                        <i className="fas fa-history empty-icon"></i>
+                                    <div className="mgr-empty-state">
+                                        <i className="fas fa-calendar-times empty-icon"></i>
                                         <p>No recent activity found.</p>
                                     </div>
                                 )}
@@ -70,23 +82,20 @@ const ManagerOverview = ({ analytics, reservations }) => {
 
                 <div className="mgr-col-side">
                     {/* Portfolio Occupancy */}
-                    <div className="mgr-card mgr-section" style={{ border: 'none', background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))', color: '#fff', borderRadius: '24px' }}>
-                        <div className="mgr-card-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h3 style={{ color: '#fff' }}>🏠 Occupancy</h3>
+                    <div className="mgr-card mgr-occupancy-card-premium">
+                        <div className="mgr-occupancy-header">
+                            <i className="fas fa-house-user"></i>
+                            <h3>Occupancy</h3>
                         </div>
-                        <div className="mgr-card-body" style={{ padding: '24px' }}>
-                            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 10 }}>
-                                <div style={{ fontWeight: 900, fontSize: '2.5rem' }}>{analytics.occupancyRate}%</div>
+                        <div className="mgr-occupancy-body">
+                            <div className="occupancy-value-wrap">
+                                <span className="occupancy-number">{analytics.occupancyRate}%</span>
+                                <span className="occupancy-tag">Live</span>
                             </div>
-                            <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 8, overflow: 'hidden', marginBottom: 12 }}>
-                                <div style={{
-                                    height: '100%', width: `${analytics.occupancyRate}%`,
-                                    background: '#fff',
-                                    borderRadius: 999, transition: 'width(0.8s) ease',
-                                    boxShadow: '0 0 15px rgba(255,255,255,0.5)'
-                                }} />
+                            <div className="occupancy-progress-track">
+                                <div className="occupancy-progress-bar" style={{ width: `${analytics.occupancyRate}%` }} />
                             </div>
-                            <p style={{ fontSize: '0.8rem', color: '#f1f0ff', opacity: 0.9, lineHeight: 1.4 }}>
+                            <p className="occupancy-desc">
                                 Current portfolio occupancy rate based on active stays today.
                             </p>
                         </div>
@@ -94,15 +103,20 @@ const ManagerOverview = ({ analytics, reservations }) => {
 
                     {/* Status Breakdown */}
                     {analytics.statusBreakdown && (
-                        <div className="mgr-card">
-                            <div className="mgr-card-header"><h3>📊 Status Breakdown</h3></div>
-                            <div className="mgr-card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                        <div className="mgr-card status-breakdown-card">
+                            <div className="mgr-card-header">
+                                <div className="mgr-header-icon-wrap">
+                                    <i className="fas fa-chart-pie"></i>
+                                    <h3>Status Breakdown</h3>
+                                </div>
+                            </div>
+                            <div className="mgr-card-body breakdown-grid">
                                 {Object.entries(analytics.statusBreakdown).map(([status, count]) => (
-                                    <div key={status} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: 'var(--bg)', borderRadius: '12px' }}>
-                                        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{status}</span>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                            <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>{count}</span>
-                                            <div style={{ width: 6, height: 6, borderRadius: '50%', background: statusColors[status] ? `var(--${statusColors[status].split('-')[1]})` : '#cbd5e1' }}></div>
+                                    <div key={status} className="status-pill-row">
+                                        <span className="status-pill-label">{status}</span>
+                                        <div className="status-pill-value-wrap">
+                                            <span className="status-pill-count">{count}</span>
+                                            <div className="status-indicator-dot" style={{ background: statusColors[status] ? `var(--${statusColors[status].split('-')[1]})` : '#cbd5e1' }}></div>
                                         </div>
                                     </div>
                                 ))}
