@@ -237,12 +237,12 @@ const AdvancedSearch = ({
                             <i className="fa fa-map-marker-alt"></i>
                         </div>
                         <div className="pill-input-wrap">
-                            {!isCompact && <label className="pill-label">Destination</label>}
+                            <label className="pill-label">Location</label>
                             <input
                                 ref={destinationRef}
                                 type="text"
                                 className="pill-input"
-                                placeholder={isCompact ? "Where to?" : "Search destinations across India"}
+                                placeholder="Where to?"
                                 value={destination}
                                 onKeyDown={handleKeyDown}
                                 onChange={(e) => {
@@ -257,7 +257,7 @@ const AdvancedSearch = ({
                                 required
                             />
                         </div>
-                        {isCompact && destination && (
+                        {destination && (
                             <button type="button" className="clear-loc-btn" onClick={(e) => { e.stopPropagation(); setDestination(''); }}>
                                 <i className="fas fa-times-circle"></i>
                             </button>
@@ -277,7 +277,7 @@ const AdvancedSearch = ({
                                                 selectLocation(loc);
                                             }}
                                         >
-                                            <div className="flex items-center gap-4 w-full">
+                                            <div className="flex items-center gap-4 w-full text-left">
                                                 <i className={`fa ${loc.type === 'State' ? 'fa-globe-asia' : 'fa-map-marker-alt'} dropdown-icon`}></i>
                                                 <div className="loc-info flex-1">
                                                     <div className="flex items-center justify-between">
@@ -299,6 +299,8 @@ const AdvancedSearch = ({
                     </div>
                 </div>
 
+                <div className="search-pill-divider"></div>
+
                 {/* 2. Check-in/out Unified Box */}
                 <div className={`search-pill-item date-pill ${showDatePicker ? 'pill-active' : ''}`} ref={datePickerContainerRef} onClick={triggerDatePicker}>
                     <div className="pill-content">
@@ -306,13 +308,14 @@ const AdvancedSearch = ({
                             <i className="fa fa-calendar-day"></i>
                         </div>
                         <div className="pill-input-wrap">
-                            {!isCompact && <label className="pill-label">Dates</label>}
-                            <div className="pill-display-text">
+                            <label className="pill-label">Check-in / Out</label>
+                            <div className="pill-display-text text-left">
                                 {startDate && endDate 
-                                    ? `${format(startDate, 'd MMM')} - ${format(endDate, 'd MMM')}`
-                                    : 'Add dates'}
+                                    ? <span className="text-slate-900 font-bold">{format(startDate, 'd MMM')} — {format(endDate, 'd MMM')}</span>
+                                    : <span className="text-slate-400">Add dates</span>}
                             </div>
                         </div>
+                        <i className={`fa fa-chevron-down pill-chevron ${showDatePicker ? 'rotated' : ''}`}></i>
                     </div>
 
                     {/* Unified Date Range Picker Popover (Upward) */}
@@ -336,10 +339,10 @@ const AdvancedSearch = ({
                             >
                                 <div className="datepicker-footer">
                                     <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(), new Date(new Date().setDate(new Date().getDate() + 1))])}>
-                                        <i className="fa fa-clock-o"></i> Tonight
+                                         Tonight
                                     </button>
                                     <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(new Date().setDate(new Date().getDate() + 1)), new Date(new Date().setDate(new Date().getDate() + 2))])}>
-                                        <i className="fa fa-sun-o"></i> Tomorrow night
+                                         Tomorrow
                                     </button>
                                     <button type="button" className="quick-action-pill" onClick={() => {
                                         const today = new Date();
@@ -349,26 +352,15 @@ const AdvancedSearch = ({
                                         sunday.setDate(friday.getDate() + 2);
                                         setDateRange([friday, sunday]);
                                     }}>
-                                        <i className="fa fa-calendar-check-o"></i> This weekend
-                                    </button>
-                                    <button type="button" className="quick-action-pill" onClick={() => {
-                                        const today = new Date();
-                                        const fridayNext = new Date(today);
-                                        fridayNext.setDate(today.getDate() + ((5 - today.getDay() + 14) % 14) || 14);
-                                        if (fridayNext.getTime() <= today.getTime() + (7 * 24 * 60 * 60 * 1000)) {
-                                            fridayNext.setDate(fridayNext.getDate() + 7);
-                                        }
-                                        const sundayNext = new Date(fridayNext);
-                                        sundayNext.setDate(fridayNext.getDate() + 2);
-                                        setDateRange([fridayNext, sundayNext]);
-                                    }}>
-                                        <i className="fa fa-calendar-plus-o"></i> Next weekend
+                                         This weekend
                                     </button>
                                 </div>
                             </DatePicker>
                         </div>
                     )}
                 </div>
+
+                <div className="search-pill-divider"></div>
 
                 {/* 3. Guests Box */}
                 <div className={`search-pill-item guests-pill ${showGuestDropdown ? 'pill-active' : ''}`} ref={guestsBoxRef} onClick={() => setShowGuestDropdown(!showGuestDropdown)}>
@@ -377,11 +369,14 @@ const AdvancedSearch = ({
                             <i className="fa fa-users"></i>
                         </div>
                         <div className="pill-input-wrap">
-                            {!isCompact && <label className="pill-label">Guests</label>}
-                            <div className="pill-display-text">
-                                {adults + children} Guests, {rooms} Room
+                            <label className="pill-label">Guests</label>
+                            <div className="pill-display-text text-left">
+                                <span className={totalGuests > 0 ? "text-slate-900 font-bold" : "text-slate-400"}>
+                                    {totalGuests} Guests, {rooms} Room
+                                </span>
                             </div>
                         </div>
+                        <i className={`fa fa-chevron-down pill-chevron ${showGuestDropdown ? 'rotated' : ''}`}></i>
                     </div>
 
                     {/* Custom Guest Dropdown */}
@@ -389,7 +384,10 @@ const AdvancedSearch = ({
                         <div className="guest-dropdown-popover" ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
                             <div className="guest-dropdown-content">
                                 <div className="guest-row">
-                                    <span className="guest-label">Adults</span>
+                                    <div className="guest-info">
+                                        <span className="guest-label-main">Adults</span>
+                                        <span className="guest-label-sub">Ages 13 or above</span>
+                                    </div>
                                     <div className="guest-counter">
                                         <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={() => setAdults(Math.max(1, adults - 1))}>−</button>
                                         <span className="counter-val">{adults}</span>
@@ -397,7 +395,10 @@ const AdvancedSearch = ({
                                     </div>
                                 </div>
                                 <div className="guest-row">
-                                    <span className="guest-label">Children</span>
+                                    <div className="guest-info">
+                                        <span className="guest-label-main">Children</span>
+                                        <span className="guest-label-sub">Ages 2–12</span>
+                                    </div>
                                     <div className="guest-counter">
                                         <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={() => setChildren(Math.max(0, children - 1))}>−</button>
                                         <span className="counter-val">{children}</span>
@@ -405,7 +406,10 @@ const AdvancedSearch = ({
                                     </div>
                                 </div>
                                 <div className="guest-row">
-                                    <span className="guest-label">Rooms</span>
+                                    <div className="guest-info">
+                                        <span className="guest-label-main">Rooms</span>
+                                        <span className="guest-label-sub">Required units</span>
+                                    </div>
                                     <div className="guest-counter">
                                         <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={() => setRooms(Math.max(1, rooms - 1))}>−</button>
                                         <span className="counter-val">{rooms}</span>
@@ -415,8 +419,8 @@ const AdvancedSearch = ({
 
                                 <div className="guest-row pet-row" onClick={() => setIsPetFriendly(!isPetFriendly)}>
                                     <div className="pet-info">
-                                        <span className="guest-label">Pet-friendly</span>
-                                        <span className="pet-desc">Only show stays that allow pets</span>
+                                        <span className="guest-label-main">Pet-friendly</span>
+                                        <span className="guest-label-sub">Only show stays that allow pets</span>
                                     </div>
                                     <label className="custom-checkbox" onClick={(e) => e.stopPropagation()}>
                                         <input type="checkbox" checked={isPetFriendly} onChange={(e) => setIsPetFriendly(e.target.checked)} />
@@ -436,7 +440,7 @@ const AdvancedSearch = ({
                 <div className="search-pill-btn-wrap">
                     <button type="submit" className="search-btn-gradient">
                         <i className="fa fa-search"></i>
-                        {!isCompact && <span>Search Stays</span>}
+                        <span>Search</span>
                     </button>
                 </div>
             </div>
