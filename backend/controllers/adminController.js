@@ -7,6 +7,7 @@ const Offer = require('../models/Offer');
 const GlobalSettings = require('../models/GlobalSettings');
 const Notification = require('../models/Notification');
 const sendNotification = require('../utils/notify');
+const { assignDefaultCoordinates } = require('../utils/geoHelper');
 
 // @desc    Get platform analytics (Advanced for Recharts)
 // @route   GET /api/admin/analytics
@@ -312,13 +313,18 @@ module.exports = {
     },
     createAdminHotel: async (req, res) => {
         try {
-            const hotel = await Hotel.create({
+            let hotel = new Hotel({
                 ...req.body,
                 managerId: req.user._id,   // Admin is the managerId
                 isAdminHotel: true,
                 isApproved: true,
             });
-            res.status(201).json(hotel);
+
+            // 🔥 Assign smart coordinates if missing
+            hotel = assignDefaultCoordinates(hotel);
+
+            const savedHotel = await hotel.save();
+            res.status(201).json(savedHotel);
         } catch (error) {
             res.status(400).json({ message: error.message });
         }

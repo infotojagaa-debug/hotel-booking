@@ -1,17 +1,22 @@
 const Hotel = require('../models/Hotel');
 const Room = require('../models/Room');
+const { assignDefaultCoordinates } = require('../utils/geoHelper');
 
 // @desc    Create new hotel
 // @route   POST /api/hotels
 // @access  Private/Manager,Admin
 const createHotel = async (req, res) => {
     try {
-        const hotel = new Hotel({
+        let hotel = new Hotel({
             ...req.body,
-            manager: req.user._id,
+            managerId: req.user._id, // Fixed: use managerId instead of manager
             isAdminHotel: req.user.role === 'Admin',
             isApproved: true // Auto-approve all properties for immediate project visibility
         });
+
+        // 🔥 Assign smart coordinates if missing
+        hotel = assignDefaultCoordinates(hotel);
+
         const savedHotel = await hotel.save();
         res.status(201).json(savedHotel);
     } catch (err) {

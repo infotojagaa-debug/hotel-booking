@@ -39,6 +39,7 @@ const HotelAddForm = ({ onSuccess }) => {
         name: '', city: '', zipCode: '', address: '',
         locationHint: '', description: '', type: 'Hotel',
         starRating: 3, cheapestPrice: '', distanceFromCenter: '1km',
+        latitude: '', longitude: ''
     });
     const [selectedAmenities, setSelectedAmenities] = useState([]);
     const [selectedAddOns, setSelectedAddOns] = useState([]);
@@ -173,6 +174,18 @@ const HotelAddForm = ({ onSuccess }) => {
                     <div className="form-group">
                         <label>STARTING PRICE (₹)</label>
                         <input name="cheapestPrice" type="number" className="form-input" placeholder="e.g. 2500" value={form.cheapestPrice} onChange={handleChange} required />
+                    </div>
+                </div>
+
+                {/* Optional Coordinates (New Row) */}
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>LATITUDE (OPTIONAL)</label>
+                        <input name="latitude" type="number" step="any" className="form-input" placeholder="e.g. 13.0827" value={form.latitude} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>LONGITUDE (OPTIONAL)</label>
+                        <input name="longitude" type="number" step="any" className="form-input" placeholder="e.g. 80.2707" value={form.longitude} onChange={handleChange} />
                     </div>
                 </div>
 

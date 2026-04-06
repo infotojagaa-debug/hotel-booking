@@ -46,7 +46,7 @@
   border-radius: var(--ch-radius);
   padding: 32px;
   box-shadow: var(--ch-shadow);
-  border: 1px solid rgba(0,0,0,0.02);
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 /* Tabs Styling */
@@ -75,7 +75,7 @@
 .tab-item-p.active {
   background: var(--ch-card);
   color: var(--ch-primary-solid);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .tab-item-p svg {
@@ -144,7 +144,7 @@
   font-size: 10px;
 }
 
-.upi-id-divider::before, 
+.upi-id-divider::before,
 .upi-id-divider::after {
   content: '';
   flex: 1;
@@ -155,7 +155,7 @@
   padding: 0 16px;
 }
 
-.upi-input-group label, 
+.upi-input-group label,
 .card-input-grid label,
 .nb-pane label {
   display: block;
@@ -167,7 +167,8 @@
   margin-bottom: 8px;
 }
 
-.modern-input-p, .modern-select-p {
+.modern-input-p,
+.modern-select-p {
   width: 100%;
   padding: 16px 20px;
   border-radius: 14px;
@@ -179,7 +180,8 @@
   color: var(--ch-text);
 }
 
-.modern-input-p:focus, .modern-select-p:focus {
+.modern-input-p:focus,
+.modern-select-p:focus {
   outline: none;
   border-color: var(--ch-primary-solid);
   background: #fff;
@@ -258,55 +260,55 @@
 
 /* Wallet Selection Grid */
 .wallet-grid-p {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 8px;
 }
 
 .wallet-box-p {
-    background: #f8fafc;
-    border: 1.5px solid #f1f5f9;
-    border-radius: 16px;
-    padding: 24px 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+  background: #f8fafc;
+  border: 1.5px solid #f1f5f9;
+  border-radius: 16px;
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .wallet-box-p:hover {
-    transform: translateY(-5px);
-    background: #ffffff;
-    border-color: #e2e8f0;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transform: translateY(-5px);
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 .wallet-box-p.active {
-    background: #ffffff;
-    border-color: var(--ch-primary-solid);
-    box-shadow: 0 10px 30px rgba(106, 92, 255, 0.12);
+  background: #ffffff;
+  border-color: var(--ch-primary-solid);
+  box-shadow: 0 10px 30px rgba(106, 92, 255, 0.12);
 }
 
 .wallet-icon-wrap {
-    font-size: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
 
 .wallet-box-p:hover .wallet-icon-wrap {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .wallet-name-p {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ch-text);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ch-text);
 }
 
 /* Wallet Styles (Legacy/Generic) */
@@ -425,7 +427,7 @@
   border-radius: var(--ch-radius);
   overflow: hidden;
   box-shadow: var(--ch-shadow);
-  border: 1px solid rgba(0,0,0,0.02);
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .summary-image-p {
@@ -609,7 +611,9 @@
 }
 
 @keyframes spinP {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .lock-icon-p {
@@ -659,13 +663,27 @@
 }
 
 @keyframes fadeInP {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes zoomInP {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* --- RESPONSIVE --- */
@@ -674,10 +692,11 @@
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  
+
   .summary-stack {
     position: static;
-    order: -1; /* Summary on top for mobile/tablet */
+    order: -1;
+    /* Summary on top for mobile/tablet */
   }
 }
 
@@ -686,13 +705,17 @@
     overflow-x: auto;
     padding: 4px;
   }
-  
+
   .tab-item-p {
     padding: 10px 20px;
     white-space: nowrap;
   }
-  
-  .card-input-grid, .upi-apps-grid-p, .bank-grid-p, .wallet-grid-p, .guest-form-grid {
+
+  .card-input-grid,
+  .upi-apps-grid-p,
+  .bank-grid-p,
+  .wallet-grid-p,
+  .guest-form-grid {
     grid-template-columns: 1fr !important;
   }
 }
@@ -709,7 +732,7 @@
   border-radius: var(--ch-radius);
   padding: 32px;
   box-shadow: var(--ch-shadow);
-  border: 1px solid rgba(0,0,0,0.02);
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .step-title-premium {
@@ -796,7 +819,7 @@
 .method-tab-btn.is-active {
   background: #ffffff;
   color: var(--ch-primary-solid);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .method-content-pane {

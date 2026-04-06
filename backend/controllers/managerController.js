@@ -6,6 +6,7 @@ const Offer = require('../models/Offer');
 const Notification = require('../models/Notification');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { assignDefaultCoordinates } = require('../utils/geoHelper');
 
 // ─── Helper: get all hotels owned by manager ───────────────────────────────
 const getManagerHotelIds = async (managerId) => {
@@ -222,13 +223,19 @@ const getManagerHotels = async (req, res) => {
 
 const createManagerHotel = async (req, res) => {
     try {
-        const hotel = await Hotel.create({
+        let hotel = new Hotel({
             ...req.body,
             managerId: req.user._id,
             isApproved: false, // Requires admin approval
         });
+
+        // 🔥 Assign smart coordinates if missing
+        hotel = assignDefaultCoordinates(hotel);
+
+        const savedHotel = await hotel.save();
+
         // Notify admin (we can use a special admin notification or just log)
-        res.status(201).json(hotel);
+        res.status(201).json(savedHotel);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

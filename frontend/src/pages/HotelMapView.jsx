@@ -45,7 +45,7 @@ const MapFitBounds = ({ hotels, forceCenter }) => {
 
   useEffect(() => {
     if (!forceCenter && hotels.length > 0) {
-      const valid = hotels.filter(h => h.latitude && h.longitude);
+      const valid = hotels.filter(h => typeof h.latitude === 'number' && typeof h.longitude === 'number');
       if (valid.length === 0) return;
       if (valid.length === 1) {
         map.setView([valid[0].latitude, valid[0].longitude], 14);
@@ -55,6 +55,25 @@ const MapFitBounds = ({ hotels, forceCenter }) => {
       map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
   }, [hotels, map, forceCenter]);
+
+  return null;
+};
+
+// ─── Selected Marker Popup Controller ────────────────────────────────────────
+const SelectedMarkerPopup = ({ selectedId }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (selectedId) {
+      setTimeout(() => {
+        map.eachLayer((layer) => {
+          if (layer.options && layer.options.hotelId === selectedId) {
+            layer.openPopup();
+          }
+        });
+      }, 500); // Allow flyTo to stabilize
+    }
+  }, [selectedId, map]);
 
   return null;
 };
@@ -309,8 +328,10 @@ const HotelMapView = () => {
     setHotels(prev => [...prev]);
   }, []);
 
-  // Valid hotels (have lat/lng)
-  const mappableHotels = displayedHotels.filter(h => h.latitude && h.longitude);
+  // Valid hotels (have lat/lng) — Relaxed to allow 0,0 but must be numbers
+  const mappableHotels = displayedHotels.filter(h => 
+    typeof h.latitude === 'number' && typeof h.longitude === 'number'
+  );
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -472,12 +493,14 @@ const HotelMapView = () => {
             {/* Map controllers */}
             <MapFitBounds hotels={mappableHotels} forceCenter={forceCenter} />
             <MapMoveListener hotels={mappableHotels} onVisibleChange={setVisibleHotels} />
+            <SelectedMarkerPopup selectedId={selectedId} hotels={mappableHotels} />
 
             {/* Markers */}
             {mappableHotels.map(hotel => (
               <Marker
                 key={hotel._id}
                 position={[hotel.latitude, hotel.longitude]}
+                hotelId={hotel._id} // Custom option for SelectedMarkerPopup
                 icon={createPriceMarker(
                   hotel.cheapestPrice,
                   selectedId === hotel._id,
