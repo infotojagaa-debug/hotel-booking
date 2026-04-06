@@ -10,6 +10,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../components/WishlistToast';
 import BookingSummaryBar from '../components/BookingSummaryBar';
 import HotelMap from '../components/HotelMap';
+import MobileHotelDetails from './MobileHotelDetails';
 import './HotelDetails.css';
 
 const HotelDetails = () => {
@@ -41,6 +42,13 @@ const HotelDetails = () => {
     // Persistent Search & Offer State
     const [searchData, setSearchData] = useState(null);
     const [activeOffer, setActiveOffer] = useState(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const savedSearch = localStorage.getItem('elite_stays_search');
@@ -146,8 +154,11 @@ const HotelDetails = () => {
 
     if (!hotel) return <div className="container py-40 text-center">Hotel not found.</div>;
 
-    // Filtered images - only show what's actually there
     const hotelImages = hotel.images || [];
+
+    if (isMobile) {
+        return <MobileHotelDetails />;
+    }
 
     return (
         <div className="container-elite pt-24 pb-20">

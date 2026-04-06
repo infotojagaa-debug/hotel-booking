@@ -4,6 +4,7 @@ import API from '../utils/api';
 import AdvancedSearch from '../components/AdvancedSearch';
 import BookingFilterSidebar from '../components/BookingFilterSidebar';
 import BookingHotelCard from '../components/BookingHotelCard';
+import MobileHotels from './MobileHotels';
 
 import { FaChevronRight, FaFilter, FaTimes, FaSearch, FaFire, FaTag, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import './HotelSearchPage.css';
@@ -23,6 +24,13 @@ const Rooms = () => {
   const [activeOffer, setActiveOffer] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Helper for human-readable sort labels
   const getSortLabel = (val) => {
@@ -145,6 +153,10 @@ const Rooms = () => {
       return acc;
     }, {})
   };
+
+  if (isMobile) {
+    return <MobileHotels />;
+  }
 
   return (
     <div className="search-page-container font-sans flex flex-col pt-24 pb-20">
