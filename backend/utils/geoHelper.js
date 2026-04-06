@@ -73,12 +73,12 @@ const CITY_COORDINATES = {
 
 /**
  * Assigns default coordinates to a hotel object if missing or zero.
- * Uses a small random offset to prevent overlap of multiple hotels in the same city.
+ * Ensures that properties NEVER land on Null Island (0,0) by using India-centric defaults.
  */
 const assignDefaultCoordinates = (hotel) => {
-    // Robust check for missing or zero coordinates
-    const lat = parseFloat(hotel.latitude);
-    const lng = parseFloat(hotel.longitude);
+    // Force coordinates to be numeric if they are strings or missing
+    let lat = hotel.latitude !== undefined ? parseFloat(hotel.latitude) : NaN;
+    let lng = hotel.longitude !== undefined ? parseFloat(hotel.longitude) : NaN;
     
     const isMissingLat = isNaN(lat) || lat === 0;
     const isMissingLng = isNaN(lng) || lng === 0;
@@ -86,10 +86,14 @@ const assignDefaultCoordinates = (hotel) => {
     if (isMissingLat || isMissingLng) {
         const cityName = (hotel.city || hotel.district || '').trim().toLowerCase();
         
-        // Find best match in our database (fuzzy match)
-        let matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName === c);
-        if (!matchedCity) {
-            matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName.includes(c) || c.includes(cityName));
+        let matchedCity = null;
+        // Only fuzzy match if we have a non-empty city name
+        if (cityName.length >= 2) {
+            matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName === c);
+            if (!matchedCity) {
+                // Secondary check: does the city input contain a known city name?
+                matchedCity = Object.keys(CITY_COORDINATES).find(c => cityName.includes(c));
+            }
         }
 
         if (matchedCity) {
@@ -102,14 +106,15 @@ const assignDefaultCoordinates = (hotel) => {
             hotel.longitude = cityData.lng + jitterLng;
             // console.log(`Smart Allocation: ${hotel.name} -> ${matchedCity} [${hotel.latitude}, ${hotel.longitude}]`);
         } else {
-            // Fallback: Default to a coordinate within India (Nagpur/Center area) if city unknown
-            // This prevents markers from appearing in Africa/Null Island (0,0)
+            // THE ULTIMATE FALLBACK: Default to Central India (Nagpur Area)
+            // NEVER allow [0,0] which results in markers in the Atlantic Ocean (Null Island)
             const fallbackLat = 21.1458; 
             const fallbackLng = 79.0882;
-            const jitter = (Math.random() - 0.5) * 3; // Wider spread for unknown cities
+            const jitter = (Math.random() - 0.5) * 2; // Spread randomly within a few hundred kms
             
             hotel.latitude = fallbackLat + jitter;
             hotel.longitude = fallbackLng + jitter;
+            // console.log(`Smart Fallback (India): ${hotel.name} [City UNKNOWN: ${cityName}]`);
         }
     }
     return hotel;

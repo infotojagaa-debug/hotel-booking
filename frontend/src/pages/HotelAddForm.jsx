@@ -96,14 +96,19 @@ const HotelAddForm = ({ onSuccess }) => {
 
             const extraServices = selectedAddOns.map(name => ({ name, price: 0, icon: '' }));
 
-            await API.post('/admin/hotels', {
+            const payload = {
                 ...form,
                 images: imagesList,
                 amenities: selectedAmenities,
                 extraServices,
                 isAdminHotel: true,
                 isApproved: true,
-            });
+                // Clean coordinates: send null for empty strings so backend applies smart defaults
+                latitude: form.latitude === '' ? null : parseFloat(form.latitude),
+                longitude: form.longitude === '' ? null : parseFloat(form.longitude)
+            };
+
+            await API.post('/admin/hotels', payload);
 
             setSuccessMsg('Hotel registered successfully!');
             setTimeout(() => { if (onSuccess) onSuccess(); }, 1500);

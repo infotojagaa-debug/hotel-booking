@@ -89,9 +89,13 @@ const MapMoveListener = ({ hotels, onVisibleChange }) => {
     onVisibleChange(visible);
   }, [map, hotels, onVisibleChange]);
 
-  useMapEvents({ moveend: update, zoomend: update });
+  useMapEvents({ 
+    moveend: update, 
+    zoomend: update 
+  });
 
-  useEffect(() => { update(); }, [update]);
+  // Removed redundant useEffect update() which was causing Error 185 (Loop)
+  // Leaflet already fires moveend on initial render.
 
   return null;
 };
