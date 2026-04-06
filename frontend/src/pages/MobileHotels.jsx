@@ -4,7 +4,7 @@ import API, { BACKEND_URL } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import './MobileHotels.css';
 
-const MobileHotels = () => {
+const MobileHotels = ({ onToggleMap }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { userInfo } = useContext(AuthContext);
@@ -110,7 +110,10 @@ const MobileHotels = () => {
       </div>
 
       {/* ── MAP TOGGLE FAB ── */}
-      <button className="mob-map-fab" onClick={() => alert("Mobile Map View coming soon!")}>
+      <button className="mob-map-fab" 
+        onClick={() => navigate('/hotels/map')}
+        onTouchStart={() => navigate('/hotels/map')}
+      >
         <i className="fa fa-map"></i> Map
       </button>
 
@@ -132,7 +135,7 @@ const MobileHotels = () => {
           <span className="mob-tab-icon">❤️</span>
           <span className="mob-tab-label">Saved</span>
         </Link>
-        <Link to={userInfo ? '/dashboard' : '/login'} className={`mob-tab`}>
+        <Link to={userInfo ? '/dashboard' : '/login'} className={`mob-tab`} onTouchStart={(e) => e.target.classList.add('active')}>
           <span className="mob-tab-icon">👤</span>
           <span className="mob-tab-label">Account</span>
         </Link>

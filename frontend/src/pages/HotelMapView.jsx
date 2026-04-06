@@ -353,8 +353,10 @@ const HotelMapView = () => {
   );
 
   // ── Render ─────────────────────────────────────────────────────────────────
-  if (isMobile) {
-    return <MobileHotels />;
+  const [showListOnMobile, setShowListOnMobile] = useState(!routerLocation.pathname.includes('map'));
+
+  if (isMobile && showListOnMobile) {
+    return <MobileHotels onToggleMap={() => setShowListOnMobile(false)} />;
   }
 
   return (
@@ -503,6 +505,7 @@ const HotelMapView = () => {
             zoomControl={false}
             className="hmv-map-container"
             ref={mapRef}
+            tap={!L.Browser.mobile}
           >
             {/* Premium light tile */}
             <TileLayer
@@ -554,7 +557,7 @@ const HotelMapView = () => {
             </button>
             <button
               className="hmv-map-ctrl-btn"
-              onClick={() => setListCollapsed(v => !v)}
+              onClick={isMobile ? () => setShowListOnMobile(true) : () => setListCollapsed(v => !v)}
               title="Toggle list"
             >
               <FaLayerGroup size={15} />

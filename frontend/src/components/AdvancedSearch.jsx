@@ -27,6 +27,8 @@ const AdvancedSearch = ({
     const [showGuestDropdown, setShowGuestDropdown] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [allLocations, setAllLocations] = useState(INDIAN_LOCATIONS);
+    const [propertyType, setPropertyType] = useState('All');
+    const [searchDebounce, setSearchDebounce] = useState(null);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -93,25 +95,42 @@ const AdvancedSearch = ({
         fetchLocations();
     }, []);
 
-    // Filter suggestions based on input
+    // Filter suggestions based on input (WITH 300ms DEBOUNCE)
     useEffect(() => {
-        if (!destination || destination.length < 1) {
-            setFilteredResults([]);
-            setActiveIndex(-1);
-            return;
-        }
-
-        const query = destination.toLowerCase();
-        const filtered = allLocations
-            .filter(loc => 
-                loc.name.toLowerCase().includes(query) || 
-                loc.state.toLowerCase().includes(query)
-            )
-            .slice(0, 10); // Top 10 matches
+        if (searchDebounce) clearTimeout(searchDebounce);
         
-        setFilteredResults(filtered);
-        setActiveIndex(0); // Auto-focus first suggestion
+        const timeout = setTimeout(() => {
+            if (!destination || destination.length < 1) {
+                setFilteredResults([]);
+                setActiveIndex(-1);
+                return;
+            }
+
+            const query = destination.toLowerCase();
+            const filtered = allLocations
+                .filter(loc => 
+                    loc.name.toLowerCase().includes(query) || 
+                    loc.state.toLowerCase().includes(query)
+                )
+                .slice(0, 10); // Top 10 matches
+            
+            setFilteredResults(filtered);
+            setActiveIndex(0); // Auto-focus first suggestion
+        }, 300);
+
+        setSearchDebounce(timeout);
+        return () => clearTimeout(timeout);
     }, [destination, allLocations]);
+
+    // Body Scroll Lock for Mobile
+    useEffect(() => {
+        if (isMobile && (showDropdown || showDatePicker || showGuestDropdown)) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isMobile, showDropdown, showDatePicker, showGuestDropdown]);
 
     // Handle clicking outside to close
     useEffect(() => {
@@ -153,7 +172,8 @@ const AdvancedSearch = ({
             adults,
             children,
             rooms,
-            isPetFriendly
+            isPetFriendly,
+            type: propertyType !== 'All' ? propertyType : null
         };
 
         // Persist for seamless flow
@@ -226,11 +246,29 @@ const AdvancedSearch = ({
 
     return (
         <form onSubmit={handleSearch} className={`search-bar-modern ${isCompact ? 'is-compact-mode' : ''} ${isMobile ? 'is-mobile-search' : ''}`}>
+            {/* 0. Property Type Tabs (Mobile Only) */}
+            {isMobile && (
+                <div className="mob-property-tabs">
+                    {['All', 'Hotel', 'Apartment', 'Villa'].map((type) => (
+                        <button
+                            key={type}
+                            type="button"
+                            className={`mob-prop-tab ${propertyType === type ? 'active' : ''}`}
+                            onClick={() => setPropertyType(type)}
+                            onTouchStart={() => setPropertyType(type)}
+                        >
+                            {type === 'All' ? 'All Stays' : `${type}s`}
+                        </button>
+                    ))}
+                </div>
+            )}
+
             <div className="search-pill-container">
                 {/* 1. Destination Box */}
                 <div 
                     className={`search-pill-item destination-pill ${showDropdown ? 'pill-active' : ''}`} 
                     onClick={() => triggerFocus(destinationRef)}
+                    onTouchStart={() => triggerFocus(destinationRef)}
                 >
                     <div className="pill-content">
                         <div className="pill-icon">
@@ -261,6 +299,9 @@ const AdvancedSearch = ({
                                     e.stopPropagation();
                                     if (destination.length > 0) setShowDropdown(true);
                                 }}
+                                onTouchStart={(e) => {
+                                    if (destination.length > 0) setShowDropdown(true);
+                                }}
                                 autoComplete="off"
                                 required
                             />
@@ -278,7 +319,7 @@ const AdvancedSearch = ({
                                 <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
                                     {isMobile && (
                                         <div className="mob-dropdown-header">
-                                            <div className="mob-drag-handle"></div>
+                                            <div className="mob-drag-handle" onTouchStart={() => setShowDropdown(false)}></div>
                                             <h3>Select Destination</h3>
                                             <p>Choose where you'd like to stay</p>
                                         </div>
@@ -291,6 +332,10 @@ const AdvancedSearch = ({
                                                     className={`dropdown-item district-item ${activeIndex === index ? 'active-suggestion' : ''}`}
                                                     onMouseEnter={() => setActiveIndex(index)}
                                                     onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        selectLocation(loc);
+                                                    }}
+                                                    onTouchStart={(e) => {
                                                         e.stopPropagation();
                                                         selectLocation(loc);
                                                     }}
@@ -327,7 +372,10 @@ const AdvancedSearch = ({
                 <div className="search-pill-divider"></div>
 
                 {/* 2. Check-in/out Unified Box */}
-                <div className={`search-pill-item date-pill ${showDatePicker ? 'pill-active' : ''}`} ref={datePickerContainerRef} onClick={triggerDatePicker}>
+                <div className={`search-pill-item date-pill ${showDatePicker ? 'pill-active' : ''}`} ref={datePickerContainerRef} 
+                    onClick={triggerDatePicker}
+                    onTouchStart={triggerDatePicker}
+                >
                     <div className="pill-content">
                         <div className="pill-icon">
                             <i className="fa fa-calendar-day"></i>
@@ -391,7 +439,10 @@ const AdvancedSearch = ({
                 <div className="search-pill-divider"></div>
 
                 {/* 3. Guests Box */}
-                <div className={`search-pill-item guests-pill ${showGuestDropdown ? 'pill-active' : ''}`} ref={guestsBoxRef} onClick={() => setShowGuestDropdown(!showGuestDropdown)}>
+                <div className={`search-pill-item guests-pill ${showGuestDropdown ? 'pill-active' : ''}`} ref={guestsBoxRef} 
+                    onClick={() => setShowGuestDropdown(!showGuestDropdown)}
+                    onTouchStart={() => setShowGuestDropdown(!showGuestDropdown)}
+                >
                     <div className="pill-content">
                         <div className="pill-icon">
                             <i className="fa fa-users"></i>
@@ -472,7 +523,7 @@ const AdvancedSearch = ({
 
                 {/* Search Button */}
                 <div className="search-pill-btn-wrap">
-                    <button type="submit" className="search-btn-gradient">
+                    <button type="submit" className="search-btn-gradient" onTouchStart={(e) => e.target.classList.add('active')}>
                         <i className="fa fa-search"></i>
                         <span>Search</span>
                     </button>

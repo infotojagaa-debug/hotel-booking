@@ -112,6 +112,16 @@ const MobileHome = () => {
     return () => document.body.classList.remove('mobile-home-active');
   }, []);
 
+  // Body Scroll Lock for search overlay
+  useEffect(() => {
+    if (showSearch) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [showSearch]);
+
   // Close search overlay on route change
   useEffect(() => {
     setShowSearch(false);
@@ -156,6 +166,24 @@ const MobileHome = () => {
     navigate('/login');
   };
 
+  const handlePopularSearch = (city) => {
+    // 1. Persist search data for the next page
+    const searchData = {
+      location: city,
+      checkIn: null,
+      checkOut: null,
+      adults: 2,
+      children: 0,
+      rooms: 1,
+      isPetFriendly: false
+    };
+    localStorage.setItem('elite_stays_search', JSON.stringify(searchData));
+    
+    // 2. Navigate immediately
+    setShowSearch(false);
+    navigate(`/hotels?location=${city}`);
+  };
+
   return (
     <div className="mob-root">
 
@@ -179,7 +207,10 @@ const MobileHome = () => {
           <p className="mob-hero-subtitle">Hotels, apartments, villas &amp; more</p>
 
           {/* Redesigned Premium Search Hub Trigger */}
-          <div className="mob-search-hub" onClick={() => setShowSearch(true)}>
+          <div className="mob-search-hub" 
+            onClick={() => setShowSearch(true)}
+            onTouchStart={() => setShowSearch(true)}
+          >
             <div className="mob-search-hub-icon">
               <i className="fa fa-search"></i>
             </div>
@@ -207,7 +238,7 @@ const MobileHome = () => {
           {/* Quick filter buttons */}
           <div className="mob-quick-filters">
             {propertyTypes.map((p) => (
-              <Link key={p.type} to={`/hotels?type=${p.type}`} className="mob-quick-filter-btn">
+              <Link key={p.type} to={`/hotels?type=${p.type}`} className="mob-quick-filter-btn" onTouchStart={(e) => e.target.classList.add('active')}>
                 <span className="mob-quick-filter-icon">{p.icon}</span>
                 <span>{p.name}</span>
               </Link>
@@ -403,7 +434,10 @@ const MobileHome = () => {
       {showSearch && (
         <div className="mob-search-overlay">
           <div className="mob-overlay-header">
-            <button className="mob-overlay-back" onClick={() => setShowSearch(false)}>
+            <button className="mob-overlay-back" 
+              onClick={() => setShowSearch(false)}
+              onTouchStart={() => setShowSearch(false)}
+            >
               <i className="fa fa-arrow-left"></i>
             </button>
             <span className="mob-overlay-title">Search Stays</span>
@@ -417,14 +451,15 @@ const MobileHome = () => {
               <h4>Popular Searches</h4>
               <div className="mob-tip-chips">
                 {['Chennai', 'Goa', 'Ooty', 'Bangalore', 'Coorg', 'Pondicherry'].map((city) => (
-                  <Link
+                  <button
                     key={city}
-                    to={`/hotels?location=${city}`}
+                    type="button"
                     className="mob-tip-chip"
-                    onClick={() => setShowSearch(false)}
+                    onClick={() => handlePopularSearch(city)}
+                    onTouchStart={() => handlePopularSearch(city)}
                   >
                     📍 {city}
-                  </Link>
+                  </button>
                 ))}
               </div>
             </div>

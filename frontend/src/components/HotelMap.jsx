@@ -100,6 +100,7 @@ const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center
                 scrollWheelZoom={true}
                 style={{ width: '100%', height: '100%', borderRadius: '24px' }}
                 zoomControl={false}
+                tap={!L.Browser.mobile} // Fix for mobile double tap issues in Leaflet
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -226,6 +227,13 @@ const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center
                 .price-pill-marker.active:after { border-top-color: #6d5dfc; bottom: -10px; }
                 .price-badge-currency { font-size: 13px; font-weight: 800; opacity: 0.8; }
                 .price-pill-text { font-size: 17px; font-weight: 950; letter-spacing: -0.8px; }
+
+                /* Mobile Marker Adjustments */
+                @media (max-width: 768px) {
+                    .price-pill-marker { padding: 6px 12px; border-width: 1.5px; }
+                    .price-pill-text { font-size: 14px; }
+                    .price-badge-currency { font-size: 10px; }
+                }
             `}</style>
         </div>
     );
