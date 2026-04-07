@@ -3808,22 +3808,26 @@ html, body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 60px 20px 40px;   /* Adjusted padding to focus on bottom placement */
-    max-width: 1350px;
+    justify-content: flex-end; /* Pin entire content block to bottom */
+    padding: 0 40px 60px; /* Padding for bottom-left pinning */
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-/* Zone 1: heading block centred in the upper half */
-.hero-heading-zone {
-    flex: 1;
+/* Zone 1: heading block aligned to the bottom left */
+.hero-centered-layout {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end; 
+}
+
+.hero-heading-zone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     text-align: left;
-    padding-bottom: 40px; /* Reduced for bottom-left pinning */
-    padding-left: 60px;
 }
 
 /* Zone 2: search bar pinned to the bottom */
