@@ -6251,3 +6251,159 @@ input:checked + .mob-slider:before {
     background: #ffffff !important;
     border-top: 1px solid #f1f5f9 !important;
 }
+
+/* ── NUCLEAR ELITE SEARCH HUB REFINEMENTS (FINAL) ── */
+
+.mob-premium-calendar {
+    width: 100% !important;
+    border: none !important;
+    font-family: inherit !important;
+}
+
+.mob-premium-calendar .react-datepicker__header,
+.mob-premium-calendar .react-datepicker__header--custom,
+.mob-premium-calendar .react-datepicker__navigation {
+    display: none !important; /* Managed by mob-overlay-header */
+}
+
+.mob-premium-calendar .react-datepicker__month-container {
+    width: 100% !important;
+    float: none !important;
+}
+
+.mob-premium-calendar .react-datepicker__month {
+    margin: 0 !important;
+    padding: 0 10px !important;
+}
+
+.mob-premium-calendar .react-datepicker__day-name,
+.mob-premium-calendar .react-datepicker__day {
+    width: 14.28% !important; /* 7 Days to 100% Width */
+    margin: 0 !important;
+    padding: 12px 0 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+}
+
+.mob-premium-calendar .react-datepicker__day--selected,
+.mob-premium-calendar .react-datepicker__day--in-range {
+    background-color: #006ce4 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+}
+
+.mob-premium-calendar .react-datepicker__day--in-selecting-range {
+    background-color: #f0f7ff !important;
+    color: #006ce4 !important;
+}
+
+/* Tab Line Correction */
+.mob-search-hub-tabs {
+    display: flex !important;
+    background: #ffffff !important;
+    border-bottom: 2px solid #f1f5f9 !important;
+    margin-bottom: 12px !important;
+}
+
+.mob-search-tab {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 16px 0 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    position: relative !important;
+    cursor: pointer !important;
+}
+
+.mob-search-tab.active {
+    color: #006ce4 !important;
+}
+
+.mob-search-tab.active::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -2px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 3px !important;
+    background: #006ce4 !important;
+    z-index: 2 !important;
+}
+
+/* Premium Guest Counter UI (Atomic Match) */
+.mob-counter-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 140px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+}
+
+.mob-counter-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #006ce4 !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.mob-counter-btn:disabled {
+    color: #cbd5e1 !important;
+}
+
+.mob-counter-value {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+/* Flexible Section Refinements */
+.mob-flexible-section {
+    padding: 0 20px !important;
+}
+
+.mob-flex-question {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 20px !important;
+}
+
+.mob-stay-options {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 30px !important;
+}
+
+.mob-stay-radio {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    padding: 16px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+}
+
+.mob-stay-radio.active {
+    border-color: #006ce4 !important;
+    background: #f0f7ff !important;
+    color: #006ce4 !important;
+}
+
+.mob-hub-done-btn:active {
+    transform: scale(0.98) !important;
+}
