@@ -103,10 +103,14 @@ const MapEventsHandler = ({ onZoomEnd }) => {
 const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center }) => {
     const navigate = useNavigate();
     const isMobile = window.innerWidth <= 768;
-    
-    const initialZoom = center ? (isMobile ? 13 : 14) : (isMobile ? 11 : 6);
+
+    // No center = Explore page: start at India overview to show city clusters
+    // With center = Hotel details page: start zoomed in on the hotel
+    const initialZoom = center ? (isMobile ? 13 : 15) : (isMobile ? 4 : 5);
     const [zoom, setZoom] = useState(initialZoom);
-    const [mapCenter, setMapCenter] = useState(center || { lat: 13.0827, lng: 80.2707 });
+
+    // Default to center of India (not Chennai) so city badge clusters are all visible
+    const [mapCenter, setMapCenter] = useState(center || { lat: 20.5937, lng: 78.9629 });
 
     const isCityView = zoom < (isMobile ? 8 : 10) && !center;
 

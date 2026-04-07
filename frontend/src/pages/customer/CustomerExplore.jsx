@@ -28,8 +28,8 @@ const CustomerExplore = () => {
                     const lng = Number(h.longitude);
                     return {
                         ...h,
-                        latitude: (lat && !isNaN(lat) && isFinite(lat)) ? lat : (13.08 + (Math.random() - 0.5) * 0.1),
-                        longitude: (lng && !isNaN(lng) && isFinite(lng)) ? lng : (80.27 + (Math.random() - 0.5) * 0.1)
+                        latitude: (lat && !isNaN(lat) && isFinite(lat)) ? lat : (20.59 + (Math.random() - 0.5) * 5),
+                        longitude: (lng && !isNaN(lng) && isFinite(lng)) ? lng : (78.96 + (Math.random() - 0.5) * 5)
                     };
                 });
                 setHotels(processed);

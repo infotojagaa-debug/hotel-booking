@@ -380,11 +380,16 @@ const HotelDetails = () => {
                     {/* 📍 Location / Map Section */}
                     <div className="hotel-location-section" id="location-map" style={{ marginTop: '40px' }}>
                         <h2 className="section-title-premium">Where you'll stay</h2>
-                        <div className="location-map-wrapper" style={{ height: '400px', marginBottom: '16px', borderRadius: '24px', overflow: 'hidden', border: '1px solid #f1f5f9', boxShadow: '0 20px 50px rgba(0,0,0,0.05)' }}>
+                        <div className="location-map-wrapper" style={{ height: '450px', marginBottom: '16px', borderRadius: '24px', overflow: 'hidden', border: '1px solid #f1f5f9', boxShadow: '0 20px 50px rgba(0,0,0,0.05)' }}>
                             <HotelMap 
                                 hotels={cityHotels} 
                                 activeHotelId={hotel._id}
-                                center={{ lat: hotel.latitude || 13.08, lng: hotel.longitude || 80.27 }}
+                                center={
+                                    hotel.latitude && hotel.longitude && 
+                                    !isNaN(Number(hotel.latitude)) && !isNaN(Number(hotel.longitude))
+                                        ? { lat: Number(hotel.latitude), lng: Number(hotel.longitude) }
+                                        : undefined
+                                }
                             />
                         </div>
                         <div className="location-info-footer flex items-center justify-between bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
