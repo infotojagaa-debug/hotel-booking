@@ -96,13 +96,13 @@ const getHotels = async (req, res) => {
 
         // 1. Basic & Security Filters
         if (location) {
-            // Trim and enforce case-insensitive exact matching across City, District, or State
-            const strictLoc = location.trim();
-            query.$or = [
-                { city: { $regex: `${strictLoc}`, $options: 'i' } },
-                { district: { $regex: `${strictLoc}`, $options: 'i' } },
-                { state: { $regex: `${strictLoc}`, $options: 'i' } }
-            ];
+            const locParts = location.split(',').map(p => p.trim()).filter(p => p.length > 0);
+            query.$or = locParts.flatMap(part => [
+                { city: { $regex: part, $options: 'i' } },
+                { district: { $regex: part, $options: 'i' } },
+                { state: { $regex: part, $options: 'i' } },
+                { address: { $regex: part, $options: 'i' } }
+            ]);
         }
         if (starRating) query.starRating = { $gte: Number(starRating) };
         if (type) {

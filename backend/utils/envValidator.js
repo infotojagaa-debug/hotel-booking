@@ -10,8 +10,7 @@ const validateEnv = () => {
   
   const required = [
     'MONGO_URI',
-    'JWT_SECRET',
-    'PORT'
+    'JWT_SECRET'
   ];
 
   required.forEach(key => {
