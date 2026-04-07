@@ -38,11 +38,21 @@ const CustomerDashboardLayout = () => {
     return (
         <div className="cd-dashboard-layout">
             {/* Mobile Header (Only visible on small screens) */}
-            <div className="cd-mobile-header">
-                <button className="cd-sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
-                    {sidebarOpen ? <FaTimes /> : <FaBars />}
+            <div className="cd-mobile-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <button className="cd-sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                        {sidebarOpen ? <FaTimes /> : <FaBars />}
+                    </button>
+                    <span className="cd-mobile-title">Elite Dashboard</span>
+                </div>
+                
+                <button 
+                    onClick={handleLogout} 
+                    className="cd-mobile-logout flex items-center justify-center bg-red-50 text-red-500 rounded-full w-9 h-9 border border-red-100 shadow-sm transition-all hover:bg-red-500 hover:text-white"
+                    title="Sign Out"
+                >
+                    <FaSignOutAlt size={14} />
                 </button>
-                <span className="cd-mobile-title">Elite Dashboard</span>
             </div>
 
             {/* Restored Sidebar */}

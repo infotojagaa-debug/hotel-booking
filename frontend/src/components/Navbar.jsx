@@ -1,4 +1,4 @@
-﻿import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import NotificationBell from './notifications/NotificationBell';
@@ -97,10 +97,25 @@ const Navbar = () => {
           )}
         </div>
         
-        {/* Mobile hamburger */}
-        <button className="glass-hamburger lg:hidden ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#userNavMobile">
-          <span className="bg-white"></span><span className="bg-white"></span><span className="bg-white"></span>
-        </button>
+        {/* Mobile quick actions & hamburger */}
+        <div className="flex lg:hidden items-center gap-4 ml-auto">
+          {userInfo && (
+            <button 
+              onClick={handleLogout}
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-white/10 border border-white/20 text-white hover:bg-red-500 hover:border-red-500 transition-all"
+              title="Logout"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </button>
+          )}
+          <button className="glass-hamburger" type="button" data-bs-toggle="collapse" data-bs-target="#userNavMobile">
+            <span className="bg-white"></span><span className="bg-white"></span><span className="bg-white"></span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile collapse */}
