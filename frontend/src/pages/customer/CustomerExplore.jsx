@@ -14,6 +14,7 @@ const CustomerExplore = () => {
     const [loading, setLoading] = useState(true);
     const [hoveredHotelId, setHoveredHotelId] = useState(null);
     const [activeHotelId, setActiveHotelId] = useState(null);
+    const [showMap, setShowMap] = useState(false); // Mobile Map Toggle
     const listRefs = useRef({});
     const navigate = useNavigate();
 
@@ -57,6 +58,8 @@ const CustomerExplore = () => {
 
     if (loading) return <div className="cd-loader"><div className="cd-spinner" /></div>;
 
+    const toggleMapView = () => setShowMap(!showMap);
+
     return (
         <div className="animate-in fade-in duration-700 flex flex-col h-[calc(100vh-180px)]">
             {/* Header / Intro Area */}
@@ -72,7 +75,7 @@ const CustomerExplore = () => {
             <div className="cd-split-screen flex-1 min-h-0">
                 
                 {/* Scrollable List Side */}
-                <div className="cd-listing-side flex-1 overflow-y-auto pr-2">
+                <div className={`cd-listing-side flex-1 overflow-y-auto pr-2 ${showMap ? 'hidden lg:block' : 'block'}`}>
                     <div className="space-y-4 pr-1">
                         {hotels.length > 0 ? (
                             hotels.map((hotel) => (
@@ -131,7 +134,7 @@ const CustomerExplore = () => {
                 </div>
 
                 {/* Sticky Map Side */}
-                <div className="cd-map-side flex-1 hidden lg:block rounded-3xl overflow-hidden border border-slate-100">
+                <div className={`cd-map-side flex-1 rounded-3xl overflow-hidden border border-slate-100 ${showMap ? 'block' : 'hidden lg:block'}`}>
                     <HotelMap 
                         hotels={hotels} 
                         hoveredHotelId={hoveredHotelId}
@@ -140,6 +143,18 @@ const CustomerExplore = () => {
                     />
                 </div>
             </div>
+
+            {/* Mobile Map/List Toggle Button */}
+            <button 
+                className="cd-mobile-map-toggle-btn lg:hidden"
+                onClick={toggleMapView}
+            >
+                {showMap ? (
+                    <React.Fragment><FaSuitcaseRolling /> <span>Show List</span></React.Fragment>
+                ) : (
+                    <React.Fragment><FaGlobeAmericas /> <span>Show Map</span></React.Fragment>
+                )}
+            </button>
         </div>
     );
 };

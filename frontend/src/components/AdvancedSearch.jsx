@@ -409,49 +409,70 @@ const AdvancedSearch = ({
                         <i className={`fa fa-chevron-down pill-chevron ${showDatePicker ? 'rotated' : ''}`}></i>
                     </div>
 
-                    {/* Unified Date Range Picker Popover (Upward) */}
-                    {showDatePicker && (
-                        <>
-                            {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowDatePicker(false); }}></div>}
-                            <div className="custom-date-picker-popover solid-dropdown" onClick={(e) => e.stopPropagation()}>
+                    {/* 3. Mobile Stability Overlay for Date Selection */}
+                    {isMobile && showDatePicker && (
+                        <div className="mob-full-page-selection-overlay">
+                            <div className="mob-overlay-header">
+                                <i className="fa fa-times mob-overlay-back-icon" onClick={() => setShowDatePicker(false)}></i>
+                                <span className="mob-overlay-title">Select Dates</span>
+                            </div>
+                            <div className="mob-overlay-scroll-body">
                                 <DatePicker
                                     selectsRange={true}
                                     startDate={startDate}
                                     endDate={endDate}
                                     onChange={(update) => {
                                         setDateRange(update);
-                                        // Stop auto-navigation: only close the picker on mobile
+                                        // Auto-close overlay when range is complete
                                         if (update[0] && update[1]) {
-                                            setTimeout(() => setShowDatePicker(false), 200);
+                                            setTimeout(() => setShowDatePicker(false), 300);
                                         }
                                     }}
                                     monthsShown={1}
                                     minDate={new Date()}
                                     inline
-                                    showPopperArrow={false}
-                                    formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 2)}
-                                >
-                                    <div className="datepicker-footer">
-                                        <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(), new Date(new Date().setDate(new Date().getDate() + 1))])}>
-                                             Tonight
-                                        </button>
-                                        <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(new Date().setDate(new Date().getDate() + 1)), new Date(new Date().setDate(new Date().getDate() + 2))])}>
-                                             Tomorrow
-                                        </button>
-                                        <button type="button" className="quick-action-pill" onClick={() => {
-                                            const today = new Date();
-                                            const friday = new Date(today);
-                                            friday.setDate(today.getDate() + ((5 - today.getDay() + 7) % 7));
-                                            const sunday = new Date(friday);
-                                            sunday.setDate(friday.getDate() + 2);
-                                            setDateRange([friday, sunday]);
-                                        }}>
-                                             This weekend
-                                        </button>
-                                    </div>
-                                </DatePicker>
+                                    calendarClassName="mob-premium-calendar"
+                                />
+                                <div className="datepicker-footer mt-6">
+                                    <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(), new Date(new Date().setDate(new Date().getDate() + 1))])}>
+                                         Tonight
+                                    </button>
+                                    <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(new Date().setDate(new Date().getDate() + 1)), new Date(new Date().setDate(new Date().getDate() + 2))])}>
+                                         Tomorrow
+                                    </button>
+                                </div>
                             </div>
-                        </>
+                            <div className="mob-overlay-footer">
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-bold text-slate-400">Total Stay</span>
+                                    <span className="text-sm font-black text-slate-900">
+                                        {startDate && endDate ? `${Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))} Nights` : 'Pick your dates'}
+                                    </span>
+                                </div>
+                                <button type="button" className="guest-apply-btn-rect" onClick={() => setShowDatePicker(false)}>Apply Dates</button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Desktop Date Picker Popover */}
+                    {!isMobile && showDatePicker && (
+                        <div className="custom-date-picker-popover solid-dropdown" onClick={(e) => e.stopPropagation()}>
+                            <DatePicker
+                                selectsRange={true}
+                                startDate={startDate}
+                                endDate={endDate}
+                                onChange={(update) => {
+                                    setDateRange(update);
+                                    if (update[0] && update[1]) {
+                                        setShowDatePicker(false);
+                                    }
+                                }}
+                                monthsShown={1}
+                                minDate={new Date()}
+                                inline
+                                showPopperArrow={false}
+                            />
+                        </div>
                     )}
                 </div>
 
@@ -477,11 +498,15 @@ const AdvancedSearch = ({
                     </div>
 
                     {/* Custom Guest Dropdown - Positioned Right on Desktop */}
-                    {showGuestDropdown && (
-                        <>
-                            {isMobile && <div className="search-mobile-backdrop" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}></div>}
-                            <div className={`guest-dropdown-popover is-right-aligned ${isMobile ? 'centered-mobile-dropdown' : ''}`} ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
-                                <div className="guest-dropdown-content">
+                    {/* 4. Mobile Stability Overlay for Guest Selection */}
+                    {isMobile && showGuestDropdown && (
+                        <div className="mob-full-page-selection-overlay">
+                            <div className="mob-overlay-header">
+                                <i className="fa fa-times mob-overlay-back-icon" onClick={() => setShowGuestDropdown(false)}></i>
+                                <span className="mob-overlay-title">Who's Coming?</span>
+                            </div>
+                            <div className="mob-overlay-scroll-body flex-start">
+                                <div className="guest-dropdown-content w-full">
                                     <div className="guest-row">
                                         <div className="guest-info">
                                             <span className="guest-label-main">Adults</span>
@@ -515,27 +540,76 @@ const AdvancedSearch = ({
                                             <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
                                         </div>
                                     </div>
-
-                                    {/* Pet Friendly - Image 2 Style Square Checkbox */}
                                     <div className="guest-row pet-row" onClick={(e) => { e.stopPropagation(); setIsPetFriendly(!isPetFriendly); }}>
                                         <div className="pet-info">
                                             <span className="guest-label-main">Pet-friendly</span>
-                                            <span className="guest-label-sub">Only show stays that allow pets</span>
+                                            <span className="guest-label-sub">Allows pets</span>
                                         </div>
-                                        <div className="pet-checkbox-wrapper">
-                                            <div className={`square-checkbox ${isPetFriendly ? 'active' : ''}`}>
-                                                {isPetFriendly && <i className="fa fa-check"></i>}
-                                            </div>
+                                        <div className={`square-checkbox ${isPetFriendly ? 'active' : ''}`}>
+                                            {isPetFriendly && <i className="fa fa-check"></i>}
                                         </div>
-                                    </div>
-                                    
-                                    <div className="guest-dropdown-footer">
-                                        <button type="button" className="guest-reset-text" onClick={(e) => { e.stopPropagation(); setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>RESET</button>
-                                        <button type="button" className="guest-apply-btn-rect" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}>Apply</button>
                                     </div>
                                 </div>
                             </div>
-                        </>
+                            <div className="mob-overlay-footer">
+                                <button type="button" className="guest-reset-text" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>Clear All</button>
+                                <button type="button" className="guest-apply-btn-rect" onClick={() => setShowGuestDropdown(false)}>Apply Selection</button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Desktop Guest Dropdown */}
+                    {!isMobile && showGuestDropdown && (
+                        <div className={`guest-dropdown-popover is-right-aligned`} ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
+                            <div className="guest-dropdown-content">
+                                {/* ... existing guest rows for desktop ... */}
+                                <div className="guest-row">
+                                    <div className="guest-info">
+                                        <span className="guest-label-main">Adults</span>
+                                        <span className="guest-label-sub">Ages 13 or above</span>
+                                    </div>
+                                    <div className="guest-counter">
+                                        <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }}>−</button>
+                                        <div className="counter-val-box">{adults}</div>
+                                        <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}>+</button>
+                                    </div>
+                                </div>
+                                <div className="guest-row">
+                                    <div className="guest-info">
+                                        <span className="guest-label-main">Children</span>
+                                        <span className="guest-label-sub">Ages 2–12</span>
+                                    </div>
+                                    <div className="guest-counter">
+                                        <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }}>−</button>
+                                        <div className="counter-val-box">{children}</div>
+                                        <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}>+</button>
+                                    </div>
+                                </div>
+                                <div className="guest-row">
+                                    <div className="guest-info">
+                                        <span className="guest-label-main">Rooms</span>
+                                        <span className="guest-label-sub">Required units</span>
+                                    </div>
+                                    <div className="guest-counter">
+                                        <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setRooms(Math.max(1, rooms - 1)); }}>−</button>
+                                        <div className="counter-val-box">{rooms}</div>
+                                        <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
+                                    </div>
+                                </div>
+                                <div className="guest-row pet-row" onClick={(e) => { e.stopPropagation(); setIsPetFriendly(!isPetFriendly); }}>
+                                    <div className="pet-info">
+                                        <span className="guest-label-main">Pet-friendly</span>
+                                    </div>
+                                    <div className={`square-checkbox ${isPetFriendly ? 'active' : ''}`}>
+                                        {isPetFriendly && <i className="fa fa-check"></i>}
+                                    </div>
+                                </div>
+                                <div className="guest-dropdown-footer">
+                                    <button type="button" className="guest-reset-text" onClick={(e) => { e.stopPropagation(); setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>RESET</button>
+                                    <button type="button" className="guest-apply-btn-rect" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
                     )}
                 </div>
 

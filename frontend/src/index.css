@@ -4519,6 +4519,103 @@
     color: #94a3b8;
 }
 
+/* ── PRO-LEVEL FULL-SCREEN MOBILE OVERLAYS ── */
+/* This solves the "pointing anyother" bug by avoiding translate(-50%,-50%) */
+.search-bar-modern.is-mobile-search .mob-full-page-selection-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: #ffffff !important;
+    z-index: 30005 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.mob-overlay-header {
+    padding: 24px 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.mob-overlay-back-icon {
+    font-size: 20px !important;
+    color: #1e293b !important;
+    cursor: pointer !important;
+}
+
+.mob-overlay-title {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+.mob-overlay-scroll-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.mob-overlay-footer {
+    padding: 20px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #f1f5f9 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+/* ── EXPLORE PAGE MAP TOGGLE (Standard Airbnb Style) ── */
+.cd-mobile-map-toggle-btn {
+    position: fixed !important;
+    bottom: 32px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: #0f172a !important;
+    color: #ffffff !important;
+    padding: 14px 24px !important;
+    border-radius: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
+    z-index: 5000 !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.cd-mobile-map-toggle-btn:active {
+    transform: translateX(-50%) scale(0.95) !important;
+}
+
+/* Fix obscured guest controls in images */
+.search-bar-modern.is-mobile-search .guest-dropdown-content {
+    background: #ffffff !important;
+    color: #111827 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.search-bar-modern.is-mobile-search .guest-row {
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
 /* ── Mobile Date & Guest Dropdown Fixes ── */
 .search-bar-modern.is-mobile-search .custom-date-picker-popover,
 .search-bar-modern.is-mobile-search .guest-dropdown-popover {
