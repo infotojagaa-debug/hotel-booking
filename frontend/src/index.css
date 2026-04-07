@@ -307,11 +307,16 @@ html, body {
 }
 
 .destination-results-dropdown {
-    width: 380px !important;
+    width: 420px !important; /* Slightly wider for better content space */
     left: 0 !important;
     position: absolute !important;
     background: #ffffff !important;
-    z-index: 2000 !important; /* Ensure it stays above everything */
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18), 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+    z-index: 2500 !important; /* Ensure it stays above everything, including promo strips */
+    overflow: hidden !important;
+    padding: 8px 0 !important; /* Vertical padding only, items have horizontal padding */
 }
 
 /* Bottom Triangle Caret Tip */
@@ -4539,6 +4544,19 @@ html, body {
     font-size: 20px;
 }
 
+.mob-res-icon-circle {
+    width: 44px !important;
+    height: 44px !important;
+    background: #f1f5f9 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #6d5dfc !important;
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+}
+
 .mob-result-info {
     flex: 1;
 }
@@ -6544,31 +6562,35 @@ input:checked + .mob-slider:before {
 }
 
 .desktop-result-item {
+    padding: 12px 24px !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     display: flex !important;
     align-items: center !important;
     gap: 16px !important;
-    padding: 12px 20px !important;
-    cursor: pointer !important;
-    transition: background 0.2s !important;
+    border-left: 3px solid transparent !important;
+    background: #ffffff !important;
 }
 
 .desktop-result-item:hover {
     background: #f8fafc !important;
+    border-left-color: #6d5dfc !important;
 }
 
 .desktop-res-icon {
-    width: 40px !important;
-    height: 40px !important;
+    width: 44px !important;
+    height: 44px !important;
     background: #f1f5f9 !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: #475569 !important;
+    color: #6d5dfc !important;
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
 }
 
 .desktop-res-name {
-    font-weight: 700 !important;
     color: #0f172a !important;
 }
 

@@ -59,9 +59,13 @@ const AdvancedSearch = ({
                 setFilteredResults([]);
                 return;
             }
-            const query = destination.toLowerCase();
             const filtered = allLocations
                 .filter(loc => loc.name.toLowerCase().includes(query) || loc.state.toLowerCase().includes(query))
+                .map(loc => ({
+                    ...loc,
+                    // Simulate deal data - in a real app, this would come from the backend
+                    hasDeal: ['Kochi', 'Goa', 'Ooty', 'Chennai'].includes(loc.name)
+                }))
                 .slice(0, 10);
             setFilteredResults(filtered);
         }, 300);
@@ -271,10 +275,19 @@ const AdvancedSearch = ({
                         <div className="destination-results-dropdown upscale-top">
                             {filteredResults.map(loc => (
                                 <div key={loc.name} className="desktop-result-item" onClick={(e) => selectLocation(loc, e)}>
-                                    <div className="desktop-res-icon"><i className="fa fa-map-marker-alt"></i></div>
-                                    <div className="flex flex-col text-left">
-                                        <span className="desktop-res-name">{loc.name}</span>
-                                        <span className="desktop-res-state">{loc.state}</span>
+                                    <div className="desktop-res-icon">
+                                        <i className={loc.hasDeal ? "fa fa-fire text-orange-500" : "fa fa-map-marker-alt"}></i>
+                                    </div>
+                                    <div className="flex flex-col text-left flex-1">
+                                        <div className="flex items-center justify-between">
+                                            <span className="desktop-res-name">{loc.name}</span>
+                                            {loc.hasDeal && (
+                                                <span className="bg-red-50 text-red-600 text-[10px] font-black px-2 py-0.5 rounded-full border border-red-100">
+                                                    HOT DEAL
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="desktop-res-state">{loc.state} {loc.hasDeal && "· Offers available"}</span>
                                     </div>
                                 </div>
                             ))}
@@ -369,10 +382,19 @@ const AdvancedSearch = ({
                     <div className="mob-search-full-body">
                         {filteredResults.map(loc => (
                             <div key={loc.name} className="mob-full-result-item" onClick={() => selectLocation(loc)}>
-                                <i className="fa fa-map-marker-alt mob-result-icon"></i>
-                                <div className="mob-result-info">
-                                    <span className="mob-result-name">{loc.name}</span>
-                                    <span className="mob-result-sub">{loc.state}</span>
+                                <div className="mob-res-icon-circle">
+                                    <i className={loc.hasDeal ? "fa fa-fire text-orange-500" : "fa fa-map-marker-alt"}></i>
+                                </div>
+                                <div className="mob-result-info flex-1">
+                                    <div className="flex items-center justify-between">
+                                        <span className="mob-result-name">{loc.name}</span>
+                                        {loc.hasDeal && (
+                                            <span className="bg-red-50 text-red-600 text-[9px] font-black px-1.5 py-0.5 rounded-full border border-red-100">
+                                                HOT DEAL
+                                            </span>
+                                        )}
+                                    </div>
+                                    <span className="mob-result-sub">{loc.state} {loc.hasDeal && "· Offers available"}</span>
                                 </div>
                             </div>
                         ))}
