@@ -273,7 +273,7 @@ const AdvancedSearch = ({
                     </div>
 
                     {!isMobile && showDropdown && filteredResults.length > 0 && (
-                        <div className="destination-results-dropdown upscale-top">
+                        <div className="destination-results-dropdown">
                             {filteredResults.map(loc => (
                                 <div key={loc.name} className="desktop-result-item" onClick={(e) => selectLocation(loc, e)}>
                                     <div className="desktop-res-icon">
@@ -308,7 +308,7 @@ const AdvancedSearch = ({
                     </div>
 
                     {!isMobile && showDatePicker && (
-                        <div className="custom-date-picker-popover upscale-top" onClick={(e) => e.stopPropagation()}>
+                        <div className="custom-date-picker-popover" onClick={(e) => e.stopPropagation()}>
                             <DatePicker
                                 selectsRange
                                 startDate={startDate}
@@ -338,7 +338,7 @@ const AdvancedSearch = ({
                     </div>
 
                     {!isMobile && showGuestDropdown && (
-                        <div className="guest-dropdown-popover upscale-top" onClick={(e) => e.stopPropagation()}>
+                        <div className="guest-dropdown-popover" onClick={(e) => e.stopPropagation()}>
                             {[
                                 { label: 'Adults', val: adults, set: setAdults, min: 1 },
                                 { label: 'Children', val: children, set: setChildren, min: 0 },

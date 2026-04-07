@@ -289,12 +289,20 @@ html, body {
 .custom-date-picker-popover,
 .destination-results-dropdown {
     position: absolute;
+    top: 100% !important; /* Force appearance below the bar */
     background: #ffffff;
-    border-radius: 20px; /* Refined for search pill context */
+    border-radius: 20px; 
     padding: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Deep premium shadow */
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15); 
+    border: 1px solid rgba(0, 0, 0, 0.08);
     z-index: 1100;
+    margin-top: 12px !important; /* Space between bar and dropdown */
+    animation: premiumPopDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes premiumPopDown {
+    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* Upscale Position Modifier (Requested: Positioning drop-downs upside) */
@@ -319,17 +327,17 @@ html, body {
     padding: 8px 0 !important; /* Vertical padding only, items have horizontal padding */
 }
 
-/* Bottom Triangle Caret Tip */
+/* Top Triangle Caret Tip - Pointing UP */
 .search-dropdown.modern-district-dropdown::after,
 .guest-dropdown-popover::after {
     content: '';
     position: absolute;
-    bottom: -10px;
-    left: 45px; /* Alignment with pill icon area */
+    top: -10px; /* Moved to top */
+    left: 45px; 
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-top: 10px solid #ffffff;
-    filter: drop-shadow(0 2px 1px rgba(0,0,0,0.02));
+    border-bottom: 10px solid #ffffff; /* Pointing up */
+    filter: drop-shadow(0 -2px 1px rgba(0,0,0,0.02));
 }
 
 @keyframes premiumPopUp {
@@ -338,17 +346,17 @@ html, body {
 }
 
 .guest-dropdown-popover {
-    width: 320px; /* Reduced width */
+    width: 320px; 
     right: 0;
     left: auto;
-    transform: scale(0.88); /* Reduced overall scale */
-    transform-origin: bottom right;
+    transform: scale(0.95); /* Better default scale */
+    transform-origin: top right; /* Origin for popDown */
 }
 
 .custom-date-picker-popover {
-    transform-origin: bottom left !important;
-    transform: scale(0.78) !important; /* Significantly reduced for navbar safety */
-    margin-bottom: 2px !important;
+    transform-origin: top left !important;
+    transform: scale(0.95) !important; 
+    margin-top: 8px !important;
     padding: 8px !important;
     width: auto !important;
 }
