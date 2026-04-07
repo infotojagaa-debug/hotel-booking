@@ -130,9 +130,9 @@ const CustomerBookings = () => {
             ) : (
                 <div className="space-y-6">
                     {displayed.map((b, idx) => (
-                        <div key={b._id} className="cd-booking-card-premium p-6 group flex flex-col xl:flex-row gap-6 border border-slate-100 bg-white rounded-3xl" data-aos="fade-up" data-aos-delay={idx * 50}>
+                        <div key={b._id} className="cd-booking-card-premium p-6 group flex flex-col lg:flex-row gap-6 border border-slate-100 bg-white rounded-3xl" data-aos="fade-up" data-aos-delay={idx * 50}>
                             {/* Main Info Column */}
-                            <div className="cd-booking-img-wrap w-full xl:w-[260px] h-[180px] rounded-[24px] overflow-hidden relative flex-shrink-0">
+                            <div className="cd-booking-img-wrap w-full lg:w-[280px] h-[180px] rounded-[24px] overflow-hidden relative flex-shrink-0">
                                 <img
                                     src={
                                         (b.room?.images?.[0] || b.hotel?.images?.[0]) 
@@ -196,7 +196,7 @@ const CustomerBookings = () => {
                             </div>
 
                             {/* Actions Column */}
-                            <div className="cd-booking-side flex flex-col justify-between items-center xl:items-end min-w-[180px] border-t xl:border-t-0 xl:border-l border-slate-50 pt-6 xl:pt-0 xl:pl-6 mt-2 xl:mt-0">
+                            <div className="cd-booking-side flex flex-col justify-between items-center lg:items-end min-w-[200px] border-t lg:border-t-0 lg:border-l border-slate-50 pt-6 lg:pt-0 lg:pl-6 mt-2 lg:mt-0">
                                 <div className="text-center xl:text-right w-full">
                                     <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1 opacity-60">Total Value</span>
                                     <div className="text-2xl font-black text-slate-900 tracking-tighter">₹{b.totalPrice?.toLocaleString()}</div>

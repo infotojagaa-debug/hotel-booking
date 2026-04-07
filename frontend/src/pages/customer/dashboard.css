@@ -303,30 +303,38 @@ body {
 }
 
 .cd-sidebar-footer {
-  padding: 25px;
+  padding: 30px 20px;
   border-top: 1px solid #f1f5f9;
+  background: white;
 }
 
 .cd-logout-btn {
   width: 100%;
   padding: 14px;
-  border-radius: 16px;
+  border-radius: 14px;
   background: #fff1f2;
   color: #f43f5e;
-  border: none;
-  font-weight: 700;
+  border: 1px solid rgba(244, 63, 94, 0.1);
+  font-weight: 800;
   font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.05);
 }
 
 .cd-logout-btn:hover {
   background: #f43f5e;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(244, 63, 94, 0.2);
+}
+
+.cd-logout-btn:active {
+  transform: translateY(0);
 }
 
 /* --- MODERN UI COMPONENTS --- */
@@ -804,14 +812,14 @@ body {
 /* --- PREMIUM CARDS (V3 Optimized) --- */
 .cd-booking-card-premium {
   background: white;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 24px;
+  padding: 24px;
   display: flex;
-  gap: 25px;
-  box-shadow: var(--cd-shadow);
-  border: 1px solid #f1f5f9;
-  margin-bottom: 20px;
-  transition: all 0.3s;
+  gap: 30px;
+  box-shadow: var(--cd-shadow-soft);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cd-booking-card-premium:hover {
