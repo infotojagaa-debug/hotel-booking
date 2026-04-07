@@ -31,6 +31,11 @@ const AdvancedSearch = ({
     const [showMobSearchOverlay, setShowMobSearchOverlay] = useState(false);
     const [searchDebounce, setSearchDebounce] = useState(null);
 
+    // NEW STATES FOR REAL-TIME BOOKING STYLE
+    const [activeDateTab, setActiveDateTab] = useState('calendar'); // 'calendar' or 'flexible'
+    const [stayDuration, setStayDuration] = useState('week'); // 'weekend', 'week', 'month', 'other'
+    const [selectedMonths, setSelectedMonths] = useState([]);
+
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
@@ -125,13 +130,13 @@ const AdvancedSearch = ({
 
     // Body Scroll Lock for Mobile
     useEffect(() => {
-        if (isMobile && (showDropdown || showDatePicker || showGuestDropdown)) {
+        if (isMobile && (showDropdown || showDatePicker || showGuestDropdown || showMobSearchOverlay)) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
         }
         return () => { document.body.style.overflow = 'unset'; };
-    }, [isMobile, showDropdown, showDatePicker, showGuestDropdown]);
+    }, [isMobile, showDropdown, showDatePicker, showGuestDropdown, showMobSearchOverlay]);
 
     const handlePillClick = (e, type) => {
         if (e) {
@@ -219,17 +224,6 @@ const AdvancedSearch = ({
         navigate(`/hotels?${searchParams.toString()}`);
     };
 
-    const triggerDatePicker = () => {
-        setShowDatePicker(!showDatePicker);
-    };
-
-    const triggerFocus = (ref) => {
-        if (ref.current) {
-            ref.current.focus();
-        }
-    };
-
-
     const selectLocation = (loc) => {
         setDestination(loc.name);
         setShowDropdown(false);
@@ -269,6 +263,13 @@ const AdvancedSearch = ({
             </span>
         );
     };
+
+    const toggleMonth = (month) => {
+        setSelectedMonths(prev => 
+            prev.includes(month) ? prev.filter(m => m !== month) : [...prev, month]
+        );
+    };
+
 
     return (
         <form onSubmit={handleSearch} className={`search-bar-modern ${isCompact ? 'is-compact-mode' : ''} ${isMobile ? 'is-mobile-search' : ''}`}>
@@ -313,7 +314,6 @@ const AdvancedSearch = ({
                                     const caret = e.target.selectionStart;
                                     setDestination(val);
                                     setShowDropdown(true);
-                                    // Hack to prevent cursor jumping on async re-renders
                                     requestAnimationFrame(() => {
                                         if (destinationRef.current) {
                                             destinationRef.current.setSelectionRange(caret, caret);
@@ -345,7 +345,6 @@ const AdvancedSearch = ({
                             </button>
                         )}
                         
-                        {/* Multi-Level Location Dropdown (Desktop Only) */}
                         {!isMobile && showDropdown && (
                             <div className="search-dropdown modern-district-dropdown select-none" ref={dropdownRef}>
                                 <div className="dropdown-list">
@@ -409,7 +408,7 @@ const AdvancedSearch = ({
                         <i className={`fa fa-chevron-down pill-chevron ${showDatePicker ? 'rotated' : ''}`}></i>
                     </div>
 
-                    {/* 3. Mobile Stability Overlay (Booking.com Style) */}
+                    {/* 3. Mobile Stability Overlay (REAL-TIME BOOKING STYLE) */}
                     {isMobile && showDatePicker && (
                         <div className="mob-full-page-selection-overlay animate-in slide-in-from-bottom duration-300">
                             <div className="mob-overlay-header">
@@ -417,49 +416,103 @@ const AdvancedSearch = ({
                                 <i className="fa fa-times mob-overlay-close-icon" onClick={() => setShowDatePicker(false)}></i>
                             </div>
 
-                            {/* Booking.com Tabs */}
+                            {/* Premium Selection Tabs */}
                             <div className="mob-search-hub-tabs">
-                                <div className="mob-search-tab active">Calendar</div>
-                                <div className="mob-search-tab">I'm flexible</div>
+                                <div className={`mob-search-tab ${activeDateTab === 'calendar' ? 'active' : ''}`} onClick={() => setActiveDateTab('calendar')}>Calendar</div>
+                                <div className={`mob-search-tab ${activeDateTab === 'flexible' ? 'active' : ''}`} onClick={() => setActiveDateTab('flexible')}>I'm flexible</div>
                             </div>
+
+                            {activeDateTab === 'calendar' && (
+                                <div className="mob-week-header">
+                                    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => <div key={day} className="mob-week-day">{day}</div>)}
+                                </div>
+                            )}
 
                             <div className="mob-overlay-scroll-body">
-                                <div className="p-4">
-                                    <DatePicker
-                                        selectsRange={true}
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        onChange={(update) => setDateRange(update)}
-                                        monthsShown={2} 
-                                        minDate={new Date()}
-                                        inline
-                                        calendarClassName="mob-premium-calendar"
-                                    />
-                                </div>
+                                {activeDateTab === 'calendar' ? (
+                                    <div className="pb-8">
+                                        <DatePicker
+                                            selectsRange={true}
+                                            startDate={startDate}
+                                            endDate={endDate}
+                                            onChange={(update) => setDateRange(update)}
+                                            monthsShown={6} 
+                                            minDate={new Date()}
+                                            inline
+                                            calendarClassName="mob-premium-calendar"
+                                            renderMonthContent={(month, date) => (
+                                                <div className="custom-month-container">
+                                                    {format(date, 'MMMM yyyy')}
+                                                </div>
+                                            )}
+                                        />
+                                    </div>
+                                ) : (
+                                    /* Flexible Tab Content */
+                                    <div className="mob-flexible-section">
+                                        <h3 className="mob-flex-question">How long do you want to stay?</h3>
+                                        <div className="mob-stay-options">
+                                            {[
+                                                { id: 'weekend', label: 'A weekend' },
+                                                { id: 'week', label: 'A week' },
+                                                { id: 'month', label: 'A month' },
+                                                { id: 'other', label: 'Other' }
+                                            ].map(opt => (
+                                                <div key={opt.id} className={`mob-stay-radio ${stayDuration === opt.id ? 'active' : ''}`} onClick={() => setStayDuration(opt.id)}>
+                                                    <div className="mob-radio-circle">
+                                                        <div className="mob-radio-dot"></div>
+                                                    </div>
+                                                    <span className="mob-stay-label">{opt.label}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <h3 className="mob-flex-question">When do you want to go?</h3>
+                                        <div className="mob-month-scroller">
+                                            {[
+                                                { id: 'apr', name: 'Apr', year: '2026' },
+                                                { id: 'may', name: 'May', year: '2026' },
+                                                { id: 'jun', name: 'Jun', year: '2026' },
+                                                { id: 'jul', name: 'Jul', year: '2026' },
+                                                { id: 'aug', name: 'Aug', year: '2026' }
+                                            ].map(m => (
+                                                <div key={m.id} className={`mob-month-card ${selectedMonths.includes(m.id) ? 'active' : ''}`} onClick={() => toggleMonth(m.id)}>
+                                                    <i className="fa fa-calendar-alt"></i>
+                                                    <div className="mob-month-text">{m.name}</div>
+                                                    <div className="text-[10px] text-slate-400 font-bold">{m.year}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Dynamic Stay Summary Bar */}
+                            {/* Summary Bar (Constant Feedback) */}
                             <div className="mob-stay-summary-bar">
                                 <span className="summary-details-text">
-                                    {startDate && endDate ? (
-                                        `${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} (${Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))}-night stay)`
-                                    ) : 'Select days and months'}
+                                    {activeDateTab === 'calendar' ? (
+                                        startDate && endDate ? (
+                                            `${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} (${Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))}-night stay)`
+                                        ) : 'Select days and months'
+                                    ) : (
+                                        selectedMonths.length > 0 ? `Selected ${selectedMonths.length} months` : 'Select days and months'
+                                    )}
                                 </span>
                             </div>
 
-                            {/* Booking.com Utility Chips */}
-                            <div className="mob-chip-container">
-                                <div className="mob-action-chip active">Exact dates</div>
-                                <div className="mob-action-chip">± 1 day</div>
-                                <div className="mob-action-chip">± 2 days</div>
-                                <div className="mob-action-chip">± 3 days</div>
-                            </div>
+                            {activeDateTab === 'calendar' && (
+                                <div className="mob-chip-container">
+                                    <div className="mob-action-chip active">Exact dates</div>
+                                    <div className="mob-action-chip">± 1 day</div>
+                                    <div className="mob-action-chip">± 2 days</div>
+                                </div>
+                            )}
 
                             <div className="mob-overlay-footer">
                                 <button 
-                                    className={`mob-large-done-btn ${!startDate || !endDate ? 'opacity-50' : ''}`}
+                                    className={`mob-large-done-btn ${(activeDateTab === 'calendar' && (!startDate || !endDate)) ? 'opacity-50' : ''}`}
                                     onClick={() => setShowDatePicker(false)}
-                                    disabled={!startDate || !endDate}
+                                    disabled={activeDateTab === 'calendar' && (!startDate || !endDate)}
                                 >
                                     Done
                                 </button>
@@ -467,7 +520,6 @@ const AdvancedSearch = ({
                         </div>
                     )}
 
-                    {/* Desktop Date Picker Popover */}
                     {!isMobile && showDatePicker && (
                         <div className="custom-date-picker-popover solid-dropdown" onClick={(e) => e.stopPropagation()}>
                             <DatePicker
@@ -510,7 +562,7 @@ const AdvancedSearch = ({
                         <i className={`fa fa-chevron-down pill-chevron ${showGuestDropdown ? 'rotated' : ''}`}></i>
                     </div>
 
-                    {/* 4. Mobile Stability Overlay for Guest Selection (Booking.com Style) */}
+                    {/* 4. Mobile Stability Overlay for Guest Selection (REAL-TIME BOOKING STYLE) */}
                     {isMobile && showGuestDropdown && (
                         <div className="mob-full-page-selection-overlay animate-in slide-in-from-bottom duration-300">
                             <div className="mob-overlay-header">
@@ -518,16 +570,16 @@ const AdvancedSearch = ({
                                 <i className="fa fa-times mob-overlay-close-icon" onClick={() => setShowGuestDropdown(false)}></i>
                             </div>
 
-                            <div className="mob-overlay-scroll-body">
+                            <div className="mob-overlay-scroll-body pb-20">
                                 {/* Adults */}
                                 <div className="mob-guest-item-card">
                                     <div className="mob-guest-meta">
                                         <span className="label-main">Adults</span>
                                     </div>
                                     <div className="mob-counter-box">
-                                        <button className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }} disabled={adults <= 1}>−</button>
+                                        <button type="button" className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }} disabled={adults <= 1}>−</button>
                                         <span className="mob-counter-value">{adults}</span>
-                                        <button className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}>+</button>
+                                        <button type="button" className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}>+</button>
                                     </div>
                                 </div>
                                 {/* Children */}
@@ -536,9 +588,9 @@ const AdvancedSearch = ({
                                         <span className="label-main">Children</span>
                                     </div>
                                     <div className="mob-counter-box">
-                                        <button className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }} disabled={children <= 0}>−</button>
+                                        <button type="button" className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }} disabled={children <= 0}>−</button>
                                         <span className="mob-counter-value">{children}</span>
-                                        <button className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}>+</button>
+                                        <button type="button" className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}>+</button>
                                     </div>
                                 </div>
                                 {/* Rooms */}
@@ -547,26 +599,40 @@ const AdvancedSearch = ({
                                         <span className="label-main">Rooms</span>
                                     </div>
                                     <div className="mob-counter-box">
-                                        <button className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setRooms(Math.max(1, rooms - 1)); }} disabled={rooms <= 1}>−</button>
+                                        <button type="button" className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setRooms(Math.max(1, rooms - 1)); }} disabled={rooms <= 1}>−</button>
                                         <span className="mob-counter-value">{rooms}</span>
-                                        <button className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
+                                        <button type="button" className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
                                     </div>
+                                </div>
+
+                                {/* Pet Toggle Switch (Premium Style) */}
+                                <div className="mob-pet-toggle-row">
+                                    <span className="mob-pet-label-main">Traveling with pets?</span>
+                                    <label className="mob-switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={isPetFriendly} 
+                                            onChange={() => setIsPetFriendly(!isPetFriendly)} 
+                                        />
+                                        <span className="mob-slider"></span>
+                                    </label>
+                                </div>
+                                <div className="mob-assistance-note">
+                                    Assistance animals aren't considered pets. <a href="#" className="mob-help-link">Read more about traveling with assistance animals</a>
                                 </div>
                             </div>
 
                             <div className="mob-overlay-footer">
-                                <button className="mob-large-done-btn" onClick={() => setShowGuestDropdown(false)}>
+                                <button type="button" className="mob-large-done-btn" onClick={() => setShowGuestDropdown(false)}>
                                     Done
                                 </button>
                             </div>
                         </div>
                     )}
 
-                    {/* Desktop Guest Dropdown */}
                     {!isMobile && showGuestDropdown && (
                         <div className={`guest-dropdown-popover is-right-aligned`} ref={guestDropdownRef} onClick={(e) => e.stopPropagation()}>
                             <div className="guest-dropdown-content">
-                                {/* ... existing guest rows for desktop ... */}
                                 <div className="guest-row">
                                     <div className="guest-info">
                                         <span className="guest-label-main">Adults</span>
@@ -617,7 +683,6 @@ const AdvancedSearch = ({
                     )}
                 </div>
 
-                {/* Search Button */}
                 <div className="search-pill-btn-wrap">
                     <button type="submit" className="search-btn-gradient" onTouchStart={(e) => e.target.classList.add('active')}>
                         <i className="fa fa-search"></i>
@@ -625,7 +690,7 @@ const AdvancedSearch = ({
                     </button>
                 </div>
             </div>
-            {/* 6. Modern Full-Screen Mobile Location Search Overlay */}
+            
             {isMobile && showMobSearchOverlay && (
                 <div className="mob-search-full-overlay">
                     <div className="mob-search-full-header">
@@ -702,6 +767,5 @@ const AdvancedSearch = ({
         </form>
     );
 };
-
 
 export default AdvancedSearch;
