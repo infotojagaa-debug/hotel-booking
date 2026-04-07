@@ -280,8 +280,9 @@
 
 /* Upscale Position Modifier (Requested: Positioning drop-downs upside) */
 .upscale-top {
-    bottom: calc(100% + 12px) !important; 
+    bottom: calc(100% + 15px) !important; 
     top: auto !important;
+    transform-origin: bottom center !important;
     animation: premiumPopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -309,9 +310,17 @@
 }
 
 .guest-dropdown-popover {
-    width: 360px;
+    width: 320px; /* Reduced width */
     right: 0;
     left: auto;
+    transform: scale(0.88); /* Reduced overall scale */
+    transform-origin: bottom right;
+}
+
+.custom-date-picker-popover {
+    transform-origin: bottom left;
+    transform: scale(0.82); /* Significantly reduced calendar size per user request */
+    margin-bottom: 5px;
 }
 
 /* Guest Selector Rows (Desktop Only) */

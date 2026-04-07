@@ -101,7 +101,8 @@ const AdvancedSearch = ({
         navigate(`/hotels?${searchParams.toString()}`);
     };
 
-    const selectLocation = (loc) => {
+    const selectLocation = (loc, e) => {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
         setDestination(loc.name);
         setShowMobSearchOverlay(false);
         setShowDropdown(false);
@@ -269,7 +270,7 @@ const AdvancedSearch = ({
                     {!isMobile && showDropdown && filteredResults.length > 0 && (
                         <div className="destination-results-dropdown upscale-top">
                             {filteredResults.map(loc => (
-                                <div key={loc.name} className="desktop-result-item" onClick={() => selectLocation(loc)}>
+                                <div key={loc.name} className="desktop-result-item" onClick={(e) => selectLocation(loc, e)}>
                                     <div className="desktop-res-icon"><i className="fa fa-map-marker-alt"></i></div>
                                     <div className="flex flex-col text-left">
                                         <span className="desktop-res-name">{loc.name}</span>
@@ -335,14 +336,14 @@ const AdvancedSearch = ({
                                         <span className="guest-sub-label">{item.label === 'Adults' ? 'Ages 13+' : item.label === 'Children' ? 'Ages 2-12' : 'Total rooms'}</span>
                                     </div>
                                     <div className="guest-counter-side">
-                                        <button type="button" className="counter-btn" onClick={() => item.set(Math.max(item.min, item.val - 1))} disabled={item.val <= item.min}>−</button>
+                                        <button type="button" className="counter-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); item.set(Math.max(item.min, item.val - 1)); }} disabled={item.val <= item.min}>−</button>
                                         <span className="counter-val">{item.val}</span>
-                                        <button type="button" className="counter-btn" onClick={() => item.set(item.val + 1)}>+</button>
+                                        <button type="button" className="counter-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); item.set(item.val + 1); }}>+</button>
                                     </div>
                                 </div>
                             ))}
                             <div className="guest-footer">
-                                <button type="button" className="guest-done-btn" onClick={() => setShowGuestDropdown(false)}>Apply Selection</button>
+                                <button type="button" className="guest-done-btn" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowGuestDropdown(false); }}>Apply Selection</button>
                             </div>
                         </div>
                     )}
