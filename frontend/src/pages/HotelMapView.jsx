@@ -22,6 +22,22 @@ const isValidCoords = (lat, lng) => {
          (Math.abs(latNum) > 0.01 || Math.abs(lngNum) > 0.01);
 };
 
+// ─── CUSTOM MARKER CREATORS ───────────────────────────────────────────────────
+const createPriceMarker = (price, isActive, isHovered) => {
+  const activeClass = isActive ? 'active' : '';
+  const hoverClass = isHovered ? 'hovered' : '';
+  return L.divIcon({
+    className: 'price-pill-marker-wrapper',
+    html: `<div class="price-pill-marker ${activeClass} ${hoverClass}">
+            <span class="price-badge-currency">₹</span>
+            <span class="price-pill-text">${parseInt(price || 0).toLocaleString('en-IN')}</span>
+           </div>`,
+    iconSize: [90, 38],
+    iconAnchor: [45, 38],
+    popupAnchor: [0, -40]
+  });
+};
+
 // ─── Map Fit Bounds Controller ────────────────────────────────────────────────
 const MapFitBounds = ({ hotels, forceCenter }) => {
   const map = useMap();
