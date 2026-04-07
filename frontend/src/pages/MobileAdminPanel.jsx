@@ -172,6 +172,38 @@ const MobileAdminPanel = () => {
         }).format(amount || 0);
     };
 
+    const handleToggleRoomStatus = async (id, current) => {
+        const statuses = ['Available', 'Blocked', 'Maintenance'];
+        const next = statuses[(statuses.indexOf(current || 'Available') + 1) % statuses.length];
+        try {
+            await API.put(`/admin/rooms/${id}`, { status: next });
+            fetchData();
+        } catch { alert('Update failed'); }
+    };
+
+    const handleEditRoomClick = (r) => {
+        setNewRoom({ ...r });
+        setSelectedHotelForRooms(hotels.find(h => h._id === (r.hotel?._id || r.hotel)));
+        setShowAddRoomForm(true);
+    };
+
+    const handleAddRoomSub = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        try {
+            const payload = { ...newRoom, hotelId: selectedHotelForRooms._id };
+            if (newRoom._id) {
+                await API.put(`/admin/rooms/${newRoom._id}`, payload);
+            } else {
+                await API.post('/admin/rooms', payload);
+            }
+            setShowAddRoomForm(false);
+            setNewRoom({ name: '', type: 'Deluxe', pricePerNight: '', maxGuests: 2, description: '', roomNumbers: '', amenities: [] });
+            fetchData();
+        } catch (err) { alert(err.response?.data?.message || 'Failed to save'); }
+        finally { setSubmitting(false); }
+    };
+
     if (loading) return <div className="mob-admin-loading"><div className="mob-spinner"></div></div>;
 
     // --- Render Helpers ---
@@ -509,8 +541,14 @@ const MobileAdminPanel = () => {
                 )}
                 {activeTab === 'rooms' && (
                     <div className="mob-adm-pane">
-                        <div className="mob-sec-hdr">
+                        <div className="mob-sec-hdr no-mb">
                             <h3>Property Rooms</h3>
+                            {selectedHotelForRooms && (
+                                <button className="mob-add-btn" onClick={() => {
+                                    setNewRoom({ name: '', type: 'Deluxe', pricePerNight: '', maxGuests: 2, description: '', roomNumbers: '', amenities: [] });
+                                    setShowAddRoomForm(true);
+                                }}>+ Add Room</button>
+                            )}
                         </div>
                         
                         <div className="mob-property-selector">
@@ -545,15 +583,26 @@ const MobileAdminPanel = () => {
                                             <div className="rm-inv-top">
                                                 <div className="rm-inv-info">
                                                     <strong>{r.name}</strong>
-                                                    <span className={`rm-st ${r.status?.toLowerCase()}`}>{r.status || 'Available'}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={`rm-st ${r.status?.toLowerCase()}`}>{r.status || 'Available'}</span>
+                                                        <button className="mob-cycle-btn" onClick={() => handleToggleRoomStatus(r._id, r.status)}>
+                                                            <i className="fa fa-sync-alt"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div className="rm-inv-actions">
-                                                    <button className="mob-icon-btn del" onClick={() => {/* admin delete logic if needed */}}><i className="fa fa-trash-alt"></i></button>
+                                                    <button className="mob-icon-btn edit" onClick={() => handleEditRoomClick(r)}><i className="fa fa-pencil-alt"></i></button>
+                                                    <button className="mob-icon-btn del" onClick={async () => {
+                                                        if (window.confirm('Delete room?')) {
+                                                            await API.delete(`/admin/rooms/${r._id}`);
+                                                            fetchData();
+                                                        }
+                                                    }}><i className="fa fa-trash-alt"></i></button>
                                                 </div>
                                             </div>
                                             <div className="rm-inv-meta">
-                                                <span><i className="fa fa-tag"></i> {formatCurrency(r.pricePerNight)}</span>
                                                 <span><i className="fa fa-users"></i> {r.maxGuests} Guests</span>
+                                                <span><i className="fa fa-tag"></i> {formatCurrency(r.pricePerNight)}</span>
                                             </div>
                                         </div>
                                     ))
@@ -569,6 +618,49 @@ const MobileAdminPanel = () => {
                     </div>
                 )}
             </main>
+
+            {/* --- ADD ROOM MODAL (PARITY SYNC) --- */}
+            {showAddRoomForm && (
+                <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
+                    <div className="mob-form-hdr">
+                        <button className="mob-close-btn" onClick={() => setShowAddRoomForm(false)}><i className="fa fa-times"></i></button>
+                        <h2>{newRoom._id ? 'Edit Room' : 'Add New Room'}</h2>
+                    </div>
+
+                    <div className="mob-modal-context-banner">
+                        <div className="ctx-lbl">MANAGING PROPERTY</div>
+                        <div className="ctx-val"><i className="fa fa-building"></i> {selectedHotelForRooms?.name}</div>
+                    </div>
+
+                    <form className="mob-form-body" onSubmit={handleAddRoomSub}>
+                        <div className="mob-input-group">
+                            <label>Room Name</label>
+                            <input type="text" placeholder="e.g. Presidential Suite" value={newRoom.name} onChange={e => setNewRoom({...newRoom, name: e.target.value})} required />
+                        </div>
+
+                        <div className="mob-row-2">
+                            <div className="mob-input-group">
+                                <label>Price / Night</label>
+                                <input type="number" placeholder="₹" value={newRoom.pricePerNight} onChange={e => setNewRoom({...newRoom, pricePerNight: e.target.value})} required />
+                            </div>
+                            <div className="mob-input-group">
+                                <label>Max Guests</label>
+                                <input type="number" value={newRoom.maxGuests} onChange={e => setNewRoom({...newRoom, maxGuests: e.target.value})} required />
+                            </div>
+                        </div>
+
+                        <div className="mob-input-group">
+                            <label>Room Description</label>
+                            <textarea rows="3" placeholder="Luxury amenities..." value={newRoom.description} onChange={e => setNewRoom({...newRoom, description: e.target.value})} required maxLength={200}></textarea>
+                            <small className="text-right block text-gray-400 text-[9px] mt-1">{newRoom.description?.length || 0}/200</small>
+                        </div>
+
+                        <button type="submit" className="mob-save-btn" disabled={submitting}>
+                            {submitting ? 'Processing...' : (newRoom._id ? 'Save Changes' : 'Create Room')}
+                        </button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };
