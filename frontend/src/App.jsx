@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Rooms from './pages/Rooms';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Register from './pages/Register';
 import RoomDetails from './pages/RoomDetails';
 import AdminPanel from './pages/AdminPanel';
 import ManagerDashboard from './pages/ManagerDashboard';
@@ -66,6 +67,7 @@ const AppLayout = () => {
         <Route path="/hotels/map" element={<HotelMapView />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/manager-signup" element={<ManagerSignup />} />
         <Route path="/rooms/:id" element={<RoomDetails />} />
         <Route path="/hotels/:id" element={<HotelDetails />} />
