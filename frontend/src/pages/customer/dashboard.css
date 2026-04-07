@@ -1652,3 +1652,261 @@ body {
     70% { box-shadow: 0 0 0 15px rgba(109, 93, 251, 0); }
     100% { box-shadow: 0 0 0 0 rgba(109, 93, 251, 0); }
 }
+
+
+/* ============================================================
+   MOBILE BOOKINGS PAGE — FULLY DEDICATED MOBILE DESIGN
+   Applies ONLY on screens ≤ 768px
+   Desktop/Laptop styles are 100% untouched above this block.
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* ── Layout & Main Content ── */
+  .cd-main {
+    margin-left: 0 !important;
+    padding: 16px 12px 100px !important;
+    padding-top: 20px !important;
+  }
+
+  /* ── Page Header (Title + Button row) ── */
+  .cd-bookings-page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .cd-welcome-title {
+    font-size: 22px !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .cd-welcome-sub {
+    font-size: 13px !important;
+    margin-top: 4px !important;
+  }
+
+  /* Book New Stay button — full width on mobile */
+  .cd-btn-primary {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 20px !important;
+    font-size: 13px !important;
+    border-radius: 14px !important;
+  }
+
+  /* ── Filter Pills Row ── */
+  .cd-filters-row {
+    gap: 8px !important;
+    margin: 0 0 16px 0 !important;
+    padding: 8px 0 !important;
+  }
+
+  .cd-filter-tab {
+    padding: 8px 18px !important;
+    font-size: 11px !important;
+    border-radius: 50px !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  /* ── Empty State ── */
+  .cd-empty {
+    padding: 48px 24px !important;
+    border-radius: 24px !important;
+  }
+
+  /* ── Booking Card — Mobile App Style ── */
+  .cd-booking-card-premium {
+    /* Reset desktop horizontal layout */
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    margin-bottom: 16px !important;
+    border: 1px solid #e8edf3 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+    background: #fff !important;
+    transition: box-shadow 0.3s ease !important;
+  }
+
+  .cd-booking-card-premium:hover {
+    transform: none !important;
+    box-shadow: 0 8px 30px rgba(109, 93, 252, 0.12) !important;
+  }
+
+  /* ── Card Hero Image — Full-Width Cinematic ── */
+  .cd-booking-img-wrap {
+    width: 100% !important;
+    height: 200px !important;
+    border-radius: 0 !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+  }
+
+  .cd-booking-img-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.6s ease !important;
+  }
+
+  /* Status badge stays on the image (absolute, top-left) */
+  .cd-status-badge {
+    font-size: 9px !important;
+    padding: 5px 12px !important;
+    border-radius: 50px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+  }
+
+  /* ── Main Info Body ── */
+  .cd-booking-main {
+    padding: 16px 16px 0 16px !important;
+    flex: none !important;
+    width: 100% !important;
+  }
+
+  /* Booking ID + Date row — slim compact chips */
+  .cd-booking-main > div:first-child {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Booking ID chip */
+  .cd-booking-main .flex.items-center.gap-2.text-\[10px\] {
+    font-size: 9px !important;
+    padding: 4px 10px !important;
+    border-radius: 50px !important;
+  }
+
+  /* Hotel Name */
+  .cd-booking-main h3 {
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    color: #0f172a !important;
+    margin-bottom: 12px !important;
+    white-space: normal !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Check-in / Check-out dates block */
+  .cd-booking-main .mt-5 {
+    margin-top: 0 !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+    background: #f8fafc !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr 1fr !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Date labels */
+  .cd-booking-main .flex.flex-col span:first-child {
+    font-size: 8px !important;
+    letter-spacing: 0.15em !important;
+  }
+
+  /* Date values */
+  .cd-booking-main .flex.flex-col span.text-sm {
+    font-size: 14px !important;
+    font-weight: 900 !important;
+  }
+
+  /* Arrow icon between dates */
+  .cd-booking-main .hidden.sm\:block {
+    display: block !important;
+  }
+
+  /* Location row */
+  .cd-booking-main .flex.items-center.gap-3.mt-4 {
+    margin-top: 10px !important;
+    font-size: 11px !important;
+    padding-bottom: 14px !important;
+  }
+
+  /* ── Action Side (Price + Buttons) ── */
+  /* On mobile: becomes a bottom footer row inside the card */
+  .cd-booking-side {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-width: unset !important;
+    width: 100% !important;
+    padding: 14px 16px !important;
+    border-top: 1px solid #f1f5f9 !important;
+    border-left: none !important;
+    margin-top: 0 !important;
+    background: #fafbff !important;
+    gap: 12px !important;
+  }
+
+  /* Price display in card footer */
+  .cd-booking-side > div:first-child {
+    text-align: left !important;
+  }
+
+  .cd-booking-side .text-2xl {
+    font-size: 20px !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .cd-booking-side .text-\[10px\].text-slate-400 {
+    font-size: 9px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* Buttons container in footer */
+  .cd-booking-side > div:last-child {
+    flex-direction: row !important;
+    gap: 8px !important;
+    margin-top: 0 !important;
+    width: auto !important;
+  }
+
+  /* Invoice button */
+  .cd-booking-side .cd-btn-primary {
+    width: auto !important;
+    padding: 10px 16px !important;
+    font-size: 11px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+    gap: 6px !important;
+  }
+
+  /* Cancel text button */
+  .cd-booking-side button.text-\[10px\] {
+    font-size: 10px !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* ── Status badge colors (keep as-is, just reinforce) ── */
+  .cd-status-badge.confirmed  { background: rgba(16,185,129,0.85) !important; color: #fff !important; }
+  .cd-status-badge.pending    { background: rgba(245,158,11,0.85) !important; color: #fff !important; }
+  .cd-status-badge.cancelled  { background: rgba(239,68,68,0.85)  !important; color: #fff !important; }
+  .cd-status-badge.completed  { background: rgba(59,130,246,0.85) !important; color: #fff !important; }
+
+  /* ── cd-btn-primary global on mobile ── */
+  .cd-btn-primary {
+    border-radius: 14px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  /* ── Loader ── */
+  .cd-loader {
+    min-height: 60vh !important;
+  }
+
+  /* ── Scrollbar hide for filter row ── */
+  .scrollbar-hide::-webkit-scrollbar { display: none !important; }
+  .scrollbar-hide { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+
+} /* END @media (max-width: 768px) */

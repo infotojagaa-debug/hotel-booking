@@ -79,7 +79,7 @@ const CustomerBookings = () => {
     return (
         <div className="animate-in fade-in duration-600">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+            <div className="cd-bookings-page-header flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
                 <div>
                     <div className="flex items-center gap-2 text-[#6d5dfc] font-black uppercase tracking-[0.2em] text-[10px] mb-3">
                         <FaSuitcaseRolling /> Travel History
