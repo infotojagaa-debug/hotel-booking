@@ -4564,13 +4564,49 @@
     width: 100% !important;
 }
 
-/* Ensure the backdrop covers EVERYTHING below the picker */
+.search-bar-modern.is-mobile-search .counter-btn {
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    color: #475569 !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    touch-action: manipulation !important;
+}
+
+.search-bar-modern.is-mobile-search .counter-btn:active {
+    transform: scale(0.9) !important;
+    background: #e2e8f0 !important;
+}
+
+.search-bar-modern.is-mobile-search .counter-btn.disabled {
+    opacity: 0.3 !important;
+    pointer-events: none !important;
+}
+
+.search-bar-modern.is-mobile-search .counter-val-box {
+    width: 40px !important;
+    text-align: center !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+/* Ensure backdrop is non-interactive but stops propagation */
 .search-bar-modern.is-mobile-search .search-mobile-backdrop {
     position: fixed !important;
     inset: 0 !important;
-    background: rgba(15, 23, 42, 0.7) !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(4px) !important;
     z-index: 20000 !important;
     display: block !important;
+    touch-action: none !important;
 }
 
 .search-bar-modern.is-mobile-search .guest-row {

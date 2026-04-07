@@ -488,9 +488,9 @@ const AdvancedSearch = ({
                                             <span className="guest-label-sub">Ages 13 or above</span>
                                         </div>
                                         <div className="guest-counter">
-                                            <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={() => setAdults(Math.max(1, adults - 1))}>−</button>
+                                            <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }}>−</button>
                                             <div className="counter-val-box">{adults}</div>
-                                            <button type="button" className="counter-btn" onClick={() => setAdults(adults + 1)}>+</button>
+                                            <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}>+</button>
                                         </div>
                                     </div>
                                     <div className="guest-row">
@@ -499,9 +499,9 @@ const AdvancedSearch = ({
                                             <span className="guest-label-sub">Ages 2–12</span>
                                         </div>
                                         <div className="guest-counter">
-                                            <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={() => setChildren(Math.max(0, children - 1))}>−</button>
+                                            <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }}>−</button>
                                             <div className="counter-val-box">{children}</div>
-                                            <button type="button" className="counter-btn" onClick={() => setChildren(children + 1)}>+</button>
+                                            <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}>+</button>
                                         </div>
                                     </div>
                                     <div className="guest-row">
@@ -510,14 +510,14 @@ const AdvancedSearch = ({
                                             <span className="guest-label-sub">Required units</span>
                                         </div>
                                         <div className="guest-counter">
-                                            <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={() => setRooms(Math.max(1, rooms - 1))}>−</button>
+                                            <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setRooms(Math.max(1, rooms - 1)); }}>−</button>
                                             <div className="counter-val-box">{rooms}</div>
-                                            <button type="button" className="counter-btn" onClick={() => setRooms(rooms + 1)}>+</button>
+                                            <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
                                         </div>
                                     </div>
 
                                     {/* Pet Friendly - Image 2 Style Square Checkbox */}
-                                    <div className="guest-row pet-row" onClick={() => setIsPetFriendly(!isPetFriendly)}>
+                                    <div className="guest-row pet-row" onClick={(e) => { e.stopPropagation(); setIsPetFriendly(!isPetFriendly); }}>
                                         <div className="pet-info">
                                             <span className="guest-label-main">Pet-friendly</span>
                                             <span className="guest-label-sub">Only show stays that allow pets</span>
@@ -530,8 +530,8 @@ const AdvancedSearch = ({
                                     </div>
                                     
                                     <div className="guest-dropdown-footer">
-                                        <button type="button" className="guest-reset-text" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>RESET</button>
-                                        <button type="button" className="guest-apply-btn-rect" onClick={() => setShowGuestDropdown(false)}>Apply</button>
+                                        <button type="button" className="guest-reset-text" onClick={(e) => { e.stopPropagation(); setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>RESET</button>
+                                        <button type="button" className="guest-apply-btn-rect" onClick={(e) => { e.stopPropagation(); setShowGuestDropdown(false); }}>Apply</button>
                                     </div>
                                 </div>
                             </div>
