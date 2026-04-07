@@ -93,7 +93,7 @@ const AppLayout = () => {
           <Route path="/manager/dashboard" element={<ManagerDashboard />} />
         </Route>
       </Routes>
-      {!isImmersivePage && <Footer />}
+      {!isImmersivePage && !isDashboard && <Footer />}
       
       {/* Global Mobile Navigation Hub */}
       {isMobile && !isImmersivePage && <MobileNav />}

@@ -817,7 +817,9 @@ body {
 
 @media (min-width: 1024px) {
   .cd-booking-card-premium {
-    flex-direction: row;
+    display: grid !important;
+    grid-template-columns: 280px 1fr auto;
+    align-items: center;
     padding: 24px;
     gap: 30px;
     border-radius: 24px;
@@ -1178,7 +1180,7 @@ body {
     padding-left: 30px;
     border-top: none;
     border-left: 1px dashed #e2e8f0;
-    min-width: 200px;
+    min-width: 220px;
   }
 }
 
