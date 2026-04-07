@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { format, addDays, startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { format, addDays, startOfWeek } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from '../context/AuthContext';
@@ -34,7 +34,6 @@ const AdvancedSearch = ({
     // ELITE SEARCH HUB STATES
     const [isHubActive, setIsHubActive] = useState(false);
     const [hubMode, setHubMode] = useState('location'); // 'location', 'dates', 'guests'
-    const [activeDateTab, setActiveDateTab] = useState('calendar'); 
     const [stayDuration, setStayDuration] = useState('week');
     const [selectedMonths, setSelectedMonths] = useState([]);
 
@@ -158,23 +157,15 @@ const AdvancedSearch = ({
                                 <i className="fa fa-times mob-hub-card-close" onClick={() => setHubMode('guests')}></i>
                             </div>
 
-                            <div className="mob-search-hub-tabs">
-                                <div className={`mob-search-tab ${activeDateTab === 'calendar' ? 'active' : ''}`} onClick={() => setActiveDateTab('calendar')}>Calendar</div>
-                                <div className={`mob-search-tab ${activeDateTab === 'flexible' ? 'active' : ''}`} onClick={() => setActiveDateTab('flexible')}>I'm flexible</div>
+                            <div className="mob-quick-select-row">
+                                <div className={`mob-quick-chip ${isSameDay(startDate, new Date()) ? 'active' : ''}`} onClick={() => setQuickDates('tonight')}>Tonight</div>
+                                <div className="mob-quick-chip" onClick={() => setQuickDates('thisWeekend')}>This weekend</div>
+                                <div className="mob-quick-chip" onClick={() => setQuickDates('nextWeekend')}>Next weekend</div>
                             </div>
-
-                            {activeDateTab === 'calendar' && (
-                                <>
-                                    <div className="mob-quick-select-row">
-                                        <div className="mob-quick-chip" onClick={() => setQuickDates('tonight')}>Tonight</div>
-                                        <div className="mob-quick-chip" onClick={() => setQuickDates('thisWeekend')}>This weekend</div>
-                                        <div className="mob-quick-chip" onClick={() => setQuickDates('nextWeekend')}>Next weekend</div>
-                                    </div>
-                                    <div className="mob-week-header">
-                                        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => <div key={day} className="mob-week-day">{day}</div>)}
-                                    </div>
-                                </>
-                            )}
+                            
+                            <div className="mob-week-header">
+                                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => <div key={day} className="mob-week-day">{day}</div>)}
+                            </div>
 
                             <div className="mob-overlay-scroll-body">
                                 <div className="px-2">
@@ -186,35 +177,6 @@ const AdvancedSearch = ({
                                         monthsShown={6} minDate={new Date()} inline
                                         calendarClassName="mob-premium-calendar"
                                     />
-                                </div>
-
-                                {/* Flexible Section (Relocated to Bottom per Layout Request) */}
-                                <div className="mob-flexible-bottom-section">
-                                    <div className="mob-flex-title-row">
-                                        <h3 className="mob-flex-main-title text-left">Can't find the right dates?</h3>
-                                        <p className="text-slate-500 text-sm text-left">Try our flexible search options below.</p>
-                                    </div>
-                                    
-                                    <h3 className="mob-flex-question text-left">How long do you want to stay?</h3>
-                                    <div className="mob-stay-options">
-                                        {['A weekend', 'A week', 'A month', 'Other'].map(opt => (
-                                            <div key={opt} className={`mob-stay-radio ${stayDuration === opt.toLowerCase().replace(' ', '') ? 'active' : ''}`} onClick={() => setStayDuration(opt.toLowerCase().replace(' ', ''))}>
-                                                <div className="mob-radio-circle"><div className="mob-radio-dot"></div></div>
-                                                <span>{opt}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <h3 className="mob-flex-question text-left">When do you want to go?</h3>
-                                    <div className="mob-month-scroller">
-                                        {['Apr', 'May', 'Jun', 'Jul', 'Aug'].map(m => (
-                                            <div key={m} className={`mob-month-card ${selectedMonths.includes(m) ? 'active' : ''}`} onClick={() => setSelectedMonths(prev => prev.includes(m) ? prev.filter(x => x !== m) : [...prev, m])}>
-                                                <i className="fa fa-calendar-alt"></i>
-                                                <span className="mob-month-text">{m}</span>
-                                                <span className="text-[10px] text-slate-400 font-bold">2026</span>
-                                            </div>
-                                        ))}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -250,7 +212,8 @@ const AdvancedSearch = ({
                                     </label>
                                 </div>
                                 <div className="mob-assistance-note text-left">
-                                    Assistance animals aren't considered pets. <a href="#" className="mob-help-link">Read more about traveling with assistance animals</a>
+                                    Assistance animals aren't considered pets. 
+                                    <a href="#" className="mob-help-link ml-1">Read more</a>
                                 </div>
 
                                 <div className="mob-pop-searches-section">
@@ -272,7 +235,7 @@ const AdvancedSearch = ({
                 <div className="mob-hub-footer-fixed">
                     <button 
                         type="button" 
-                        className={`mob-hub-done-btn ${(hubMode === 'dates' && (!startDate || !endDate)) ? 'opacity-50' : ''}`} 
+                        className={`mob-hub-done-btn ${(hubMode === 'dates' && (!startDate || !endDate)) ? 'disabled' : ''}`} 
                         onClick={() => {
                             if (hubMode === 'dates') {
                                 if (startDate && endDate) setHubMode('guests');
@@ -280,6 +243,7 @@ const AdvancedSearch = ({
                                 handleSearch();
                             }
                         }}
+                        disabled={hubMode === 'dates' && (!startDate || !endDate)}
                     >
                         {hubMode === 'dates' ? 'Next' : 'Search'}
                     </button>
@@ -291,7 +255,6 @@ const AdvancedSearch = ({
     return (
         <form onSubmit={handleSearch} className={`search-bar-modern ${isCompact ? 'is-compact-mode' : ''} ${isMobile ? 'is-mobile-search' : ''}`}>
             <div className="search-pill-container">
-                {/* Restore Professional Location Dropdown Style */}
                 <div className="search-pill-item destination-pill relative" onClick={() => isMobile ? setShowMobSearchOverlay(true) : setShowDropdown(!showDropdown)}>
                     <div className="pill-content">
                         <div className="pill-icon"><i className="fa fa-map-marker-alt"></i></div>
