@@ -24,6 +24,19 @@ const MobileManagerDashboard = () => {
     const [offers, setOffers] = useState([]);
     const [notifications, setNotifications] = useState([]);
     
+    // --- New Form States ---
+    const [showAddHotel, setShowAddHotel] = useState(false);
+    const [showAddRoom, setShowAddRoom] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [hotelForm, setHotelForm] = useState({
+        name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: ''
+    });
+    const [roomForm, setRoomForm] = useState({
+        name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1
+    });
+    const [previewImage, setPreviewImage] = useState(null);
+    const [selectedImageFile, setSelectedImageFile] = useState(null);
+    
     // --- Config ---
     const TABS = [
         { id: 'overview', label: 'Dashboard', icon: 'fa-chart-pie' },
@@ -84,11 +97,51 @@ const MobileManagerDashboard = () => {
         } catch {}
     };
 
-    const handleStatusChange = async (id, status) => {
+    const handleAddHotel = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
         try {
-            await API.put(`/manager/bookings/${id}/status`, { status });
+            let imageUrl = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
+            if (selectedImageFile) {
+                const formData = new FormData();
+                formData.append('image', selectedImageFile);
+                const { data } = await API.post('/upload', formData);
+                imageUrl = data.url;
+            }
+            
+            await API.post('/admin/hotels', { ...hotelForm, images: [imageUrl], isApproved: true });
+            setShowAddHotel(false);
             fetchAll();
-        } catch { alert('Update failed'); }
+        } catch (err) { alert(err.response?.data?.message || 'Failed to add hotel'); }
+        finally { setSubmitting(false); }
+    };
+
+    const handleAddRoom = async (e) => {
+        e.preventDefault();
+        if (!selectedHotel) return alert('Select a hotel first');
+        setSubmitting(true);
+        try {
+            let imageUrl = 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80';
+            if (selectedImageFile) {
+                const formData = new FormData();
+                formData.append('image', selectedImageFile);
+                const { data } = await API.post('/upload', formData);
+                imageUrl = data.url;
+            }
+            
+            await API.post('/manager/rooms', { ...roomForm, images: [imageUrl], hotelId: selectedHotel._id });
+            setShowAddRoom(false);
+            fetchAll();
+        } catch (err) { alert(err.response?.data?.message || 'Failed to add room'); }
+        finally { setSubmitting(false); }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedImageFile(file);
+            setPreviewImage(URL.createObjectURL(file));
+        }
     };
 
     if (loading) return <div className="mob-admin-loading"><div className="mob-spinner"></div></div>;
@@ -134,7 +187,7 @@ const MobileManagerDashboard = () => {
         <div className="mob-mgr-pane">
             <div className="mob-sec-hdr">
                 <h3>Room Inventory</h3>
-                <button className="mob-add-btn">+ Add Room</button>
+                <button className="mob-add-btn" onClick={() => { setRoomForm({ ...roomForm }); setShowAddRoom(true); }}>+ Add Room</button>
             </div>
             {rooms.map(r => (
                 <div key={r._id} className="mob-adm-card room-inv-c">
@@ -226,7 +279,10 @@ const MobileManagerDashboard = () => {
                 {/* Parity Hub for other sections */}
                 {activeTab === 'hotels' && (
                     <div className="mob-mgr-pane">
-                        <h3>My Properties</h3>
+                        <div className="mob-sec-hdr">
+                            <h3>My Properties</h3>
+                            <button className="mob-add-btn" onClick={() => setShowAddHotel(true)}>+ Add Hotel</button>
+                        </div>
                         {hotels.map(h => (
                             <div key={h._id} className="mob-adm-list-item">
                                 <div className="mob-li-info">
@@ -357,8 +413,153 @@ const MobileManagerDashboard = () => {
                 )}
 
             </main>
+
+            {/* --- ADD HOTEL MODAL --- */}
+            {showAddHotel && (
+                <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
+                    <div className="mob-form-hdr">
+                        <button className="mob-close-btn" onClick={() => { setShowAddHotel(false); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
+                        <h2>Register Property</h2>
+                    </div>
+                    <form className="mob-form-body" onSubmit={handleAddHotel}>
+                        <div className="mob-input-group">
+                            <label>Hotel Name</label>
+                            <input type="text" placeholder="e.g. Grand Plaza" value={hotelForm.name} onChange={e => setHotelForm({...hotelForm, name: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-row">
+                            <div className="mob-input-group">
+                                <label>City</label>
+                                <input type="text" placeholder="Mumbai" value={hotelForm.city} onChange={e => setHotelForm({...hotelForm, city: e.target.value})} required />
+                            </div>
+                            <div className="mob-input-group">
+                                <label>Type</label>
+                                <select value={hotelForm.type} onChange={e => setHotelForm({...hotelForm, type: e.target.value})}>
+                                    <option>Hotel</option><option>Apartment</option><option>Resort</option><option>Villa</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Full Address</label>
+                            <input type="text" placeholder="123 Street, Area..." value={hotelForm.address} onChange={e => setHotelForm({...hotelForm, address: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Starting Price (₹)</label>
+                            <input type="number" placeholder="2500" value={hotelForm.cheapestPrice} onChange={e => setHotelForm({...hotelForm, cheapestPrice: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Description</label>
+                            <textarea rows="3" placeholder="Describe your property..." value={hotelForm.description} onChange={e => setHotelForm({...hotelForm, description: e.target.value})} required></textarea>
+                        </div>
+                        
+                        <div className="mob-amenity-pick">
+                            <label>Property Amenities</label>
+                            <div className="mob-amenity-grid">
+                                {['WiFi', 'Pool', 'Gym', 'Spa', 'Restaurant'].map(a => (
+                                    <div key={a} className={`mob-amenity-chip ${hotelForm.amenities?.includes(a) ? 'active' : ''}`} 
+                                         onClick={() => {
+                                             const curr = hotelForm.amenities || [];
+                                             setHotelForm({...hotelForm, amenities: curr.includes(a) ? curr.filter(x => x !== a) : [...curr, a]})
+                                         }}>
+                                        <i className={`fa ${a === 'WiFi' ? 'fa-wifi' : a === 'Pool' ? 'fa-swimming-pool' : a === 'Gym' ? 'fa-dumbbell' : a === 'Spa' ? 'fa-spa' : 'fa-utensils'}`}></i>
+                                        <span>{a}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        
+                        <div className="mob-img-upload-c">
+                            <label>Property Photo</label>
+                            <div className="mob-img-preview" onClick={() => document.getElementById('hotel-file').click()}>
+                                {previewImage ? (
+                                    <img src={previewImage} alt="Preview" />
+                                ) : (
+                                    <div className="mob-img-placeholder"><i className="fa fa-camera"></i><span>Tap to upload</span></div>
+                                )}
+                            </div>
+                            <input type="file" id="hotel-file" hidden onChange={handleFileChange} accept="image/*" />
+                        </div>
+
+                        <div className="mob-form-footer">
+                            <button type="submit" className="mob-submit-btn" disabled={submitting}>
+                                {submitting ? 'Registering...' : 'Register Property'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+
+            {/* --- ADD ROOM MODAL --- */}
+            {showAddRoom && (
+                <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
+                    <div className="mob-form-hdr">
+                        <button className="mob-close-btn" onClick={() => { setShowAddRoom(false); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
+                        <h2>{selectedHotel ? `Add Room to ${selectedHotel.name.substring(0, 15)}...` : 'Add Room'}</h2>
+                    </div>
+                    <form className="mob-form-body" onSubmit={handleAddRoom}>
+                        <div className="mob-input-group">
+                            <label>Room Name</label>
+                            <input type="text" placeholder="e.g. Deluxe Suite" value={roomForm.name} onChange={e => setRoomForm({...roomForm, name: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-row">
+                            <div className="mob-input-group">
+                                <label>Price (₹)</label>
+                                <input type="number" placeholder="1500" value={roomForm.pricePerNight} onChange={e => setRoomForm({...roomForm, pricePerNight: e.target.value})} required />
+                            </div>
+                            <div className="mob-input-group">
+                                <label>Max Guests</label>
+                                <input type="number" value={roomForm.maxGuests} onChange={e => setRoomForm({...roomForm, maxGuests: e.target.value})} required />
+                            </div>
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Type</label>
+                            <select value={roomForm.type} onChange={e => setRoomForm({...roomForm, type: e.target.value})}>
+                                <option>Classic Room</option><option>Deluxe Room</option><option>Suite</option><option>Double Room</option>
+                            </select>
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Description</label>
+                            <textarea rows="3" placeholder="Room details..." value={roomForm.description} onChange={e => setRoomForm({...roomForm, description: e.target.value})} required></textarea>
+                        </div>
+
+                        <div className="mob-amenity-pick">
+                            <label>Room Amenities</label>
+                            <div className="mob-amenity-grid">
+                                {['WiFi', 'AC', 'TV', 'Mini Bar'].map(a => (
+                                    <div key={a} className={`mob-amenity-chip ${roomForm.amenities?.includes(a) ? 'active' : ''}`} 
+                                         onClick={() => {
+                                             const curr = roomForm.amenities || [];
+                                             setRoomForm({...roomForm, amenities: curr.includes(a) ? curr.filter(x => x !== a) : [...curr, a]})
+                                         }}>
+                                        <i className={`fa ${a === 'WiFi' ? 'fa-wifi' : a === 'AC' ? 'fa-snowflake' : a === 'TV' ? 'fa-tv' : 'fa-cocktail'}`}></i>
+                                        <span>{a}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mob-img-upload-c">
+                            <label>Room Photo</label>
+                            <div className="mob-img-preview" onClick={() => document.getElementById('room-file').click()}>
+                                {previewImage ? (
+                                    <img src={previewImage} alt="Preview" />
+                                ) : (
+                                    <div className="mob-img-placeholder"><i className="fa fa-camera"></i><span>Tap to upload</span></div>
+                                )}
+                            </div>
+                            <input type="file" id="room-file" hidden onChange={handleFileChange} accept="image/*" />
+                        </div>
+
+                        <div className="mob-form-footer">
+                            <button type="submit" className="mob-submit-btn" disabled={submitting}>
+                                {submitting ? 'Adding Room...' : 'Confirm Room'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };
 
 export default MobileManagerDashboard;
+
