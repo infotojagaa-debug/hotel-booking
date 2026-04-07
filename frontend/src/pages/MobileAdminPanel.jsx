@@ -213,13 +213,15 @@ const MobileAdminPanel = () => {
                 <h3>Recent Activity</h3>
                 <div className="mob-activity-list">
                     {bookings.slice(0, 5).map(b => (
-                        <div key={b._id} className="mob-act-item">
-                            <div className="mob-act-dot"></div>
-                            <div className="mob-act-tx">
-                                <strong>{b.user?.name || 'Guest'}</strong>
-                                <span>{new Date(b.createdAt).toLocaleDateString()}</span>
+                        <div key={b._id} className="mob-act-item modern">
+                            <div className="mob-act-dot-v"></div>
+                            <div className="mob-act-main">
+                                <div className="mob-guest-row">
+                                    <span className="guest-nm">{b.user?.name || 'Guest'}</span>
+                                    <span className="room-nm">{b.hotel?.name || 'Platform Booking'}</span>
+                                </div>
+                                <div className="mob-pr-row">{formatCurrency(b.totalPrice)}</div>
                             </div>
-                            <div className="mob-act-pr">{formatCurrency(b.totalPrice)}</div>
                         </div>
                     ))}
                 </div>
@@ -507,17 +509,63 @@ const MobileAdminPanel = () => {
                 )}
                 {activeTab === 'rooms' && (
                     <div className="mob-adm-pane">
-                        <h3>Property Rooms</h3>
-                        <p className="text-gray-500 text-sm mb-4">Select hotel to manage inventory</p>
-                        {hotels.map(h => (
-                            <div key={h._id} className="mob-adm-list-item" onClick={() => alert('Inventory control coming to mobile in next minor sync!')}>
-                                <div className="mob-li-info">
-                                    <strong>{h.name}</strong>
-                                    <span>Manage Rooms</span>
-                                </div>
-                                <i className="fas fa-chevron-right text-gray-300"></i>
+                        <div className="mob-sec-hdr">
+                            <h3>Property Rooms</h3>
+                        </div>
+                        
+                        <div className="mob-property-selector">
+                            <label>SELECT HOTEL</label>
+                            <div className="mob-chip-row">
+                                {hotels.map(h => (
+                                    <button 
+                                        key={h._id} 
+                                        className={`mob-prop-chip ${selectedHotelForRooms?._id === h._id ? 'active' : ''}`}
+                                        onClick={() => {
+                                            setSelectedHotelForRooms(h);
+                                            setHotelRooms(rooms.filter(r => r.hotel?._id === h._id || r.hotel === h._id));
+                                        }}
+                                    >
+                                        {h.name}
+                                    </button>
+                                ))}
                             </div>
-                        ))}
+                        </div>
+
+                        {selectedHotelForRooms ? (
+                            <>
+                                <h4 className="mob-inv-sub">Rooms in {selectedHotelForRooms.name}</h4>
+                                {hotelRooms.length === 0 ? (
+                                    <div className="mob-empty-state">
+                                        <i className="fa fa-door-closed"></i>
+                                        <p>No rooms found for this property</p>
+                                    </div>
+                                ) : (
+                                    hotelRooms.map(r => (
+                                        <div key={r._id} className="mob-adm-card room-inv-c">
+                                            <div className="rm-inv-top">
+                                                <div className="rm-inv-info">
+                                                    <strong>{r.name}</strong>
+                                                    <span className={`rm-st ${r.status?.toLowerCase()}`}>{r.status || 'Available'}</span>
+                                                </div>
+                                                <div className="rm-inv-actions">
+                                                    <button className="mob-icon-btn del" onClick={() => {/* admin delete logic if needed */}}><i className="fa fa-trash-alt"></i></button>
+                                                </div>
+                                            </div>
+                                            <div className="rm-inv-meta">
+                                                <span><i className="fa fa-tag"></i> {formatCurrency(r.pricePerNight)}</span>
+                                                <span><i className="fa fa-users"></i> {r.maxGuests} Guests</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </>
+                        ) : (
+                            <div className="mob-empty-state premium">
+                                <i className="fa fa-hotel"></i>
+                                <h4>Select a Hotel</h4>
+                                <p>Choose a property from the chips above to view and manage its room inventory.</p>
+                            </div>
+                        )}
                     </div>
                 )}
             </main>
