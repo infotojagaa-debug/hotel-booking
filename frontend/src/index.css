@@ -2,6 +2,20 @@
 @source "./pages/customer";
 @config "../tailwind.config.js";
 
+/* Global Reset to Fix Layout Issues */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background-color: #f8fafc; /* Standard background color */
+}
+
+* {
+    box-sizing: border-box;
+}
+
 /* Booking.com Style Overhaul */
 
 :root {
@@ -3793,9 +3807,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-end; /* Moved text to bottom */
     text-align: left;
-    padding-bottom: 32px;
+    padding-bottom: 120px; /* Increased bottom padding for bottom alignment */
     padding-left: 60px;
 }
 
