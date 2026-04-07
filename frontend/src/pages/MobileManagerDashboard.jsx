@@ -29,10 +29,10 @@ const MobileManagerDashboard = () => {
     const [showAddRoom, setShowAddRoom] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [hotelForm, setHotelForm] = useState({
-        name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: ''
+        name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: '', amenities: []
     });
     const [roomForm, setRoomForm] = useState({
-        name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1
+        name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1, amenities: []
     });
     const [previewImage, setPreviewImage] = useState(null);
     const [selectedImageFile, setSelectedImageFile] = useState(null);
@@ -109,8 +109,20 @@ const MobileManagerDashboard = () => {
                 imageUrl = data.url;
             }
             
-            await API.post('/admin/hotels', { ...hotelForm, images: [imageUrl], isApproved: true });
+            const payload = { 
+                ...hotelForm, 
+                images: [imageUrl], 
+                isApproved: true,
+                starRating: Number(hotelForm.starRating),
+                cheapestPrice: Number(hotelForm.cheapestPrice),
+                latitude: null, // Parity with desktop defaults
+                longitude: null
+            };
+            
+            await API.post('/admin/hotels', payload);
             setShowAddHotel(false);
+            setHotelForm({ name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: '', amenities: [] });
+            setPreviewImage(null);
             fetchAll();
         } catch (err) { alert(err.response?.data?.message || 'Failed to add hotel'); }
         finally { setSubmitting(false); }
@@ -129,8 +141,19 @@ const MobileManagerDashboard = () => {
                 imageUrl = data.url;
             }
             
-            await API.post('/manager/rooms', { ...roomForm, images: [imageUrl], hotelId: selectedHotel._id });
+            const payload = { 
+                ...roomForm, 
+                images: [imageUrl], 
+                hotelId: selectedHotel._id,
+                pricePerNight: Number(roomForm.pricePerNight),
+                maxGuests: Number(roomForm.maxGuests),
+                totalRoomCount: Number(roomForm.totalRoomCount)
+            };
+            
+            await API.post('/manager/rooms', payload);
             setShowAddRoom(false);
+            setRoomForm({ name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1, amenities: [] });
+            setPreviewImage(null);
             fetchAll();
         } catch (err) { alert(err.response?.data?.message || 'Failed to add room'); }
         finally { setSubmitting(false); }
@@ -454,14 +477,20 @@ const MobileManagerDashboard = () => {
                         <div className="mob-amenity-pick">
                             <label>Property Amenities</label>
                             <div className="mob-amenity-grid">
-                                {['WiFi', 'Pool', 'Gym', 'Spa', 'Restaurant'].map(a => (
-                                    <div key={a} className={`mob-amenity-chip ${hotelForm.amenities?.includes(a) ? 'active' : ''}`} 
+                                {[
+                                    {id: 'WiFi', icon: 'fa-wifi'}, {id: 'Breakfast', icon: 'fa-coffee'}, 
+                                    {id: 'Restaurant', icon: 'fa-utensils'}, {id: 'Pool', icon: 'fa-swimming-pool'}, 
+                                    {id: 'Gym', icon: 'fa-dumbbell'}, {id: 'Parking', icon: 'fa-car'}, 
+                                    {id: 'AC', icon: 'fa-snowflake'}, {id: 'Spa', icon: 'fa-spa'}, 
+                                    {id: 'Pet-friendly', icon: 'fa-paw'}, {id: 'TV', icon: 'fa-tv'}
+                                ].map(a => (
+                                    <div key={a.id} className={`mob-amenity-chip ${hotelForm.amenities?.includes(a.id) ? 'active' : ''}`} 
                                          onClick={() => {
                                              const curr = hotelForm.amenities || [];
-                                             setHotelForm({...hotelForm, amenities: curr.includes(a) ? curr.filter(x => x !== a) : [...curr, a]})
+                                             setHotelForm({...hotelForm, amenities: curr.includes(a.id) ? curr.filter(x => x !== a.id) : [...curr, a.id]})
                                          }}>
-                                        <i className={`fa ${a === 'WiFi' ? 'fa-wifi' : a === 'Pool' ? 'fa-swimming-pool' : a === 'Gym' ? 'fa-dumbbell' : a === 'Spa' ? 'fa-spa' : 'fa-utensils'}`}></i>
-                                        <span>{a}</span>
+                                        <i className={`fa ${a.icon}`}></i>
+                                        <span>{a.id}</span>
                                     </div>
                                 ))}
                             </div>
@@ -524,14 +553,20 @@ const MobileManagerDashboard = () => {
                         <div className="mob-amenity-pick">
                             <label>Room Amenities</label>
                             <div className="mob-amenity-grid">
-                                {['WiFi', 'AC', 'TV', 'Mini Bar'].map(a => (
-                                    <div key={a} className={`mob-amenity-chip ${roomForm.amenities?.includes(a) ? 'active' : ''}`} 
+                                {[
+                                    {id: 'WiFi', icon: 'fa-wifi'}, {id: 'AC', icon: 'fa-snowflake'}, 
+                                    {id: 'TV', icon: 'fa-tv'}, {id: 'Mini Bar', icon: 'fa-cocktail'}, 
+                                    {id: 'Balcony', icon: 'fa-border-none'}, {id: 'King Bed', icon: 'fa-bed'}, 
+                                    {id: 'Sea View', icon: 'fa-water'}, {id: 'Hot Tub', icon: 'fa-hot-tub'}, 
+                                    {id: 'Safe', icon: 'fa-lock'}, {id: 'Work Desk', icon: 'fa-briefcase'}
+                                ].map(a => (
+                                    <div key={a.id} className={`mob-amenity-chip ${roomForm.amenities?.includes(a.id) ? 'active' : ''}`} 
                                          onClick={() => {
                                              const curr = roomForm.amenities || [];
-                                             setRoomForm({...roomForm, amenities: curr.includes(a) ? curr.filter(x => x !== a) : [...curr, a]})
+                                             setRoomForm({...roomForm, amenities: curr.includes(a.id) ? curr.filter(x => x !== a.id) : [...curr, a.id]})
                                          }}>
-                                        <i className={`fa ${a === 'WiFi' ? 'fa-wifi' : a === 'AC' ? 'fa-snowflake' : a === 'TV' ? 'fa-tv' : 'fa-cocktail'}`}></i>
-                                        <span>{a}</span>
+                                        <i className={`fa ${a.icon}`}></i>
+                                        <span>{a.id}</span>
                                     </div>
                                 ))}
                             </div>
