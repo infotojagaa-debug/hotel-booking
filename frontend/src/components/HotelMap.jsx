@@ -46,17 +46,32 @@ const createPriceIcon = (price, isActive, isHovered) => {
 
 // --- HELPER COMPONENTS ---
 
-const MapController = ({ center, zoom }) => {
+const MapController = ({ center, zoom, hotels }) => {
     const map = useMap();
+    const isMobile = window.innerWidth <= 768;
+
     useEffect(() => {
+        // Priority 1: Specific center (e.g. pinned hotel or search location)
         if (center && isValidCoords(center.lat, center.lng)) {
             try {
                 map.flyTo([Number(center.lat), Number(center.lng)], zoom || 15, { duration: 1.5 });
             } catch (err) {
                 console.error('Leaflet flyTo Error:', err);
             }
+        } 
+        // Priority 2: Auto-fit all hotels (Desktop-like discovery logic for Mobile)
+        else if (hotels && hotels.length > 0) {
+            const validHotels = hotels.filter(h => isValidCoords(h.latitude, h.longitude));
+            if (validHotels.length > 0) {
+                const bounds = L.latLngBounds(validHotels.map(h => [h.latitude, h.longitude]));
+                map.fitBounds(bounds, { 
+                    padding: isMobile ? [30, 30] : [50, 50],
+                    maxZoom: isMobile ? 12 : 14 
+                });
+            }
         }
-    }, [center, zoom, map]);
+    }, [center, zoom, map, hotels]);
+
     return null;
 };
 
@@ -72,9 +87,13 @@ const MapEventsHandler = ({ onZoomEnd }) => {
 
 const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center }) => {
     const navigate = useNavigate();
-    const [zoom, setZoom] = useState(center ? 14 : 6);
+    const isMobile = window.innerWidth <= 768;
+    
+    const initialZoom = center ? (isMobile ? 13 : 14) : (isMobile ? 11 : 6);
+    const [zoom, setZoom] = useState(initialZoom);
     const [mapCenter, setMapCenter] = useState(center || { lat: 13.0827, lng: 80.2707 });
-    const isCityView = zoom < 10 && !center; // Never show city view on specific hotel view
+
+    const isCityView = zoom < (isMobile ? 8 : 10) && !center;
 
     // Group hotels by city for the initial macro view
     const cityGroups = useMemo(() => {
@@ -121,7 +140,7 @@ const HotelMap = ({ hotels, hoveredHotelId, onMarkerClick, activeHotelId, center
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" // Modern light theme
                 />
                 
-                <MapController center={mapCenter} zoom={zoom} />
+                <MapController center={mapCenter} zoom={zoom} hotels={hotels} />
                 <MapEventsHandler onZoomEnd={setZoom} />
 
                 {/* Macro View: Show City Badges */}

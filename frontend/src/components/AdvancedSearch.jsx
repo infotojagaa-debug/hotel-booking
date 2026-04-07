@@ -409,47 +409,60 @@ const AdvancedSearch = ({
                         <i className={`fa fa-chevron-down pill-chevron ${showDatePicker ? 'rotated' : ''}`}></i>
                     </div>
 
-                    {/* 3. Mobile Stability Overlay for Date Selection */}
+                    {/* 3. Mobile Stability Overlay (Booking.com Style) */}
                     {isMobile && showDatePicker && (
-                        <div className="mob-full-page-selection-overlay">
+                        <div className="mob-full-page-selection-overlay animate-in slide-in-from-bottom duration-300">
                             <div className="mob-overlay-header">
-                                <i className="fa fa-times mob-overlay-back-icon" onClick={() => setShowDatePicker(false)}></i>
-                                <span className="mob-overlay-title">Select Dates</span>
+                                <span className="mob-overlay-title">Select dates</span>
+                                <i className="fa fa-times mob-overlay-close-icon" onClick={() => setShowDatePicker(false)}></i>
                             </div>
+
+                            {/* Booking.com Tabs */}
+                            <div className="mob-search-hub-tabs">
+                                <div className="mob-search-tab active">Calendar</div>
+                                <div className="mob-search-tab">I'm flexible</div>
+                            </div>
+
                             <div className="mob-overlay-scroll-body">
-                                <DatePicker
-                                    selectsRange={true}
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    onChange={(update) => {
-                                        setDateRange(update);
-                                        // Auto-close overlay when range is complete
-                                        if (update[0] && update[1]) {
-                                            setTimeout(() => setShowDatePicker(false), 300);
-                                        }
-                                    }}
-                                    monthsShown={1}
-                                    minDate={new Date()}
-                                    inline
-                                    calendarClassName="mob-premium-calendar"
-                                />
-                                <div className="datepicker-footer mt-6">
-                                    <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(), new Date(new Date().setDate(new Date().getDate() + 1))])}>
-                                         Tonight
-                                    </button>
-                                    <button type="button" className="quick-action-pill" onClick={() => setDateRange([new Date(new Date().setDate(new Date().getDate() + 1)), new Date(new Date().setDate(new Date().getDate() + 2))])}>
-                                         Tomorrow
-                                    </button>
+                                <div className="p-4">
+                                    <DatePicker
+                                        selectsRange={true}
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        onChange={(update) => setDateRange(update)}
+                                        monthsShown={2} 
+                                        minDate={new Date()}
+                                        inline
+                                        calendarClassName="mob-premium-calendar"
+                                    />
                                 </div>
                             </div>
+
+                            {/* Dynamic Stay Summary Bar */}
+                            <div className="mob-stay-summary-bar">
+                                <span className="summary-details-text">
+                                    {startDate && endDate ? (
+                                        `${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} (${Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))}-night stay)`
+                                    ) : 'Select days and months'}
+                                </span>
+                            </div>
+
+                            {/* Booking.com Utility Chips */}
+                            <div className="mob-chip-container">
+                                <div className="mob-action-chip active">Exact dates</div>
+                                <div className="mob-action-chip">± 1 day</div>
+                                <div className="mob-action-chip">± 2 days</div>
+                                <div className="mob-action-chip">± 3 days</div>
+                            </div>
+
                             <div className="mob-overlay-footer">
-                                <div className="flex flex-col">
-                                    <span className="text-[10px] font-bold text-slate-400">Total Stay</span>
-                                    <span className="text-sm font-black text-slate-900">
-                                        {startDate && endDate ? `${Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))} Nights` : 'Pick your dates'}
-                                    </span>
-                                </div>
-                                <button type="button" className="guest-apply-btn-rect" onClick={() => setShowDatePicker(false)}>Apply Dates</button>
+                                <button 
+                                    className={`mob-large-done-btn ${!startDate || !endDate ? 'opacity-50' : ''}`}
+                                    onClick={() => setShowDatePicker(false)}
+                                    disabled={!startDate || !endDate}
+                                >
+                                    Done
+                                </button>
                             </div>
                         </div>
                     )}
@@ -497,63 +510,54 @@ const AdvancedSearch = ({
                         <i className={`fa fa-chevron-down pill-chevron ${showGuestDropdown ? 'rotated' : ''}`}></i>
                     </div>
 
-                    {/* Custom Guest Dropdown - Positioned Right on Desktop */}
-                    {/* 4. Mobile Stability Overlay for Guest Selection */}
+                    {/* 4. Mobile Stability Overlay for Guest Selection (Booking.com Style) */}
                     {isMobile && showGuestDropdown && (
-                        <div className="mob-full-page-selection-overlay">
+                        <div className="mob-full-page-selection-overlay animate-in slide-in-from-bottom duration-300">
                             <div className="mob-overlay-header">
-                                <i className="fa fa-times mob-overlay-back-icon" onClick={() => setShowGuestDropdown(false)}></i>
-                                <span className="mob-overlay-title">Who's Coming?</span>
+                                <span className="mob-overlay-title">Select guests</span>
+                                <i className="fa fa-times mob-overlay-close-icon" onClick={() => setShowGuestDropdown(false)}></i>
                             </div>
-                            <div className="mob-overlay-scroll-body flex-start">
-                                <div className="guest-dropdown-content w-full">
-                                    <div className="guest-row">
-                                        <div className="guest-info">
-                                            <span className="guest-label-main">Adults</span>
-                                            <span className="guest-label-sub">Ages 13 or above</span>
-                                        </div>
-                                        <div className="guest-counter">
-                                            <button type="button" className={`counter-btn ${adults <= 1 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }}>−</button>
-                                            <div className="counter-val-box">{adults}</div>
-                                            <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}>+</button>
-                                        </div>
+
+                            <div className="mob-overlay-scroll-body">
+                                {/* Adults */}
+                                <div className="mob-guest-item-card">
+                                    <div className="mob-guest-meta">
+                                        <span className="label-main">Adults</span>
                                     </div>
-                                    <div className="guest-row">
-                                        <div className="guest-info">
-                                            <span className="guest-label-main">Children</span>
-                                            <span className="guest-label-sub">Ages 2–12</span>
-                                        </div>
-                                        <div className="guest-counter">
-                                            <button type="button" className={`counter-btn ${children <= 0 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }}>−</button>
-                                            <div className="counter-val-box">{children}</div>
-                                            <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}>+</button>
-                                        </div>
+                                    <div className="mob-counter-box">
+                                        <button className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }} disabled={adults <= 1}>−</button>
+                                        <span className="mob-counter-value">{adults}</span>
+                                        <button className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}>+</button>
                                     </div>
-                                    <div className="guest-row">
-                                        <div className="guest-info">
-                                            <span className="guest-label-main">Rooms</span>
-                                            <span className="guest-label-sub">Required units</span>
-                                        </div>
-                                        <div className="guest-counter">
-                                            <button type="button" className={`counter-btn ${rooms <= 1 ? 'disabled' : ''}`} onClick={(e) => { e.stopPropagation(); setRooms(Math.max(1, rooms - 1)); }}>−</button>
-                                            <div className="counter-val-box">{rooms}</div>
-                                            <button type="button" className="counter-btn" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
-                                        </div>
+                                </div>
+                                {/* Children */}
+                                <div className="mob-guest-item-card">
+                                    <div className="mob-guest-meta">
+                                        <span className="label-main">Children</span>
                                     </div>
-                                    <div className="guest-row pet-row" onClick={(e) => { e.stopPropagation(); setIsPetFriendly(!isPetFriendly); }}>
-                                        <div className="pet-info">
-                                            <span className="guest-label-main">Pet-friendly</span>
-                                            <span className="guest-label-sub">Allows pets</span>
-                                        </div>
-                                        <div className={`square-checkbox ${isPetFriendly ? 'active' : ''}`}>
-                                            {isPetFriendly && <i className="fa fa-check"></i>}
-                                        </div>
+                                    <div className="mob-counter-box">
+                                        <button className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }} disabled={children <= 0}>−</button>
+                                        <span className="mob-counter-value">{children}</span>
+                                        <button className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}>+</button>
+                                    </div>
+                                </div>
+                                {/* Rooms */}
+                                <div className="mob-guest-item-card">
+                                    <div className="mob-guest-meta">
+                                        <span className="label-main">Rooms</span>
+                                    </div>
+                                    <div className="mob-counter-box">
+                                        <button className="mob-counter-btn minus" onClick={(e) => { e.stopPropagation(); setRooms(Math.max(1, rooms - 1)); }} disabled={rooms <= 1}>−</button>
+                                        <span className="mob-counter-value">{rooms}</span>
+                                        <button className="mob-counter-btn plus" onClick={(e) => { e.stopPropagation(); setRooms(rooms + 1); }}>+</button>
                                     </div>
                                 </div>
                             </div>
+
                             <div className="mob-overlay-footer">
-                                <button type="button" className="guest-reset-text" onClick={() => { setAdults(2); setChildren(0); setRooms(1); setIsPetFriendly(false); }}>Clear All</button>
-                                <button type="button" className="guest-apply-btn-rect" onClick={() => setShowGuestDropdown(false)}>Apply Selection</button>
+                                <button className="mob-large-done-btn" onClick={() => setShowGuestDropdown(false)}>
+                                    Done
+                                </button>
                             </div>
                         </div>
                     )}
