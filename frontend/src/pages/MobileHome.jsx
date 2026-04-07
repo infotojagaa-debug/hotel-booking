@@ -345,8 +345,6 @@ const MobileHome = () => {
           <button className="mob-newsletter-btn">Subscribe Now</button>
         </div>
       </div>
-
-      <MobileNav />
     </div>
   );
 };

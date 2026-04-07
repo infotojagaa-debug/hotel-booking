@@ -11,32 +11,41 @@ const MobileNav = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
 
-    // Smart Visibility Logic: Show on scroll, hide after 3s of inactivity
+    // Smart Visibility Logic: Show on activity, hide after 2s of inactivity
     useEffect(() => {
         let timeoutId = null;
 
-        const handleScroll = () => {
+        const showNav = () => {
             setIsVisible(true);
             if (timeoutId) clearTimeout(timeoutId);
             
+            // Only hide if we are scrolled down (at the top it should always stay visible)
             timeoutId = setTimeout(() => {
-                if (window.scrollY > 50) {
+                if (window.scrollY > 80) {
                     setIsVisible(false);
                 }
-            }, 3000);
+            }, 2000);
         };
 
         const handleOpenSearch = () => setShowSearch(true);
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Listen for all activity: Scroll, Mouse Move (Hover), Touch, etc.
+        window.addEventListener('scroll', showNav, { passive: true });
+        window.addEventListener('mousemove', showNav);
+        window.addEventListener('mousedown', showNav);
+        window.addEventListener('touchstart', showNav, { passive: true });
         window.addEventListener('open-mob-search', handleOpenSearch);
         
+        // Initial timer
         timeoutId = setTimeout(() => {
-            if (window.scrollY > 50) setIsVisible(false);
-        }, 5000);
+            if (window.scrollY > 80) setIsVisible(false);
+        }, 2000);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', showNav);
+            window.removeEventListener('mousemove', showNav);
+            window.removeEventListener('mousedown', showNav);
+            window.removeEventListener('touchstart', showNav);
             window.removeEventListener('open-mob-search', handleOpenSearch);
             if (timeoutId) clearTimeout(timeoutId);
         };

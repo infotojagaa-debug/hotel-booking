@@ -15,7 +15,35 @@ const isValidCoords = (lat, lng) => {
 };
 
 // --- CUSTOM MARKER CREATORS ---
-// (createCityIcon and createPriceIcon remain the same...)
+
+// 1. City Level Badge Marker
+const createCityIcon = (cityName, count) => {
+    return L.divIcon({
+        className: 'city-badge-wrapper',
+        html: `<div class="city-badge-marker">
+                <span class="city-badge-name">${cityName}</span>
+                <span class="city-badge-count">${count} properties</span>
+              </div>`,
+        iconSize: [120, 50],
+        iconAnchor: [60, 25],
+    });
+};
+
+// 2. Hotel Price Tag Marker (PILL STYLE)
+const createPriceIcon = (price, isActive, isHovered) => {
+    const activeClass = isActive ? 'active' : '';
+    const hoverClass = isHovered ? 'hovered' : '';
+    return L.divIcon({
+        className: 'price-pill-marker-wrapper',
+        html: `<div class="price-pill-marker ${activeClass} ${hoverClass}">
+                <span class="price-badge-currency">₹</span>
+                <span class="price-pill-text">${price?.toLocaleString()}</span>
+              </div>`,
+        iconSize: [90, 38],
+        iconAnchor: [45, 38],
+        popupAnchor: [0, -40]
+    });
+};
 
 // --- HELPER COMPONENTS ---
 

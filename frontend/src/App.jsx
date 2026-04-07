@@ -34,17 +34,27 @@ import CustomerSettings from './pages/customer/CustomerSettings';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ScrollToTop from './components/ScrollToTop';
+import MobileNav from './components/MobileNav';
 
 const AppLayout = () => {
   const location = useLocation();
   const isPanel = location.pathname.startsWith('/manager') || location.pathname.startsWith('/admin') || location.pathname === '/hotels/map';
   const isDashboard = location.pathname.startsWith('/dashboard');
 
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       {!isPanel && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* (Rest of the routes remain unchanged...) */}
         <Route path="/hotels" element={<Rooms />} />
         <Route path="/hotels/map" element={<HotelMapView />} />
         <Route path="/login" element={<Login />} />
@@ -77,6 +87,9 @@ const AppLayout = () => {
         </Route>
       </Routes>
       {!isPanel && !isDashboard && <Footer />}
+      
+      {/* Global Mobile Navigation Hub */}
+      {isMobile && !isPanel && <MobileNav />}
     </>
   );
 };

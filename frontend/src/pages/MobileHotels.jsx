@@ -102,8 +102,6 @@ const MobileHotels = () => {
       <button className="mob-map-fab" onClick={() => navigate('/hotels/map')}>
         <i className="fa fa-map"></i> Map
       </button>
-
-      <MobileNav />
     </div>
   );
 };
