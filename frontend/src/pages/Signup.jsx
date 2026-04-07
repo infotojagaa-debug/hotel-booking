@@ -27,7 +27,8 @@ const Signup = () => {
         }
         setLoading(true);
         try {
-            const { data } = await API.post('/users/register', { 
+            // Using the base endpoint /users as it is the most stable across all deployments
+            const { data } = await API.post('/users', { 
                 name: `${firstName} ${lastName}`.trim(), 
                 email: email.toLowerCase().trim(), 
                 password 
@@ -35,7 +36,9 @@ const Signup = () => {
             login(data);
             navigate('/');
         } catch (error) {
-            alert(error.response?.data?.message || 'Registration failed');
+            console.error('REGISTRATION FAILED at URL:', error.config?.url);
+            console.error('Error Details:', error.response?.data || error.message);
+            alert(error.response?.data?.message || `Registration failed (Status: ${error.response?.status || 'Unknown'}). Check console for URL.`);
         } finally {
             setLoading(false);
         }

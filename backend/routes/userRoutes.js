@@ -6,6 +6,7 @@ const passport = require('passport');
  
 router.post('/', registerUser);
 router.post('/register', registerUser);
+router.post('/signup', registerUser);
 router.post('/login', authUser);
 router.get('/verify/:token', verifyEmail);
 router.post('/forgotpassword', forgotPassword);
