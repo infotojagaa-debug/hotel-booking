@@ -12,7 +12,8 @@ const AdvancedSearch = ({
     initialLocation = '',
     initialAdults = 2,
     initialChildren = 0,
-    initialRooms = 1
+    initialRooms = 1,
+    onSearchComplete
 }) => {
 
     const [destination, setDestination] = useState(initialLocation);
@@ -96,10 +97,11 @@ const AdvancedSearch = ({
         }
         const searchParams = new URLSearchParams();
         Object.entries(searchData).forEach(([key, value]) => { if (value) searchParams.append(key, value); });
-        
         setIsHubActive(false);
         setShowMobSearchOverlay(false);
         
+        if (onSearchComplete) onSearchComplete();
+
         navigate(`/hotels?${searchParams.toString()}`);
     };
 

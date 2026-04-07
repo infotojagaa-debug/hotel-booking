@@ -113,7 +113,7 @@ const MobileNav = () => {
                     </div>
 
                     <div className="mob-overlay-body">
-                        <AdvancedSearch />
+                        <AdvancedSearch onSearchComplete={() => setShowSearch(false)} />
 
                         <div className="mob-overlay-tips">
                             <h4>Popular Searches</h4>

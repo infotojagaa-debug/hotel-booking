@@ -55,9 +55,24 @@ const MobileHotels = () => {
         {loading ? (
           [1, 2, 3].map(i => <div key={i} className="mob-skeleton-card"></div>)
         ) : hotels.length === 0 ? (
-          <div className="mob-empty">
-            <h2>No hotels found</h2>
-            <p>Try moving the map or changing your dates.</p>
+          <div className="mob-empty" style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
+            <div style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}><i className="fa fa-search"></i></div>
+            <h2 style={{ fontSize: '20px', color: '#1e293b', fontWeight: '800', marginBottom: '8px' }}>
+              {new URLSearchParams(location.search).get('location') 
+                ? `No properties found in ${new URLSearchParams(location.search).get('location')}`
+                : 'No properties found'}
+            </h2>
+            <p style={{ color: '#64748b', fontSize: '14px', lineHeight: '1.5' }}>
+              {new URLSearchParams(location.search).get('location') 
+                ? `We couldn't find any properties in ${new URLSearchParams(location.search).get('location')} matching your criteria. Try changing your dates or removing filters.`
+                : 'Try moving the map or changing your dates.'}
+            </p>
+            <button 
+              onClick={() => navigate('/hotels')} 
+              style={{ marginTop: '20px', padding: '10px 20px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '8px', border: 'none', fontWeight: '700' }}
+            >
+              Clear Search
+            </button>
           </div>
         ) : (
           <div className="mob-hotel-list">
