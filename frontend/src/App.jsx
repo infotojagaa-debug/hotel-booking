@@ -51,9 +51,11 @@ const AppLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const hideNavbar = isPanel || (isMobile && location.pathname === '/hotels');
+
   return (
     <>
-      {!isPanel && <Navbar />}
+      {!hideNavbar && !hideOverlays && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         {/* (Rest of the routes remain unchanged...) */}

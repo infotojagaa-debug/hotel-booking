@@ -90,8 +90,10 @@ const MobilePaymentPage = () => {
             const { data } = await API.post('/bookings', bookingPayload);
             navigate('/success', { state: { bookingId: data._id } });
         } catch (error) {
-            alert('Something went wrong. Redirecting home.');
-            navigate('/');
+            console.error('Payment Error:', error.response?.data || error.message);
+            alert(`Payment Failed: ${error.response?.data?.message || 'A network or server error occurred. Please try again.'}`);
+            setIsProcessing(false);
+            setProcessStatus('Error');
         }
     };
 

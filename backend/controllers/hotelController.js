@@ -99,9 +99,9 @@ const getHotels = async (req, res) => {
             // Trim and enforce case-insensitive exact matching across City, District, or State
             const strictLoc = location.trim();
             query.$or = [
-                { city: { $regex: `^${strictLoc}$`, $options: 'i' } },
-                { district: { $regex: `^${strictLoc}$`, $options: 'i' } },
-                { state: { $regex: `^${strictLoc}$`, $options: 'i' } }
+                { city: { $regex: `${strictLoc}`, $options: 'i' } },
+                { district: { $regex: `${strictLoc}`, $options: 'i' } },
+                { state: { $regex: `${strictLoc}`, $options: 'i' } }
             ];
         }
         if (starRating) query.starRating = { $gte: Number(starRating) };
