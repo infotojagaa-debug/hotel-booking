@@ -570,7 +570,7 @@ const AdvancedSearch = ({
                                 <i className="fa fa-times mob-overlay-close-icon" onClick={() => setShowGuestDropdown(false)}></i>
                             </div>
 
-                            <div className="mob-overlay-scroll-body pb-20">
+                            <div className="mob-overlay-scroll-body pb-24">
                                 {/* Adults */}
                                 <div className="mob-guest-item-card">
                                     <div className="mob-guest-meta">
