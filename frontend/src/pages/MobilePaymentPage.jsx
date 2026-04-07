@@ -227,14 +227,51 @@ const MobilePaymentPage = () => {
                             </div>
                         )}
 
-                        {/* Netbanking & Wallet fallbacks */}
-                        {(activeTab === 'netbanking' || activeTab === 'wallet') && (
-                            <div className="mob-dumb-pane">
-                                <select className="mob-inp" onChange={(e) => activeTab === 'netbanking' ? setSelectedBank(e.target.value) : setSelectedWallet(e.target.value)}>
-                                    <option value="">Select Option</option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                </select>
+                        {/* Netbanking */}
+                        {activeTab === 'netbanking' && (
+                            <div className="mob-nb-pane">
+                                <div className="mob-pay-grid">
+                                    {[
+                                        { id: 'hdfc', name: 'HDFC', icon: 'H' },
+                                        { id: 'icici', name: 'ICICI', icon: 'I' },
+                                        { id: 'sbi', name: 'SBI', icon: 'S' },
+                                        { id: 'axis', name: 'Axis', icon: 'A' },
+                                        { id: 'kotak', name: 'Kotak', icon: 'K' },
+                                        { id: 'pnb', name: 'PNB', icon: 'P' }
+                                    ].map(bank => (
+                                        <div 
+                                            key={bank.id} 
+                                            className={`mob-pay-grid-item ${selectedBank === bank.id ? 'active' : ''}`}
+                                            onClick={() => setSelectedBank(bank.id)}
+                                        >
+                                            <div className="mob-bank-logo">{bank.icon}</div>
+                                            <span>{bank.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Wallet */}
+                        {activeTab === 'wallet' && (
+                            <div className="mob-wallet-pane">
+                                <div className="mob-pay-grid">
+                                    {[
+                                        { id: 'razorpay', name: 'Razorpay', icon: 'RZ' },
+                                        { id: 'amazonpay', name: 'Amazon Pay', icon: 'AP' },
+                                        { id: 'stripe', name: 'Stripe', icon: 'ST' },
+                                        { id: 'airtel', name: 'Airtel', icon: 'AM' }
+                                    ].map(wallet => (
+                                        <div 
+                                            key={wallet.id} 
+                                            className={`mob-pay-grid-item ${selectedWallet === wallet.id ? 'active' : ''}`}
+                                            onClick={() => setSelectedWallet(wallet.id)}
+                                        >
+                                            <div className="mob-wallet-logo">{wallet.icon}</div>
+                                            <span>{wallet.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
 
