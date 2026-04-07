@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import AdvancedSearch from './AdvancedSearch';
+
 
 // Dynamically import all images from the hero_section_image directory
 const imageModules = import.meta.glob('../assets/hero_section_image/*.{jpg,jpeg,png,webp}', { eager: true });
@@ -80,25 +80,23 @@ const HeroSlider = () => {
             {/* Two-zone flex layout: heading floats in center, search anchors to bottom */}
             <div className="hero-content-layout">
 
-                {/* Zone 1 — Heading (grows to fill upper area) */}
-                <div className="hero-heading-zone animate-fade-up">
-                    <h1 className="hero-title">
-                        Discover Your <span className="text-gradient">Perfect Stay</span><br />
-                        Across India
-                        <svg className="hero-swoosh" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '10px' }}>
-                            <path d="M11 28C11 28 5 18 10 7" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
-                            <path d="M22 23C22 23 27 15 33 11" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
-                        </svg>
-                    </h1>
-                    <p className="hero-subtitle animate-fade-up" style={{ animationDelay: '0.2s' }}>
-                        Book unique stays that bring travelers and locals together.<br />
-                        Your gateway to shared adventures and luxury retreats.
-                    </p>
-                </div>
+                {/* Zone 1 — Centered Content (Title + Subtitle + Search Bar) */}
+                <div className="hero-centered-layout animate-fade-up">
+                    <div className="hero-heading-zone">
+                        <h1 className="hero-title">
+                            Discover Your <span className="text-gradient">Perfect Stay</span><br />
+                            Across India
+                            <svg className="hero-swoosh" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '10px' }}>
+                                <path d="M11 28C11 28 5 18 10 7" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
+                                <path d="M22 23C22 23 27 15 33 11" stroke="#6d5dfc" strokeWidth="4" strokeLinecap="round"/>
+                            </svg>
+                        </h1>
+                        <p className="hero-subtitle" style={{ animationDelay: '0.2s' }}>
+                            Book unique stays that bring travelers and locals together.<br />
+                            Your gateway to shared adventures and luxury retreats.
+                        </p>
 
-                {/* Zone 2 — Search bar anchored to bottom */}
-                <div className="hero-search-bottom-wrap animate-fade-up" style={{ animationDelay: '0.35s' }}>
-                    <AdvancedSearch />
+                    </div>
                 </div>
 
             </div>
