@@ -6407,3 +6407,107 @@ input:checked + .mob-slider:before {
 .mob-hub-done-btn:active {
     transform: scale(0.98) !important;
 }
+
+/* ── STYLE RESTORATION & QUICK SELECTION REFINEMENTS ── */
+
+.mob-quick-select-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 12px 20px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+}
+
+.mob-quick-chip {
+    white-space: nowrap !important;
+    padding: 10px 20px !important;
+    border: 1.5px solid #006ce4 !important;
+    border-radius: 50px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #006ce4 !important;
+    background: #ffffff !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mob-quick-chip:active {
+    transform: scale(0.95) !important;
+}
+
+.mob-quick-chip.active {
+    background: #006ce4 !important;
+    color: #ffffff !important;
+}
+
+/* Restore Professional Desktop Location Dropdown Styles */
+.destination-results-dropdown {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    width: 400px !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+    z-index: 99999 !important;
+    padding: 12px 0 !important;
+    margin-top: 8px !important;
+}
+
+.desktop-result-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    padding: 12px 20px !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+}
+
+.desktop-result-item:hover {
+    background: #f8fafc !important;
+}
+
+.desktop-res-icon {
+    width: 40px !important;
+    height: 40px !important;
+    background: #f1f5f9 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #475569 !important;
+}
+
+.desktop-res-name {
+    font-weight: 700 !important;
+    color: #0f172a !important;
+}
+
+.desktop-res-state {
+    font-size: 13px !important;
+    color: #64748b !important;
+}
+
+/* Elite Flexible Selection (Bottom) Styles */
+.mob-flexible-bottom-section {
+    padding: 30px 20px !important;
+    border-top: 10px solid #f8fafc !important;
+    background: #ffffff !important;
+}
+
+.mob-flex-title-row {
+    margin-bottom: 24px !important;
+}
+
+.mob-flex-main-title {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+.mob-prop-pill:active {
+    transform: scale(0.96) !important;
+}
