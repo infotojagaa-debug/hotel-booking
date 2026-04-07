@@ -6109,3 +6109,145 @@ input:checked + .mob-slider:before {
     font-weight: 700 !important;
     color: #0f172a !important;
 }
+
+/* ── ELITE SEARCH HUB: CLEAN SLATE OVERHAUL ── */
+
+.mob-search-hub-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: #ffffff !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.mob-search-hub-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    padding: 16px 20px !important;
+    background: #ffffff !important;
+}
+
+.mob-hub-back-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    background: #f1f5f9 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    font-size: 18px !important;
+    color: #0f172a !important;
+}
+
+.mob-hub-title {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+/* Property Selection Pills */
+.mob-prop-tabs-scroller {
+    display: flex !important;
+    gap: 10px !important;
+    padding: 8px 20px 20px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.mob-prop-pill {
+    white-space: nowrap !important;
+    padding: 10px 22px !important;
+    border-radius: 50px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.2s !important;
+}
+
+.mob-prop-pill.all-stays {
+    background: #7c3aed !important; /* Premium Purple */
+    color: #ffffff !important;
+}
+
+.mob-prop-pill.others {
+    background: #1e293b !important; /* Deep Navy */
+    color: #ffffff !important;
+}
+
+/* Selection Cards */
+.mob-selection-card-full {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    padding-top: 20px !important;
+}
+
+.mob-card-head-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 24px 16px !important;
+}
+
+.mob-card-head-title {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+/* Popular Searches with Red Pin Icons */
+.mob-pop-searches-section {
+    padding: 24px 20px !important;
+}
+
+.mob-pop-head-text {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    margin-bottom: 16px !important;
+}
+
+.mob-pop-chip-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+.mob-pop-chip-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 18px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 50px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    cursor: pointer !important;
+}
+
+.mob-pop-chip-btn i {
+    color: #ef4444 !important; /* Premium Red Pin */
+}
+
+.mob-hub-footer-fixed {
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 16px 20px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #f1f5f9 !important;
+}
