@@ -36,6 +36,7 @@ const authUser = async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = async (req, res) => {
+    console.log('REGISTRATION REQUEST RECEIVED:', req.body.email);
     const { name, email, password, role, phone, hotelName, hotelLocation, licenseInfo } = req.body;
 
     try {

@@ -157,8 +157,12 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+app.get('/api/version', (req, res) => {
+    res.json({ version: '1.0.1', message: 'Registration route debug active' });
+});
+
 app.get('/', (req, res) => {
-    res.send('API is running...');
+    res.send('API is running... (v1.0.1)');
 });
 
 const http = require('http');
