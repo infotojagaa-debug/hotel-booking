@@ -27,6 +27,7 @@ const MobileManagerDashboard = () => {
     // --- New Form States ---
     const [showAddHotel, setShowAddHotel] = useState(false);
     const [showAddRoom, setShowAddRoom] = useState(false);
+    const [editingId, setEditingId] = useState(null); // Used for both Hotel and Room editing
     const [submitting, setSubmitting] = useState(false);
     const [hotelForm, setHotelForm] = useState({
         name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: '', amenities: []
@@ -105,7 +106,7 @@ const MobileManagerDashboard = () => {
         e.preventDefault();
         setSubmitting(true);
         try {
-            let imageUrl = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
+            let imageUrl = hotelForm.images?.[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
             if (selectedImageFile) {
                 const formData = new FormData();
                 formData.append('image', selectedImageFile);
@@ -118,26 +119,30 @@ const MobileManagerDashboard = () => {
                 images: [imageUrl], 
                 isApproved: true,
                 starRating: Number(hotelForm.starRating),
-                cheapestPrice: Number(hotelForm.cheapestPrice),
-                latitude: null, // Parity with desktop defaults
-                longitude: null
+                cheapestPrice: Number(hotelForm.cheapestPrice)
             };
             
-            await API.post('/admin/hotels', payload);
+            if (editingId) {
+                await API.put(`/manager/hotels/${editingId}`, payload);
+            } else {
+                await API.post('/admin/hotels', payload);
+            }
+
             setShowAddHotel(false);
+            setEditingId(null);
             setHotelForm({ name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: '', amenities: [] });
             setPreviewImage(null);
             fetchAll();
-        } catch (err) { alert(err.response?.data?.message || 'Failed to add hotel'); }
+        } catch (err) { alert(err.response?.data?.message || 'Failed to save hotel'); }
         finally { setSubmitting(false); }
     };
 
     const handleAddRoom = async (e) => {
         e.preventDefault();
-        if (!selectedHotel) return alert('Select a hotel first');
+        if (!selectedHotel && !editingId) return alert('Select a hotel first');
         setSubmitting(true);
         try {
-            let imageUrl = 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80';
+            let imageUrl = roomForm.images?.[0] || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80';
             if (selectedImageFile) {
                 const formData = new FormData();
                 formData.append('image', selectedImageFile);
@@ -148,18 +153,24 @@ const MobileManagerDashboard = () => {
             const payload = { 
                 ...roomForm, 
                 images: [imageUrl], 
-                hotelId: selectedHotel._id,
                 pricePerNight: Number(roomForm.pricePerNight),
                 maxGuests: Number(roomForm.maxGuests),
                 totalRoomCount: Number(roomForm.totalRoomCount)
             };
-            
-            await API.post('/manager/rooms', payload);
+
+            if (editingId) {
+                await API.put(`/manager/rooms/${editingId}`, payload);
+            } else {
+                payload.hotelId = selectedHotel._id;
+                await API.post('/manager/rooms', payload);
+            }
+
             setShowAddRoom(false);
+            setEditingId(null);
             setRoomForm({ name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1, amenities: [] });
             setPreviewImage(null);
             fetchAll();
-        } catch (err) { alert(err.response?.data?.message || 'Failed to add room'); }
+        } catch (err) { alert(err.response?.data?.message || 'Failed to save room'); }
         finally { setSubmitting(false); }
     };
 
@@ -206,6 +217,35 @@ const MobileManagerDashboard = () => {
         if (file) {
             setSelectedImageFile(file);
             setPreviewImage(URL.createObjectURL(file));
+        }
+    };
+
+    const handleEditHotelClick = (h) => {
+        setHotelForm({ ...h });
+        setEditingId(h._id);
+        setPreviewImage(h.images?.[0] || null);
+        setShowAddHotel(true);
+    };
+
+    const handleEditRoomClick = (r) => {
+        setRoomForm({ ...r });
+        setEditingId(r._id);
+        setPreviewImage(r.images?.[0] || null);
+        setShowAddRoom(true);
+    };
+
+    const handleBackClick = () => {
+        if (showAddHotel || showAddRoom || showAddOffer) {
+            setShowAddHotel(false);
+            setShowAddRoom(false);
+            setShowAddOffer(false);
+            setEditingId(null);
+        } else if (activeTab === 'rooms' || activeTab === 'availability') {
+            setActiveTab('hotels');
+        } else if (activeTab !== 'overview') {
+            setActiveTab('overview');
+        } else {
+            navigate('/dashboard'); // Go to general dashboard or home instead of login
         }
     };
 
@@ -272,6 +312,7 @@ const MobileManagerDashboard = () => {
                             </div>
                         </div>
                         <div className="rm-inv-actions">
+                            <button className="mob-icon-btn edit" onClick={(e) => { e.stopPropagation(); handleEditRoomClick(r); }}><i className="fa fa-pencil-alt"></i></button>
                             <button className="mob-icon-btn del" onClick={(e) => { e.stopPropagation(); handleDeleteRoom(r._id); }}><i className="fa fa-trash-alt"></i></button>
                         </div>
                     </div>
@@ -321,13 +362,18 @@ const MobileManagerDashboard = () => {
             {/* Header */}
             <header className="mob-adm-header">
                 <div className="mob-adm-top">
-                    <div className="mob-adm-logo">
-                        <div className="mob-mgr-avatar">
-                            {userInfo?.name?.substring(0, 1) || 'M'}
-                        </div>
-                        <div className="mob-mgr-meta">
-                            <span>{userInfo?.name || 'Manager'}</span>
-                            <small>Elite Manager</small>
+                    <div className="mob-header-left">
+                        <button className="mob-back-btn" onClick={handleBackClick}>
+                            <i className="fas fa-chevron-left"></i>
+                        </button>
+                        <div className="mob-adm-logo">
+                            <div className="mob-mgr-avatar">
+                                {userInfo?.name?.substring(0, 1) || 'M'}
+                            </div>
+                            <div className="mob-mgr-meta">
+                                <span>{userInfo?.name || 'Manager'}</span>
+                                <small>Elite Manager</small>
+                            </div>
                         </div>
                     </div>
                     <button className="mob-logout-c" onClick={() => { logout(); navigate('/login'); }}>
@@ -378,9 +424,10 @@ const MobileManagerDashboard = () => {
                                     <strong>{h.name}</strong>
                                     <span>{h.city} · {h.isApproved ? 'Live' : 'Pending'}</span>
                                 </div>
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    <button className="mob-icon-btn edit" onClick={(e) => { e.stopPropagation(); handleEditHotelClick(h); }}><i className="fa fa-pencil-alt"></i></button>
                                     <button className="mob-icon-btn del" onClick={(e) => { e.stopPropagation(); handleDeleteHotel(h._id); }}><i className="fa fa-trash-alt"></i></button>
-                                    <i className="fa fa-chevron-right text-gray-300"></i>
+                                    <i className="fa fa-chevron-right text-gray-300 ml-2"></i>
                                 </div>
                             </div>
                         ))}
@@ -574,8 +621,8 @@ const MobileManagerDashboard = () => {
             {showAddHotel && (
                 <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
                     <div className="mob-form-hdr">
-                        <button className="mob-close-btn" onClick={() => { setShowAddHotel(false); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
-                        <h2>Register Property</h2>
+                        <button className="mob-close-btn" onClick={() => { setShowAddHotel(false); setEditingId(null); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
+                        <h2>{editingId ? 'Edit Property' : 'Register Property'}</h2>
                     </div>
                     <form className="mob-form-body" onSubmit={handleAddHotel}>
                         <div className="mob-input-group">
@@ -654,8 +701,8 @@ const MobileManagerDashboard = () => {
             {showAddRoom && (
                 <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
                     <div className="mob-form-hdr">
-                        <button className="mob-close-btn" onClick={() => { setShowAddRoom(false); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
-                        <h2>{selectedHotel ? `Add Room to ${selectedHotel.name.substring(0, 15)}...` : 'Add Room'}</h2>
+                        <button className="mob-close-btn" onClick={() => { setShowAddRoom(false); setEditingId(null); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
+                        <h2>{editingId ? 'Edit Room' : (selectedHotel ? `Add Room to ${selectedHotel.name.substring(0, 15)}...` : 'Add Room')}</h2>
                     </div>
                     <form className="mob-form-body" onSubmit={handleAddRoom}>
                         <div className="mob-input-group">
