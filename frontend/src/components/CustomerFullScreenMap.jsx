@@ -6,35 +6,49 @@ import { FaStar, FaChevronLeft, FaSearch, FaTimes, FaHeart, FaMapMarkerAlt, FaEx
 import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../utils/api';
 
-// --- CUSTOM PRICE PILL MARKER ---
-const createPricePillIcon = (price, isActive, isHovered) => {
-    const activeClass = isActive ? 'active' : '';
-    const hoverClass = isHovered ? 'hovered' : '';
-    return L.divIcon({
-        className: 'price-pill-marker-wrapper',
-        html: `<div class="price-pill-marker ${activeClass} ${hoverClass}">
-                <span class="price-badge-currency">₹</span>
-                <span class="price-pill-text">${price?.toLocaleString()}</span>
-              </div>`,
-        iconSize: [90, 38],
-        iconAnchor: [45, 38],
-        popupAnchor: [0, -40]
-    });
+// --- UTILS ---
+const isValidCoords = (lat, lng) => {
+    const latNum = parseFloat(lat);
+    const lngNum = parseFloat(lng);
+    return !isNaN(latNum) && !isNaN(lngNum) && isFinite(latNum) && isFinite(lngNum) && 
+           (Math.abs(latNum) > 0.01 || Math.abs(lngNum) > 0.01);
 };
 
 // --- MAP AUTO-FIT BOUNDS CONTROLLER ---
 const MapController = ({ hotels, forceCenter }) => {
     const map = useMap();
+    const lastFlyTo = useRef(null);
+
     useEffect(() => {
         if (hotels.length > 0 && !forceCenter) {
-            const bounds = L.latLngBounds(hotels.map(h => [h.latitude, h.longitude]));
-            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+            const valid = hotels.filter(h => isValidCoords(h.latitude, h.longitude));
+            if (valid.length === 0) return;
+            
+            try {
+                const bounds = L.latLngBounds(valid.map(h => [h.latitude, h.longitude]));
+                map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+            } catch (err) {
+                console.warn('Map fitBounds skipped:', err.message);
+            }
         }
     }, [hotels, map, forceCenter]);
 
     useEffect(() => {
-        if (forceCenter) {
-            map.flyTo([forceCenter.lat, forceCenter.lng], 15, { duration: 1.2 });
+        if (forceCenter && isValidCoords(forceCenter.lat, forceCenter.lng)) {
+            const lat = Number(forceCenter.lat);
+            const lng = Number(forceCenter.lng);
+
+            // Prevent loop/redundant flyTo
+            if (lastFlyTo.current && lastFlyTo.current.lat === lat && lastFlyTo.current.lng === lng) {
+                return;
+            }
+
+            try {
+                lastFlyTo.current = { lat, lng };
+                map.flyTo([lat, lng], 15, { duration: 1.2 });
+            } catch (err) {
+                console.warn('Map flyTo skipped:', err.message);
+            }
         }
     }, [forceCenter, map]);
 

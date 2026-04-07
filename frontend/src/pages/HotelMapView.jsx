@@ -14,46 +14,53 @@ import API, { BACKEND_URL } from '../utils/api';
 import MobileHotels from './MobileHotels';
 import './HotelMapView.css';
 
-// ─── Fix Leaflet default icon ─────────────────────────────────────────────────
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-});
-
-// ─── Custom Price Marker ──────────────────────────────────────────────────────
-const createPriceMarker = (price, isActive, isHovered) => {
-  const cls = `hmv-price-marker${isActive ? ' active' : ''}${isHovered ? ' hovered' : ''}`;
-  return L.divIcon({
-    className: 'hmv-price-marker-wrapper',
-    html: `<div class="${cls}">₹${Number(price || 0).toLocaleString('en-IN')}</div>`,
-    iconSize: [90, 34],
-    iconAnchor: [45, 41],
-    popupAnchor: [0, -42],
-  });
+// --- UTILS ---
+const isValidCoords = (lat, lng) => {
+  const latNum = parseFloat(lat);
+  const lngNum = parseFloat(lng);
+  return !isNaN(latNum) && !isNaN(lngNum) && isFinite(latNum) && isFinite(lngNum) && 
+         (Math.abs(latNum) > 0.01 || Math.abs(lngNum) > 0.01);
 };
 
 // ─── Map Fit Bounds Controller ────────────────────────────────────────────────
 const MapFitBounds = ({ hotels, forceCenter }) => {
   const map = useMap();
+  const lastFlyTo = useRef(null);
 
   useEffect(() => {
-    if (forceCenter) {
-      map.flyTo([forceCenter.lat, forceCenter.lng], 15, { duration: 1.0, easeLinearity: 0.3 });
+    if (forceCenter && isValidCoords(forceCenter.lat, forceCenter.lng)) {
+      const lat = Number(forceCenter.lat);
+      const lng = Number(forceCenter.lng);
+      
+      // Prevent loop/redundant flyTo
+      if (lastFlyTo.current && lastFlyTo.current.lat === lat && lastFlyTo.current.lng === lng) {
+        return;
+      }
+
+      try {
+        lastFlyTo.current = { lat, lng };
+        map.flyTo([lat, lng], 15, { duration: 1.0, easeLinearity: 0.3 });
+      } catch (err) {
+        console.warn('Map flyTo skipped:', err.message);
+      }
     }
   }, [forceCenter, map]);
 
   useEffect(() => {
     if (!forceCenter && hotels.length > 0) {
-      const valid = hotels.filter(h => typeof h.latitude === 'number' && typeof h.longitude === 'number');
+      const valid = hotels.filter(h => isValidCoords(h.latitude, h.longitude));
       if (valid.length === 0) return;
-      if (valid.length === 1) {
-        map.setView([valid[0].latitude, valid[0].longitude], 14);
-        return;
+      
+      try {
+        if (valid.length === 1) {
+          map.setView([valid[0].latitude, valid[0].longitude], 14);
+          return;
+        }
+        const bounds = L.latLngBounds(valid.map(h => [h.latitude, h.longitude]));
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+      } catch (err) {
+        console.warn('Map fitBounds/setView skipped:', err.message);
       }
-      const bounds = L.latLngBounds(valid.map(h => [h.latitude, h.longitude]));
-      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
   }, [hotels, map, forceCenter]);
 

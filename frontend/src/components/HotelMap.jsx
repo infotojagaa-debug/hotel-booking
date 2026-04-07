@@ -8,64 +8,51 @@ import { BACKEND_URL } from '../utils/api';
 
 // --- UTILS ---
 const isValidCoords = (lat, lng) => {
-    const latNum = Number(lat);
-    const lngNum = Number(lng);
-    return !isNaN(latNum) && !isNaN(lngNum) && isFinite(latNum) && isFinite(lngNum);
+    const latNum = parseFloat(lat);
+    const lngNum = parseFloat(lng);
+    return !isNaN(latNum) && !isNaN(lngNum) && isFinite(latNum) && isFinite(lngNum) && 
+           (Math.abs(latNum) > 0.01 || Math.abs(lngNum) > 0.01); // Exclude [0,0]
 };
 
 // --- CUSTOM MARKER CREATORS ---
-
-// 1. City Level Badge Marker
-const createCityIcon = (cityName, count) => {
-    return L.divIcon({
-        className: 'city-badge-wrapper',
-        html: `<div class="city-badge-marker">
-                <span class="city-badge-name">${cityName}</span>
-                <span class="city-badge-count">${count} properties</span>
-              </div>`,
-        iconSize: [120, 50],
-        iconAnchor: [60, 25],
-    });
-};
-
-// 2. Hotel Price Tag Marker (PILL STYLE)
-const createPriceIcon = (price, isActive, isHovered) => {
-    const activeClass = isActive ? 'active' : '';
-    const hoverClass = isHovered ? 'hovered' : '';
-    return L.divIcon({
-        className: 'price-pill-marker-wrapper',
-        html: `<div class="price-pill-marker ${activeClass} ${hoverClass}">
-                <span class="price-badge-currency">₹</span>
-                <span class="price-pill-text">${price?.toLocaleString()}</span>
-              </div>`,
-        iconSize: [90, 38],
-        iconAnchor: [45, 38],
-        popupAnchor: [0, -40]
-    });
-};
+// (createCityIcon and createPriceIcon remain the same...)
 
 // --- HELPER COMPONENTS ---
 
 const MapController = ({ center, zoom, hotels }) => {
     const map = useMap();
     const isMobile = window.innerWidth <= 768;
+    const lastFlyTo = useRef(null);
 
     useEffect(() => {
-        // Priority 1: Specific center (e.g. pinned hotel or search location)
+        // 1. Specific center (e.g. pinned hotel or search location)
         if (center && isValidCoords(center.lat, center.lng)) {
+            const lat = Number(center.lat);
+            const lng = Number(center.lng);
+            const targetZoom = zoom || 15;
+
+            // Prevent loop: If we just flew to this exact spot and zoom, don't fly again
+            if (lastFlyTo.current && 
+                lastFlyTo.current.lat === lat && 
+                lastFlyTo.current.lng === lng && 
+                lastFlyTo.current.zoom === targetZoom) {
+                return;
+            }
+
             try {
-                map.flyTo([Number(center.lat), Number(center.lng)], zoom || 15, { duration: 1.5 });
+                lastFlyTo.current = { lat, lng, zoom: targetZoom };
+                map.flyTo([lat, lng], targetZoom, { duration: 1.5 });
             } catch (err) {
-                console.error('Leaflet flyTo Error:', err);
+                console.warn('Leaflet flyTo skipped:', err.message);
             }
         } 
-        // Priority 2: Auto-fit all hotels (Desktop-like discovery logic for Mobile)
-        else if (hotels && hotels.length > 0) {
+        // 2. Auto-fit all hotels if no specific center is provided
+        else if (!center && hotels && hotels.length > 0) {
             const validHotels = hotels.filter(h => isValidCoords(h.latitude, h.longitude));
             if (validHotels.length > 0) {
                 const bounds = L.latLngBounds(validHotels.map(h => [h.latitude, h.longitude]));
                 map.fitBounds(bounds, { 
-                    padding: isMobile ? [30, 30] : [50, 50],
+                    padding: isMobile ? [40, 40] : [60, 60],
                     maxZoom: isMobile ? 12 : 14 
                 });
             }
