@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import API, { BACKEND_URL } from '../utils/api';
-import { AuthContext } from '../context/AuthContext';
+import MobileNav from '../components/MobileNav';
 import './MobileHotels.css';
 
-const MobileHotels = ({ onToggleMap }) => {
+const MobileHotels = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userInfo } = useContext(AuthContext);
 
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,8 +22,6 @@ const MobileHotels = ({ onToggleMap }) => {
       setLoading(true);
       try {
         const params = new URLSearchParams(location.search);
-        // RETAIN 'type' parameter for "Browse by property" functionality
-        // removed params.delete('type') bug
         const { data } = await API.get(`/hotels?${params.toString()}`);
         setHotels(data);
       } catch (err) {
@@ -81,12 +78,6 @@ const MobileHotels = ({ onToggleMap }) => {
                     <h4>{hotel.name}</h4>
                     <p className="mob-card-location">📍 {hotel.city || 'India'} <span style={{color:'#6b7280', fontSize:'11px'}}>{hotel.distance || '1.2 km from center'}</span></p>
                     
-                    <div className="mob-card-amenities">
-                      {hotel.amenities?.slice(0, 3).map((am, i) => (
-                        <span key={i}>{am}</span>
-                      ))}
-                    </div>
-
                     <div className="mob-card-bottom">
                       <div className="mob-card-urgency">
                         {hotel.cheapestPrice < 4000 ? <label className="mob-tag-green">Value Deal</label> : null}
@@ -108,37 +99,11 @@ const MobileHotels = ({ onToggleMap }) => {
       </div>
 
       {/* ── MAP TOGGLE FAB ── */}
-      <button className="mob-map-fab" 
-        onClick={() => navigate('/hotels/map')}
-        onTouchStart={() => navigate('/hotels/map')}
-      >
+      <button className="mob-map-fab" onClick={() => navigate('/hotels/map')}>
         <i className="fa fa-map"></i> Map
       </button>
 
-      {/* ── BOTTOM TAB BAR ── */}
-      <nav className="mob-bottom-bar">
-        <Link to="/" className={`mob-tab`}>
-          <span className="mob-tab-icon">🏠</span>
-          <span className="mob-tab-label">Home</span>
-        </Link>
-        <Link to="/" className="mob-tab">
-          <span className="mob-tab-icon">🔍</span>
-          <span className="mob-tab-label">Search</span>
-        </Link>
-        <Link to="/hotels" className={`mob-tab active`}>
-          <span className="mob-tab-icon">🗺️</span>
-          <span className="mob-tab-label">Hotels</span>
-        </Link>
-        <Link to={userInfo ? '/wishlist' : '/login'} className={`mob-tab`}>
-          <span className="mob-tab-icon">❤️</span>
-          <span className="mob-tab-label">Saved</span>
-        </Link>
-        <Link to={userInfo ? '/dashboard' : '/login'} className={`mob-tab`} onTouchStart={(e) => e.target.classList.add('active')}>
-          <span className="mob-tab-icon">👤</span>
-          <span className="mob-tab-label">Account</span>
-        </Link>
-      </nav>
-
+      <MobileNav />
     </div>
   );
 };

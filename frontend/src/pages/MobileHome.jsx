@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import AdvancedSearch from '../components/AdvancedSearch';
 import { AuthContext } from '../context/AuthContext';
 import API, { BACKEND_URL } from '../utils/api';
+import MobileNav from '../components/MobileNav';
 import './MobileHome.css';
 
 // Trending destination images
@@ -98,34 +98,17 @@ const exploreDestinations = [
 ];
 
 const MobileHome = () => {
-  const [showSearch, setShowSearch]           = useState(false);
   const [featuredHotels, setFeaturedHotels]   = useState([]);
   const [exclusiveOffers, setExclusiveOffers] = useState(DUMMY_OFFERS);
   const [loading, setLoading]                 = useState(true);
-  const { userInfo, logout }                  = useContext(AuthContext);
+  const { userInfo }                          = useContext(AuthContext);
   const navigate                              = useNavigate();
-  const location                              = useLocation();
 
   // Hide desktop navbar while this component is mounted
   useEffect(() => {
     document.body.classList.add('mobile-home-active');
     return () => document.body.classList.remove('mobile-home-active');
   }, []);
-
-  // Body Scroll Lock for search overlay
-  useEffect(() => {
-    if (showSearch) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [showSearch]);
-
-  // Close search overlay on route change
-  useEffect(() => {
-    setShowSearch(false);
-  }, [location]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,37 +136,6 @@ const MobileHome = () => {
     return 'TRENDING';
   };
 
-  const activeTab = location.pathname === '/'
-    ? 'home'
-    : location.pathname === '/wishlist'
-    ? 'wishlist'
-    : location.pathname.startsWith('/dashboard')
-    ? 'account'
-    : '';
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  const handlePopularSearch = (city) => {
-    // 1. Persist search data for the next page
-    const searchData = {
-      location: city,
-      checkIn: null,
-      checkOut: null,
-      adults: 2,
-      children: 0,
-      rooms: 1,
-      isPetFriendly: false
-    };
-    localStorage.setItem('elite_stays_search', JSON.stringify(searchData));
-    
-    // 2. Navigate immediately
-    setShowSearch(false);
-    navigate(`/hotels?location=${city}`);
-  };
-
   return (
     <div className="mob-root">
 
@@ -206,11 +158,8 @@ const MobileHome = () => {
           <h1 className="mob-hero-title">Where to next?</h1>
           <p className="mob-hero-subtitle">Hotels, apartments, villas &amp; more</p>
 
-          {/* Redesigned Premium Search Hub Trigger */}
-          <div className="mob-search-hub" 
-            onClick={() => setShowSearch(true)}
-            onTouchStart={() => setShowSearch(true)}
-          >
+          {/* Redesigned Premium Search Hub Trigger - Handled by MobileNav but triggerable here */}
+          <div className="mob-search-hub" onClick={() => window.dispatchEvent(new CustomEvent('open-mob-search'))}>
             <div className="mob-search-hub-icon">
               <i className="fa fa-search"></i>
             </div>
@@ -397,75 +346,7 @@ const MobileHome = () => {
         </div>
       </div>
 
-      {/* ── BOTTOM TAB BAR ── */}
-      <nav className="mob-bottom-bar">
-        <Link to="/" className={`mob-tab ${activeTab === 'home' ? 'active' : ''}`}>
-          <span className="mob-tab-icon">🏠</span>
-          <span className="mob-tab-label">Home</span>
-        </Link>
-
-        <button className="mob-tab" onClick={() => setShowSearch(true)}>
-          <span className="mob-tab-icon">🔍</span>
-          <span className="mob-tab-label">Search</span>
-        </button>
-
-        <Link to="/hotels" className={`mob-tab ${location.pathname === '/hotels' ? 'active' : ''}`}>
-          <span className="mob-tab-icon">🗺️</span>
-          <span className="mob-tab-label">Hotels</span>
-        </Link>
-
-        <Link to={userInfo ? '/wishlist' : '/login'} className={`mob-tab ${activeTab === 'wishlist' ? 'active' : ''}`}>
-          <span className="mob-tab-icon">❤️</span>
-          <span className="mob-tab-label">Saved</span>
-        </Link>
-
-        <Link
-          to={userInfo
-            ? (userInfo.role === 'admin' ? '/admin/dashboard' : userInfo.role === 'manager' ? '/manager/dashboard' : '/dashboard')
-            : '/login'}
-          className={`mob-tab ${activeTab === 'account' ? 'active' : ''}`}
-        >
-          <span className="mob-tab-icon">👤</span>
-          <span className="mob-tab-label">Account</span>
-        </Link>
-      </nav>
-
-      {/* ── FULL-SCREEN SEARCH OVERLAY ── */}
-      {showSearch && (
-        <div className="mob-search-overlay">
-          <div className="mob-overlay-header">
-            <button className="mob-overlay-back" 
-              onClick={() => setShowSearch(false)}
-              onTouchStart={() => setShowSearch(false)}
-            >
-              <i className="fa fa-arrow-left"></i>
-            </button>
-            <span className="mob-overlay-title">Search Stays</span>
-          </div>
-
-          <div className="mob-overlay-body">
-            <AdvancedSearch />
-
-            {/* Quick destination chips */}
-            <div className="mob-overlay-tips">
-              <h4>Popular Searches</h4>
-              <div className="mob-tip-chips">
-                {['Chennai', 'Goa', 'Ooty', 'Bangalore', 'Coorg', 'Pondicherry'].map((city) => (
-                  <button
-                    key={city}
-                    type="button"
-                    className="mob-tip-chip"
-                    onClick={() => handlePopularSearch(city)}
-                    onTouchStart={() => handlePopularSearch(city)}
-                  >
-                    📍 {city}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <MobileNav />
     </div>
   );
 };
