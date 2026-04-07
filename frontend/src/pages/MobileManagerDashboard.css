@@ -494,3 +494,31 @@
 .mob-adm-nav-scroll::-webkit-scrollbar {
     display: none;
 }
+
+/* Modal Context Banner */
+.mob-modal-context-banner {
+    background: #f1f5f9;
+    padding: 15px 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.mob-modal-context-banner .ctx-lbl {
+    font-size: 9px;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.mob-modal-context-banner .ctx-val {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mob-modal-context-banner .ctx-val i {
+    color: #6366f1;
+}

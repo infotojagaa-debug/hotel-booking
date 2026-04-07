@@ -30,7 +30,7 @@ const MobileManagerDashboard = () => {
     const [editingId, setEditingId] = useState(null); // Used for both Hotel and Room editing
     const [submitting, setSubmitting] = useState(false);
     const [hotelForm, setHotelForm] = useState({
-        name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: '', amenities: []
+        name: '', city: '', address: '', description: '', type: 'Hotel', starRating: 3, cheapestPrice: '', amenities: [], distanceFromCenter: ''
     });
     const [roomForm, setRoomForm] = useState({
         name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1, amenities: []
@@ -119,7 +119,8 @@ const MobileManagerDashboard = () => {
                 images: [imageUrl], 
                 isApproved: true,
                 starRating: Number(hotelForm.starRating),
-                cheapestPrice: Number(hotelForm.cheapestPrice)
+                cheapestPrice: Number(hotelForm.cheapestPrice),
+                distanceFromCenter: hotelForm.distanceFromCenter || 'Unknown'
             };
             
             if (editingId) {
@@ -668,6 +669,10 @@ const MobileManagerDashboard = () => {
                             <input type="number" placeholder="2500" value={hotelForm.cheapestPrice} onChange={e => setHotelForm({...hotelForm, cheapestPrice: e.target.value})} required />
                         </div>
                         <div className="mob-input-group">
+                            <label>Distance from center (e.g. 2.5 km)</label>
+                            <input type="text" placeholder="2.5 km" value={hotelForm.distanceFromCenter} onChange={e => setHotelForm({...hotelForm, distanceFromCenter: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-group">
                             <label>Description</label>
                             <textarea rows="3" placeholder="Describe your property..." value={hotelForm.description} onChange={e => setHotelForm({...hotelForm, description: e.target.value})} required></textarea>
                         </div>
@@ -720,8 +725,15 @@ const MobileManagerDashboard = () => {
                 <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
                     <div className="mob-form-hdr">
                         <button className="mob-close-btn" onClick={() => { setShowAddRoom(false); setEditingId(null); setPreviewImage(null); }}><i className="fa fa-times"></i></button>
-                        <h2>{editingId ? 'Edit Room' : (selectedHotel ? `Add Room to ${selectedHotel.name.substring(0, 15)}...` : 'Add Room')}</h2>
+                        <h2>{editingId ? 'Edit Room' : 'Add Room'}</h2>
                     </div>
+                    
+                    {/* Property Identification Banner */}
+                    <div className="mob-modal-context-banner">
+                        <div className="ctx-lbl">TARGET PROPERTY</div>
+                        <div className="ctx-val"><i className="fa fa-hotel"></i> {selectedHotel?.name}</div>
+                    </div>
+
                     <form className="mob-form-body" onSubmit={handleAddRoom}>
                         <div className="mob-input-group">
                             <label>Room Name</label>
