@@ -36,6 +36,10 @@ const MobileManagerDashboard = () => {
     });
     const [previewImage, setPreviewImage] = useState(null);
     const [selectedImageFile, setSelectedImageFile] = useState(null);
+    const [showAddOffer, setShowAddOffer] = useState(false);
+    const [offerForm, setOfferForm] = useState({
+        code: '', title: '', description: '', discountType: 'Percentage', discountValue: '', validFrom: '', validTo: ''
+    });
     
     // --- Config ---
     const TABS = [
@@ -159,6 +163,44 @@ const MobileManagerDashboard = () => {
         finally { setSubmitting(false); }
     };
 
+    const handleDeleteHotel = async (id) => {
+        if (!window.confirm('Delete this hotel and all its rooms?')) return;
+        try {
+            await API.delete(`/manager/hotels/${id}`);
+            fetchAll();
+        } catch { alert('Delete failed'); }
+    };
+
+    const handleDeleteRoom = async (id) => {
+        if (!window.confirm('Delete this room?')) return;
+        try {
+            await API.delete(`/manager/rooms/${id}`);
+            fetchAll();
+        } catch { alert('Delete failed'); }
+    };
+
+    const handleToggleRoomStatus = async (id, current) => {
+        const statuses = ['Available', 'Blocked', 'Maintenance'];
+        const next = statuses[(statuses.indexOf(current || 'Available') + 1) % statuses.length];
+        try {
+            await API.put(`/manager/rooms/${id}`, { status: next });
+            fetchAll();
+        } catch { alert('Update failed'); }
+    };
+
+    const handleAddOffer = async (e) => {
+        e.preventDefault();
+        if (!hotels.length) return alert('No property to link offer to');
+        setSubmitting(true);
+        try {
+            await API.post('/manager/offers', { ...offerForm, hotel: selectedHotel?._id || hotels[0]._id });
+            setShowAddOffer(false);
+            setOfferForm({ code: '', title: '', description: '', discountType: 'Percentage', discountValue: '', validFrom: '', validTo: '' });
+            fetchAll();
+        } catch (err) { alert(err.response?.data?.message || 'Failed to add offer'); }
+        finally { setSubmitting(false); }
+    };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -212,11 +254,26 @@ const MobileManagerDashboard = () => {
                 <h3>Room Inventory</h3>
                 <button className="mob-add-btn" onClick={() => { setRoomForm({ ...roomForm }); setShowAddRoom(true); }}>+ Add Room</button>
             </div>
-            {rooms.map(r => (
+            {rooms.length === 0 ? (
+                <div className="mob-empty-state">
+                    <i className="fa fa-bed"></i>
+                    <p>No rooms found for {selectedHotel?.name}</p>
+                </div>
+            ) : rooms.map(r => (
                 <div key={r._id} className="mob-adm-card room-inv-c">
                     <div className="rm-inv-top">
-                        <strong>{r.name}</strong>
-                        <span className={`rm-st ${r.status?.toLowerCase()}`}>{r.status || 'Available'}</span>
+                        <div className="rm-inv-info">
+                            <strong>{r.name}</strong>
+                            <div className="flex items-center gap-2">
+                                <span className={`rm-st ${r.status?.toLowerCase()}`}>{r.status || 'Available'}</span>
+                                <button className="mob-cycle-btn" onClick={(e) => { e.stopPropagation(); handleToggleRoomStatus(r._id, r.status); }}>
+                                    <i className="fa fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="rm-inv-actions">
+                            <button className="mob-icon-btn del" onClick={(e) => { e.stopPropagation(); handleDeleteRoom(r._id); }}><i className="fa fa-trash-alt"></i></button>
+                        </div>
                     </div>
                     <div className="rm-inv-meta">
                         <span><i className="fa fa-users"></i> {r.maxGuests} Guests</span>
@@ -295,6 +352,15 @@ const MobileManagerDashboard = () => {
 
             {/* Content Area */}
             <main className="mob-adm-content">
+                {/* Context Bar for Rooms/Availability */}
+                {(activeTab === 'rooms' || activeTab === 'availability') && selectedHotel && (
+                    <div className="mob-ctx-bar">
+                        <i className="fa fa-building"></i>
+                        <span>Managing <strong>{selectedHotel.name}</strong></span>
+                        <button className="mob-st-sw" onClick={() => setActiveTab('hotels')}>Switch</button>
+                    </div>
+                )}
+
                 {activeTab === 'overview' && renderOverview()}
                 {activeTab === 'rooms' && renderInventory()}
                 {activeTab === 'bookings' && renderBookings()}
@@ -307,12 +373,15 @@ const MobileManagerDashboard = () => {
                             <button className="mob-add-btn" onClick={() => setShowAddHotel(true)}>+ Add Hotel</button>
                         </div>
                         {hotels.map(h => (
-                            <div key={h._id} className="mob-adm-list-item">
+                            <div key={h._id} className="mob-adm-list-item" onClick={() => { setSelectedHotel(h); fetchRooms(h._id); setActiveTab('rooms'); }}>
                                 <div className="mob-li-info">
                                     <strong>{h.name}</strong>
                                     <span>{h.city} · {h.isApproved ? 'Live' : 'Pending'}</span>
                                 </div>
-                                <i className="fa fa-arrow-right text-gray-300"></i>
+                                <div className="flex items-center gap-4">
+                                    <button className="mob-icon-btn del" onClick={(e) => { e.stopPropagation(); handleDeleteHotel(h._id); }}><i className="fa fa-trash-alt"></i></button>
+                                    <i className="fa fa-chevron-right text-gray-300"></i>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -395,16 +464,29 @@ const MobileManagerDashboard = () => {
 
                 {activeTab === 'offers' && (
                     <div className="mob-mgr-pane">
-                        <h3>Hotel Offers</h3>
-                        {offers.map(o => (
-                            <div key={o._id} className="mob-adm-card">
-                                <strong>{o.code}</strong>
-                                <p className="text-xs">{o.title}</p>
-                                <div className="text-indigo-600 font-bold mt-1">
-                                    {o.discountType === 'Percentage' ? `${o.discountValue}% OFF` : `₹${o.discountValue} OFF`}
-                                </div>
+                        <div className="mob-sec-hdr">
+                            <h3>Hotel Offers</h3>
+                            <button className="mob-add-btn" onClick={() => setShowAddOffer(true)}>+ Add Offer</button>
+                        </div>
+                        {offers.length === 0 ? (
+                            <div className="mob-empty-state">
+                                <i className="fa fa-tag"></i>
+                                <p>No active offers found</p>
                             </div>
-                        ))}
+                        ) : (
+                            <div className="mob-offers-grid">
+                                {offers.map(o => (
+                                    <div key={o._id} className="mob-adm-card offer-card">
+                                        <div className="off-hdr">
+                                            <strong>{o.code}</strong>
+                                            <span className="badge-purple">{o.discountType === 'Percentage' ? `${o.discountValue}% OFF` : `₹${o.discountValue} OFF`}</span>
+                                        </div>
+                                        <p className="text-xs font-bold my-1">{o.title}</p>
+                                        <p className="text-[10px] text-gray-500">{o.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -436,6 +518,57 @@ const MobileManagerDashboard = () => {
                 )}
 
             </main>
+
+            {/* --- ADD OFFER MODAL --- */}
+            {showAddOffer && (
+                <div className="mob-form-overlay animate-in fade-in slide-in-from-bottom duration-300">
+                    <div className="mob-form-hdr">
+                        <button className="mob-close-btn" onClick={() => setShowAddOffer(false)}><i className="fa fa-times"></i></button>
+                        <h2>Create Offer</h2>
+                    </div>
+                    <form className="mob-form-body" onSubmit={handleAddOffer}>
+                        <div className="mob-input-group">
+                            <label>Coupon Code</label>
+                            <input type="text" placeholder="e.g. SAVE20" value={offerForm.code} onChange={e => setOfferForm({...offerForm, code: e.target.value.toUpperCase()})} required />
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Offer Title</label>
+                            <input type="text" placeholder="e.g. Summer Special" value={offerForm.title} onChange={e => setOfferForm({...offerForm, title: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-row">
+                            <div className="mob-input-group">
+                                <label>Type</label>
+                                <select value={offerForm.discountType} onChange={e => setOfferForm({...offerForm, discountType: e.target.value})}>
+                                    <option value="Percentage">Percentage (%)</option>
+                                    <option value="Flat">Flat (₹)</option>
+                                </select>
+                            </div>
+                            <div className="mob-input-group">
+                                <label>Value</label>
+                                <input type="number" placeholder="20" value={offerForm.discountValue} onChange={e => setOfferForm({...offerForm, discountValue: e.target.value})} required />
+                            </div>
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Valid From</label>
+                            <input type="date" value={offerForm.validFrom} onChange={e => setOfferForm({...offerForm, validFrom: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Valid To</label>
+                            <input type="date" value={offerForm.validTo} onChange={e => setOfferForm({...offerForm, validTo: e.target.value})} required />
+                        </div>
+                        <div className="mob-input-group">
+                            <label>Description</label>
+                            <textarea rows="3" placeholder="Brief details about the offer..." value={offerForm.description} onChange={e => setOfferForm({...offerForm, description: e.target.value})} required></textarea>
+                        </div>
+
+                        <div className="mob-form-footer">
+                            <button type="submit" className="mob-submit-btn" disabled={submitting}>
+                                {submitting ? 'Creating...' : 'Launch Offer'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
 
             {/* --- ADD HOTEL MODAL --- */}
             {showAddHotel && (
