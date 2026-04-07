@@ -376,10 +376,138 @@
 
 /* --- PREMIUM UI COMPONENTS --- */
 
+.no-mb { margin-bottom: 0 !important; }
+.mob-sub-info { font-size: 11px; color: #94a3b8; margin: 4px 0 20px 0; }
+
 .mob-header-left {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+/* Modern Activity List (Recent Reservations) */
+.mob-act-item.modern {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.mob-act-item.modern:last-child { border-bottom: none; }
+
+.mob-act-dot-v {
+    width: 3px;
+    height: 30px;
+    background: #6366f1;
+    border-radius: 10px;
+}
+
+.mob-act-main {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mob-guest-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-nm {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1a162d;
+    line-height: 1.2;
+}
+
+.room-nm {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.mob-pr-row {
+    font-size: 14px;
+    font-weight: 800;
+    color: #6366f1;
+}
+
+/* Pricing Control & Badges */
+.pricing-card {
+    padding: 20px;
+    border-left: 5px solid #6366f1;
+}
+
+.room-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.badge-vibrant {
+    background: #eef2ff;
+    color: #4f46e5;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    border: 1px solid #e0e7ff;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+}
+
+/* Premium Financial Performance */
+.premium-fin-card {
+    padding: 24px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+}
+
+.fin-hdr {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.fin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.fin-col { display: flex; flex-direction: column; }
+.fin-label { font-size: 11px; color: #64748b; margin-bottom: 4px; }
+.fin-huge { font-size: 28px; font-weight: 900; color: #1e293b; line-height: 1; }
+.fin-val { font-size: 16px; font-weight: 800; color: #1e293b; }
+
+.fin-col.right { text-align: right; }
+
+/* Premium Empty States */
+.mob-empty-state.premium {
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.mob-empty-state.premium i {
+    font-size: 40px;
+    color: #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.mob-empty-state.premium h4 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.mob-empty-state.premium p {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.5;
 }
 
 .mob-back-btn {

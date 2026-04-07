@@ -275,13 +275,15 @@ const MobileManagerDashboard = () => {
                 <h3>Recent Reservations</h3>
                 <div className="mob-activity-list">
                     {reservations.slice(0, 5).map(r => (
-                        <div key={r._id} className="mob-act-item">
-                            <div className="mob-act-dot"></div>
-                            <div className="mob-act-tx">
-                                <strong>{r.user?.name || 'Guest'}</strong>
-                                <span>{r.room?.name}</span>
+                        <div key={r._id} className="mob-act-item modern">
+                            <div className="mob-act-dot-v"></div>
+                            <div className="mob-act-main">
+                                <div className="mob-guest-row">
+                                    <span className="guest-nm">{r.user?.name || 'Guest'}</span>
+                                    <span className="room-nm">{r.room?.name}</span>
+                                </div>
+                                <div className="mob-pr-row">{formatCurrency(r.managerEarnings)}</div>
                             </div>
-                            <div className="mob-act-pr">{formatCurrency(r.managerEarnings)}</div>
                         </div>
                     ))}
                 </div>
@@ -455,13 +457,22 @@ const MobileManagerDashboard = () => {
                 
                 {activeTab === 'availability' && (
                     <div className="mob-mgr-pane">
-                        <h3>Availability Control</h3>
-                        <p className="text-gray-500 text-xs mb-4">Porting calendar view to mobile. Use "Inventory" for price checks.</p>
-                        {rooms.slice(0, 5).map(r => (
-                            <div key={r._id} className="mob-adm-card">
+                        <div className="mob-sec-hdr no-mb">
+                            <h3>Availability Control</h3>
+                            <button className="mob-st-sw" onClick={() => setActiveTab('rooms')}>Manage Pricing</button>
+                        </div>
+                        <p className="mob-sub-info">Porting calendar view to mobile. Use "Inventory" for price checks.</p>
+                        
+                        {rooms.length === 0 ? (
+                            <div className="mob-empty-state">
+                                <i className="fa fa-calendar-alt"></i>
+                                <p>No rooms found to manage</p>
+                            </div>
+                        ) : rooms.map(r => (
+                            <div key={r._id} className="mob-adm-card pricing-card">
                                 <div className="flex justify-between items-center">
-                                    <strong>{r.name}</strong>
-                                    <span className="text-sm font-bold text-indigo-600">{r.weekendPriceMultiplier}x Wknd</span>
+                                    <strong className="room-title">{r.name}</strong>
+                                    <span className="badge-vibrant">{r.weekendPriceMultiplier || '1.0'}x Wknd</span>
                                 </div>
                             </div>
                         ))}
@@ -470,11 +481,17 @@ const MobileManagerDashboard = () => {
 
                 {activeTab === 'reports' && (
                     <div className="mob-mgr-pane">
-                        <div className="mob-adm-card fin-card">
-                            <h3>Financial Performance</h3>
-                            <div className="fin-grid">
-                                <div className="fin-item"><span>Net Earnings</span><strong>{formatCurrency(analytics?.netEarnings)}</strong></div>
-                                <div className="fin-item"><span>Total Revenue</span><strong>{formatCurrency(analytics?.totalRevenue)}</strong></div>
+                        <div className="mob-adm-card premium-fin-card">
+                            <div className="fin-hdr">Financial Performance</div>
+                            <div className="fin-row">
+                                <div className="fin-col">
+                                    <span className="fin-label">Net Earnings</span>
+                                    <span className="fin-huge">{formatCurrency(analytics?.netEarnings)}</span>
+                                </div>
+                                <div className="fin-col right">
+                                    <span className="fin-label">Total Revenue</span>
+                                    <span className="fin-val">{formatCurrency(analytics?.totalRevenue)}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -515,8 +532,16 @@ const MobileManagerDashboard = () => {
 
                 {activeTab === 'reviews' && (
                     <div className="mob-mgr-pane">
-                        <h3>Guest Feedback</h3>
-                        {reviews.map(r => (
+                        <div className="mob-sec-hdr">
+                            <h3>Guest Feedback</h3>
+                        </div>
+                        {reviews.length === 0 ? (
+                            <div className="mob-empty-state premium">
+                                <i className="fa fa-star"></i>
+                                <h4>No Feedback Yet</h4>
+                                <p>Customer reviews will appear here once guests complete their stays.</p>
+                            </div>
+                        ) : reviews.map(r => (
                             <div key={r._id} className="mob-adm-card">
                                 <div className="rev-hdr"><strong>{r.user?.name}</strong> <span>{r.rating}★</span></div>
                                 <p className="text-sm my-2 italic">"{r.comment}"</p>
