@@ -276,6 +276,93 @@
     animation-name: slideInFromBottom;
 }
 
+/* Property Selector Pills */
+.mob-property-selector {
+    margin: 15px 0 20px;
+}
+
+.mob-property-selector label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.mob-chip-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+}
+
+.mob-chip-row::-webkit-scrollbar { display: none; }
+
+.mob-prop-chip {
+    white-space: nowrap;
+    padding: 8px 18px;
+    border-radius: 100px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.mob-prop-chip.active {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: white;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.mob-inv-sub {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 20px 0 15px;
+    padding-left: 4px;
+    border-left: 4px solid #6366f1;
+    line-height: 1.2;
+}
+
+/* Neat Room Actions */
+.rm-inv-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: 10px;
+}
+
+.mob-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.mob-icon-btn.edit {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.mob-icon-btn.del {
+    background: #fff1f2;
+    color: #f43f5e;
+}
+
+.mob-icon-btn:active {
+    transform: scale(0.9);
+}
+
 /* ... Animations and other styles ... */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -312,11 +399,6 @@
 .mob-back-btn:active {
     background: #e2e8f0;
     transform: scale(0.9);
-}
-
-.mob-icon-btn.edit {
-    background: #eff6ff;
-    color: #2563eb;
 }
 
 /* Amenities Grid Allocation */

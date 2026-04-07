@@ -125,7 +125,7 @@ const MobileManagerDashboard = () => {
             if (editingId) {
                 await API.put(`/manager/hotels/${editingId}`, payload);
             } else {
-                await API.post('/admin/hotels', payload);
+                await API.post('/manager/hotels', payload);
             }
 
             setShowAddHotel(false);
@@ -292,8 +292,26 @@ const MobileManagerDashboard = () => {
         <div className="mob-mgr-pane">
             <div className="mob-sec-hdr">
                 <h3>Room Inventory</h3>
-                <button className="mob-add-btn" onClick={() => { setRoomForm({ ...roomForm }); setShowAddRoom(true); }}>+ Add Room</button>
+                <button className="mob-add-btn" onClick={() => { setRoomForm({ name: '', type: 'Classic Room', pricePerNight: '', maxGuests: 2, description: '', totalRoomCount: 1, amenities: [] }); setShowAddRoom(true); }}>+ Add Room</button>
             </div>
+
+            <div className="mob-property-selector">
+                <label>SELECT PROPERTY</label>
+                <div className="mob-chip-row">
+                    {hotels.map(h => (
+                        <button 
+                            key={h._id} 
+                            className={`mob-prop-chip ${selectedHotel?._id === h._id ? 'active' : ''}`}
+                            onClick={() => { setSelectedHotel(h); fetchRooms(h._id); }}
+                        >
+                            {h.name}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <h4 className="mob-inv-sub">Room Inventory — {selectedHotel?.name || 'Select a property'}</h4>
+
             {rooms.length === 0 ? (
                 <div className="mob-empty-state">
                     <i className="fa fa-bed"></i>
