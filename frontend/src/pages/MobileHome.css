@@ -94,7 +94,7 @@ body.mobile-home-active .custom-navbar {
    ============================================================ */
 .mob-hero {
   position: relative;
-  padding: 0 18px 28px;
+  padding: 0 28px 28px;
   background: linear-gradient(160deg, #2d264d 0%, #6d5dfc 60%, #4f46e5 100%);
   margin-top: -56px; /* overlap with top bar bg */
   padding-top: 60px;

@@ -3792,10 +3792,11 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    text-align: center;
+    text-align: left;
     padding-bottom: 32px;
+    padding-left: 60px;
 }
 
 /* Zone 2: search bar pinned to the bottom */
@@ -4947,6 +4948,9 @@ body.modal-open {
     .hero-heading-zone {
         padding-bottom: 14px;
         justify-content: flex-end;
+        align-items: flex-start;
+        text-align: left;
+        padding-left: 20px;
     }
 
     .hero-search-bottom-wrap {
