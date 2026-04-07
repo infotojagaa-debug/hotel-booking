@@ -59,6 +59,7 @@ const AdvancedSearch = ({
                 setFilteredResults([]);
                 return;
             }
+            const query = destination.toLowerCase();
             const filtered = allLocations
                 .filter(loc => loc.name.toLowerCase().includes(query) || loc.state.toLowerCase().includes(query))
                 .map(loc => ({
