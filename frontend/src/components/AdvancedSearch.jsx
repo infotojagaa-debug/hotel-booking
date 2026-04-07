@@ -90,11 +90,7 @@ const AdvancedSearch = ({
             type: propertyType !== 'All' ? propertyType : null
         };
         localStorage.setItem('elite_stays_search', JSON.stringify(searchData));
-        if (!userInfo) {
-            localStorage.setItem('pendingSearch', JSON.stringify(searchData));
-            navigate(`/login?redirect=/hotels&msg=${encodeURIComponent('Please login to continue')}`);
-            return;
-        }
+        
         const searchParams = new URLSearchParams();
         Object.entries(searchData).forEach(([key, value]) => { if (value) searchParams.append(key, value); });
         setIsHubActive(false);

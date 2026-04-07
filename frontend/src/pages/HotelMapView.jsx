@@ -15,15 +15,15 @@ import MobileHotels from './MobileHotels';
 import './HotelMapView.css';
 
 // --- UTILS ---
-const isValidCoords = (lat, lng) => {
+function isValidCoords(lat, lng) {
   const latNum = parseFloat(lat);
   const lngNum = parseFloat(lng);
   return !isNaN(latNum) && !isNaN(lngNum) && isFinite(latNum) && isFinite(lngNum) && 
          (Math.abs(latNum) > 0.01 || Math.abs(lngNum) > 0.01);
-};
+}
 
 // ─── CUSTOM MARKER CREATORS ───────────────────────────────────────────────────
-const createPriceMarker = (price, isActive, isHovered) => {
+function createPriceMarker(price, isActive, isHovered) {
   const activeClass = isActive ? 'active' : '';
   const hoverClass = isHovered ? 'hovered' : '';
   return L.divIcon({
@@ -36,7 +36,7 @@ const createPriceMarker = (price, isActive, isHovered) => {
     iconAnchor: [45, 38],
     popupAnchor: [0, -40]
   });
-};
+}
 
 // ─── Map Fit Bounds Controller ────────────────────────────────────────────────
 const MapFitBounds = ({ hotels, forceCenter }) => {

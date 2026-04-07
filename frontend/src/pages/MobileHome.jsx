@@ -101,8 +101,13 @@ const MobileHome = () => {
   const [featuredHotels, setFeaturedHotels]   = useState([]);
   const [exclusiveOffers, setExclusiveOffers] = useState(DUMMY_OFFERS);
   const [loading, setLoading]                 = useState(true);
-  const { userInfo }                          = useContext(AuthContext);
+  const { userInfo, logout } = useContext(AuthContext);
   const navigate                              = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   // Hide desktop navbar while this component is mounted
   useEffect(() => {
@@ -144,7 +149,12 @@ const MobileHome = () => {
         <div className="mob-top-bar">
           <div className="mob-brand">Elite Stays</div>
           {userInfo ? (
-            <div className="mob-user-avatar">{userInfo.name.charAt(0).toUpperCase()}</div>
+            <div className="flex items-center gap-3">
+              <div className="mob-user-avatar" onClick={() => navigate('/dashboard')}>{userInfo?.name?.charAt(0).toUpperCase()}</div>
+              <button className="mob-top-logout-btn" onClick={handleLogout}>
+                <i className="fa fa-sign-out-alt"></i>
+              </button>
+            </div>
           ) : (
             <Link to="/login" className="mob-login-link">Login</Link>
           )}

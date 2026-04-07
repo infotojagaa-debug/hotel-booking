@@ -41,7 +41,7 @@ const AppLayout = () => {
   const isPanel = location.pathname.startsWith('/manager') || location.pathname.startsWith('/admin') || location.pathname === '/hotels/map';
   const isDashboard = location.pathname.startsWith('/dashboard');
   const isCheckout = location.pathname.startsWith('/payment') || location.pathname.startsWith('/success');
-  const isDetailsPage = /^\/hotels\/[a-zA-Z0-9_]+$/.test(location.pathname) || /^\/rooms\/[a-zA-Z0-9_]+$/.test(location.pathname);
+  const isDetailsPage = location.pathname.startsWith('/hotels/') || location.pathname.startsWith('/rooms/');
 
   const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
 
@@ -51,11 +51,13 @@ const AppLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Elite immersive pages should hide global navigation to prevent UI overlapping
+  const isImmersivePage = isPanel || isDashboard || isCheckout || isDetailsPage;
   const hideNavbar = isPanel || (isMobile && location.pathname === '/hotels');
 
   return (
     <>
-      {!hideNavbar && !hideOverlays && <Navbar />}
+      {!hideNavbar && !isImmersivePage && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         {/* (Rest of the routes remain unchanged...) */}
@@ -90,10 +92,10 @@ const AppLayout = () => {
           <Route path="/manager/dashboard" element={<ManagerDashboard />} />
         </Route>
       </Routes>
-      {!isPanel && !isDashboard && !isCheckout && !isDetailsPage && <Footer />}
+      {!isImmersivePage && <Footer />}
       
       {/* Global Mobile Navigation Hub */}
-      {isMobile && !isPanel && !isCheckout && !isDashboard && !isDetailsPage && <MobileNav />}
+      {isMobile && !isImmersivePage && <MobileNav />}
     </>
   );
 };

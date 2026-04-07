@@ -55,23 +55,25 @@ const MobileHotels = () => {
         {loading ? (
           [1, 2, 3].map(i => <div key={i} className="mob-skeleton-card"></div>)
         ) : hotels.length === 0 ? (
-          <div className="mob-empty" style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
-            <div style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}><i className="fa fa-search"></i></div>
-            <h2 style={{ fontSize: '20px', color: '#1e293b', fontWeight: '800', marginBottom: '8px' }}>
+          <div className="mob-empty" style={{ textAlign: 'center', padding: '60px 24px', background: '#fff', margin: '20px', borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+            <div style={{ width: '80px', height: '80px', background: '#f1f5f9', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: '#6d5dfc', fontSize: '32px' }}>
+              <i className="fa fa-search"></i>
+            </div>
+            <h2 style={{ fontSize: '22px', color: '#1e293b', fontWeight: '900', marginBottom: '12px' }}>
               {new URLSearchParams(location.search).get('location') 
-                ? `No properties found in ${new URLSearchParams(location.search).get('location')}`
+                ? `No results for "${new URLSearchParams(location.search).get('location')}"`
                 : 'No properties found'}
             </h2>
-            <p style={{ color: '#64748b', fontSize: '14px', lineHeight: '1.5' }}>
+            <p style={{ color: '#64748b', fontSize: '15px', lineHeight: '1.6', marginBottom: '32px' }}>
               {new URLSearchParams(location.search).get('location') 
-                ? `We couldn't find any properties in ${new URLSearchParams(location.search).get('location')} matching your criteria. Try changing your dates or removing filters.`
-                : 'Try moving the map or changing your dates.'}
+                ? `We couldn't find any stays matching your search in this area. Try adjusting your dates or expanding your search.`
+                : 'Try moving the map or removing filters to see more results.'}
             </p>
             <button 
               onClick={() => navigate('/hotels')} 
-              style={{ marginTop: '20px', padding: '10px 20px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '8px', border: 'none', fontWeight: '700' }}
+              style={{ width: '100%', padding: '16px', backgroundColor: '#6d5dfc', color: '#fff', borderRadius: '16px', border: 'none', fontWeight: '800', boxShadow: '0 10px 20px rgba(109, 93, 252, 0.2)' }}
             >
-              Clear Search
+              Clear all filters
             </button>
           </div>
         ) : (

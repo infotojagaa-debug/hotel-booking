@@ -8,7 +8,7 @@ import MobileDashboard from './MobileDashboard';
 const Dashboard = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { userInfo } = useContext(AuthContext);
+    const { userInfo, logout } = useContext(AuthContext);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
@@ -79,6 +79,15 @@ const Dashboard = () => {
                             <Link to="/wishlist" className="bg-white/20 text-white border border-white/30 px-6 py-3 rounded-xl font-bold hover:bg-white/30 transition-all flex items-center justify-center gap-2">
                                 <FaHeart /> View Wishlist
                             </Link>
+                            <button 
+                                onClick={() => {
+                                    logout();
+                                    navigate('/login');
+                                }}
+                                className="bg-rose-500/80 text-white border border-rose-400/30 px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-all flex items-center justify-center gap-2 mt-2"
+                            >
+                                <i className="fa fa-sign-out-alt"></i> Sign Out
+                            </button>
                         </div>
                     </div>
                 </div>

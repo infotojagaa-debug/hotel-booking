@@ -52,6 +52,28 @@ body.mobile-home-active .custom-navbar {
   font-weight: 900;
   font-family: 'Poppins', sans-serif;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.mob-top-logout-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mob-top-logout-btn:active {
+  transform: scale(0.9);
+  background: rgba(255,255,255,0.35);
 }
 
 .mob-login-link {
@@ -457,6 +479,7 @@ body.mobile-home-active .custom-navbar {
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
