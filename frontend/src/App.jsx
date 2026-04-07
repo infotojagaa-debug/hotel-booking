@@ -41,6 +41,7 @@ const AppLayout = () => {
   const isPanel = location.pathname.startsWith('/manager') || location.pathname.startsWith('/admin') || location.pathname === '/hotels/map';
   const isDashboard = location.pathname.startsWith('/dashboard');
   const isCheckout = location.pathname.startsWith('/payment') || location.pathname.startsWith('/success');
+  const isDetailsPage = /^\/hotels\/[a-zA-Z0-9_]+$/.test(location.pathname) || /^\/rooms\/[a-zA-Z0-9_]+$/.test(location.pathname);
 
   const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
 
@@ -87,10 +88,10 @@ const AppLayout = () => {
           <Route path="/manager/dashboard" element={<ManagerDashboard />} />
         </Route>
       </Routes>
-      {!isPanel && !isDashboard && !isCheckout && <Footer />}
+      {!isPanel && !isDashboard && !isCheckout && !isDetailsPage && <Footer />}
       
       {/* Global Mobile Navigation Hub */}
-      {isMobile && !isPanel && !isCheckout && !isDashboard && <MobileNav />}
+      {isMobile && !isPanel && !isCheckout && !isDashboard && !isDetailsPage && <MobileNav />}
     </>
   );
 };

@@ -96,6 +96,10 @@ const AdvancedSearch = ({
         }
         const searchParams = new URLSearchParams();
         Object.entries(searchData).forEach(([key, value]) => { if (value) searchParams.append(key, value); });
+        
+        setIsHubActive(false);
+        setShowMobSearchOverlay(false);
+        
         navigate(`/hotels?${searchParams.toString()}`);
     };
 
@@ -154,7 +158,7 @@ const AdvancedSearch = ({
                         <div className="mob-hub-selection-card">
                             <div className="mob-card-head-row">
                                 <span className="mob-card-head-title">Select dates</span>
-                                <i className="fa fa-times mob-hub-card-close" onClick={() => setHubMode('guests')}></i>
+                                <i className="fa fa-times mob-hub-card-close" onClick={() => setIsHubActive(false)}></i>
                             </div>
 
                             <div className="mob-quick-select-row">
@@ -185,7 +189,7 @@ const AdvancedSearch = ({
                         <div className="mob-hub-selection-card">
                             <div className="mob-card-head-row">
                                 <span className="mob-card-head-title">Select guests</span>
-                                <i className="fa fa-times mob-hub-card-close" onClick={() => setHubMode('dates')}></i>
+                                <i className="fa fa-times mob-hub-card-close" onClick={() => setIsHubActive(false)}></i>
                             </div>
 
                             <div className="mob-overlay-scroll-body">
