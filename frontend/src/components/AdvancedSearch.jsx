@@ -267,7 +267,7 @@ const AdvancedSearch = ({
                     </div>
 
                     {!isMobile && showDropdown && filteredResults.length > 0 && (
-                        <div className="destination-results-dropdown">
+                        <div className="destination-results-dropdown upscale-top">
                             {filteredResults.map(loc => (
                                 <div key={loc.name} className="desktop-result-item" onClick={() => selectLocation(loc)}>
                                     <div className="desktop-res-icon"><i className="fa fa-map-marker-alt"></i></div>
@@ -281,7 +281,7 @@ const AdvancedSearch = ({
                     )}
                 </div>
                 
-                <div className="search-pill-item date-pill" onClick={() => isMobile ? setIsHubActive(true) || setHubMode('dates') : setShowDatePicker(!showDatePicker)}>
+                <div className="search-pill-item date-pill relative" onClick={() => isMobile ? setIsHubActive(true) || setHubMode('dates') : setShowDatePicker(!showDatePicker)}>
                     <div className="pill-content">
                         <div className="pill-icon"><i className="fa fa-calendar-day"></i></div>
                         <div className="pill-input-wrap">
@@ -291,9 +291,29 @@ const AdvancedSearch = ({
                             </div>
                         </div>
                     </div>
+
+                    {!isMobile && showDatePicker && (
+                        <div className="custom-date-picker-popover upscale-top" onClick={(e) => e.stopPropagation()}>
+                            <DatePicker
+                                selectsRange
+                                startDate={startDate}
+                                endDate={endDate}
+                                onChange={(update) => setDateRange(update)}
+                                monthsShown={2}
+                                minDate={new Date()}
+                                inline
+                                calendarClassName="premium-desktop-calendar"
+                            />
+                            <div className="datepicker-footer">
+                                <button type="button" className="quick-action-pill" onClick={() => setQuickDates('tonight')}>Tonight</button>
+                                <button type="button" className="quick-action-pill" onClick={() => setQuickDates('thisWeekend')}>This Weekend</button>
+                                <button type="button" className="datepicker-done-btn" onClick={() => setShowDatePicker(false)}>Done</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                <div className="search-pill-item guests-pill" onClick={() => isMobile ? setIsHubActive(true) || setHubMode('guests') : setShowGuestDropdown(!showGuestDropdown)}>
+                <div className="search-pill-item guests-pill relative" onClick={() => isMobile ? setIsHubActive(true) || setHubMode('guests') : setShowGuestDropdown(!showGuestDropdown)}>
                     <div className="pill-content">
                         <div className="pill-icon"><i className="fa fa-users"></i></div>
                         <div className="pill-input-wrap">
@@ -301,6 +321,31 @@ const AdvancedSearch = ({
                             <div className="pill-display-text text-left">{totalGuests} Guests, {rooms} Rms</div>
                         </div>
                     </div>
+
+                    {!isMobile && showGuestDropdown && (
+                        <div className="guest-dropdown-popover upscale-top" onClick={(e) => e.stopPropagation()}>
+                            {[
+                                { label: 'Adults', val: adults, set: setAdults, min: 1 },
+                                { label: 'Children', val: children, set: setChildren, min: 0 },
+                                { label: 'Rooms', val: rooms, set: setRooms, min: 1 }
+                            ].map(item => (
+                                <div key={item.label} className="guest-select-row">
+                                    <div className="guest-label-side">
+                                        <span className="guest-main-label">{item.label}</span>
+                                        <span className="guest-sub-label">{item.label === 'Adults' ? 'Ages 13+' : item.label === 'Children' ? 'Ages 2-12' : 'Total rooms'}</span>
+                                    </div>
+                                    <div className="guest-counter-side">
+                                        <button type="button" className="counter-btn" onClick={() => item.set(Math.max(item.min, item.val - 1))} disabled={item.val <= item.min}>−</button>
+                                        <span className="counter-val">{item.val}</span>
+                                        <button type="button" className="counter-btn" onClick={() => item.set(item.val + 1)}>+</button>
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="guest-footer">
+                                <button type="button" className="guest-done-btn" onClick={() => setShowGuestDropdown(false)}>Apply Selection</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="search-pill-btn-wrap">

@@ -267,17 +267,27 @@
 /* Dropdowns & Popovers - Highly Compressed Size */
 .search-dropdown.modern-district-dropdown,
 .guest-dropdown-popover,
-.custom-date-picker-popover {
+.custom-date-picker-popover,
+.destination-results-dropdown {
     position: absolute;
-    bottom: calc(100% + 15px); /* Unified upward opening */
-    left: 0;
     background: #ffffff;
-    border-radius: 24px; /* Image Match: Smoother rounding */
-    padding: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Deep premium shadow */
+    border-radius: 20px; /* Refined for search pill context */
+    padding: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Deep premium shadow */
     border: 1px solid rgba(0, 0, 0, 0.05);
     z-index: 1100;
+}
+
+/* Upscale Position Modifier (Requested: Positioning drop-downs upside) */
+.upscale-top {
+    bottom: calc(100% + 12px) !important; 
+    top: auto !important;
     animation: premiumPopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.destination-results-dropdown {
+    width: 400px;
+    left: 0;
 }
 
 /* Bottom Triangle Caret Tip */
@@ -298,15 +308,49 @@
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.guest-dropdown-popover,
-.search-dropdown.modern-district-dropdown {
-    width: 420px; /* Exact Size Match */
-    padding: 12px 20px;
-    max-height: 380px;
-    overflow-y: auto;
-    margin-bottom: 0;
-    top: auto;
+.guest-dropdown-popover {
+    width: 360px;
+    right: 0;
+    left: auto;
 }
+
+/* Guest Selector Rows (Desktop Only) */
+.guest-select-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.guest-select-row:last-child { border-bottom: none; }
+
+.guest-label-side { display: flex; flex-direction: column; text-align: left; }
+.guest-main-label { font-size: 14px; font-weight: 800; color: #1e293b; }
+.guest-sub-label { font-size: 11px; color: #64748b; font-weight: 500; }
+
+.guest-counter-side { display: flex; align-items: center; gap: 16px; }
+
+.counter-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid #e2e8f0; background: #fff;
+    color: #6d5dfc; font-size: 18px; font-weight: 400;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+}
+
+.counter-btn:hover:not(:disabled) { background: #6d5dfc; color: #fff; border-color: #6d5dfc; }
+.counter-btn:disabled { color: #cbd5e1; cursor: not-allowed; }
+.counter-val { font-size: 15px; font-weight: 800; color: #1e293b; min-width: 20px; text-align: center; }
+
+.guest-footer { margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9; }
+.guest-done-btn, .datepicker-done-btn {
+    width: 100%; padding: 12px; background: #6d5dfc; color: #fff;
+    border: none; border-radius: 12px; font-weight: 800; font-size: 14px;
+    cursor: pointer; transition: opacity 0.2s;
+}
+
+.guest-done-btn:hover { opacity: 0.9; }
 
 /* Custom Premium Scrollbar (Match Image) */
 .guest-dropdown-popover::-webkit-scrollbar,
