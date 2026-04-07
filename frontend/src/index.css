@@ -285,15 +285,19 @@
 
 /* Upscale Position Modifier (Requested: Positioning drop-downs upside) */
 .upscale-top {
-    bottom: calc(100% + 15px) !important; 
+    bottom: 100% !important; /* Absolute Force: No downward space */
     top: auto !important;
     transform-origin: bottom center !important;
+    margin-bottom: 8px !important;
     animation: premiumPopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .destination-results-dropdown {
-    width: 400px;
-    left: 0;
+    width: 380px !important;
+    left: 0 !important;
+    position: absolute !important;
+    background: #ffffff !important;
+    z-index: 2000 !important; /* Ensure it stays above everything */
 }
 
 /* Bottom Triangle Caret Tip */
@@ -323,9 +327,15 @@
 }
 
 .custom-date-picker-popover {
-    transform-origin: bottom left;
-    transform: scale(0.82); /* Significantly reduced calendar size per user request */
-    margin-bottom: 5px;
+    transform-origin: bottom left !important;
+    transform: scale(0.78) !important; /* Significantly reduced for navbar safety */
+    margin-bottom: 2px !important;
+    padding: 8px !important;
+    width: auto !important;
+}
+
+.premium-desktop-calendar {
+    transform: scale(1.05); /* Slight internal scale for readability within container */
 }
 
 /* Guest Selector Rows (Desktop Only) */

@@ -300,7 +300,7 @@ const AdvancedSearch = ({
                                 startDate={startDate}
                                 endDate={endDate}
                                 onChange={(update) => setDateRange(update)}
-                                monthsShown={2}
+                                monthsShown={1} // Reduced from 2 to 1 for desktop compactness
                                 minDate={new Date()}
                                 inline
                                 calendarClassName="premium-desktop-calendar"
