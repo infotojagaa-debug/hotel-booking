@@ -52,7 +52,8 @@ const AppLayout = () => {
   }, []);
 
   // Elite immersive pages should hide global navigation to prevent UI overlapping
-  const isImmersivePage = isPanel || isDashboard || isCheckout || isDetailsPage;
+  // We keep dashboard out of immersive so it has the site navbar and footer
+  const isImmersivePage = isPanel || isCheckout || isDetailsPage;
   const hideNavbar = isPanel || (isMobile && location.pathname === '/hotels');
 
   return (

@@ -303,9 +303,8 @@ body {
 }
 
 .cd-sidebar-footer {
-  padding: 30px 20px;
+  padding: 25px;
   border-top: 1px solid #f1f5f9;
-  background: white;
 }
 
 .cd-logout-btn {
@@ -314,27 +313,20 @@ body {
   border-radius: 14px;
   background: #fff1f2;
   color: #f43f5e;
-  border: 1px solid rgba(244, 63, 94, 0.1);
-  font-weight: 800;
+  border: none;
+  font-weight: 700;
   font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.05);
+  transition: all 0.3s;
 }
 
 .cd-logout-btn:hover {
   background: #f43f5e;
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(244, 63, 94, 0.2);
-}
-
-.cd-logout-btn:active {
-  transform: translateY(0);
 }
 
 /* --- MODERN UI COMPONENTS --- */
@@ -812,14 +804,26 @@ body {
 /* --- PREMIUM CARDS (V3 Optimized) --- */
 .cd-booking-card-premium {
   background: white;
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: 20px;
+  padding: 20px;
   display: flex;
-  gap: 30px;
-  box-shadow: var(--cd-shadow-soft);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  margin-bottom: 24px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: var(--cd-shadow);
+  border: 1px solid #f1f5f9;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+@media (min-width: 1024px) {
+  .cd-booking-card-premium {
+    flex-direction: row;
+    padding: 24px;
+    gap: 30px;
+    border-radius: 24px;
+    box-shadow: var(--cd-shadow-soft);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+  }
 }
 
 .cd-booking-card-premium:hover {
@@ -1160,11 +1164,22 @@ body {
 .cd-booking-side {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  padding-left: 30px;
-  border-left: 1px dashed #e2e8f0;
+  padding-top: 20px;
+  border-top: 1px dashed #e2e8f0;
   min-width: 180px;
+}
+
+@media (min-width: 1024px) {
+  .cd-booking-side {
+    align-items: flex-end;
+    padding-top: 0;
+    padding-left: 30px;
+    border-top: none;
+    border-left: 1px dashed #e2e8f0;
+    min-width: 200px;
+  }
 }
 
 .cd-price-tag {
